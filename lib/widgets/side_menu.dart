@@ -10,6 +10,7 @@ class NavDrawer extends StatelessWidget {
   Widget build(BuildContext context) {
     void logout() async {
       await FirebaseAuth.instance.signOut();
+      // ignore: use_build_context_synchronously
       Navigator.pushReplacementNamed(context, HomePage.id);
     }
 
@@ -20,39 +21,45 @@ class NavDrawer extends StatelessWidget {
           DrawerHeader(
             decoration: BoxDecoration(
                 color: Theme.of(context).canvasColor,
-                image: const DecorationImage(
-                    fit: BoxFit.fill,
-                    image: AssetImage('assets/images/drone.png'))),
-            child: const Text(
-              'Side menu',
-              style: TextStyle(color: Colors.white, fontSize: 25),
-            ),
+            ), 
+            child: const Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                CircleAvatar(
+                  radius: 40,
+                  backgroundImage: NetworkImage(
+                    'https://source.unsplash.com/200x200/?portrait',
+                  ),
+                ),
+                Text(
+                  'Username',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 30,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            )
+          ),
+          ListTile(
+            leading: const Icon(Icons.account_box),
+            title: const Text('Profile'),
+            onTap: () => {
+              Navigator.of(context).pushNamed("UserProfile"),
+              },
           ),
           ListTile(
             leading: const Icon(Icons.input),
-            title: const Text('Welcome'),
+            title: const Text('Logout'),
             onTap: () => {
               logout()
             },
           ),
           ListTile(
-            leading: const Icon(Icons.verified_user),
-            title: const Text('Profile'),
-            onTap: () => {Navigator.of(context).pop()},
-          ),
-          ListTile(
             leading: const Icon(Icons.settings),
             title: const Text('Settings'),
-            onTap: () => {Navigator.of(context).pop()},
-          ),
-          ListTile(
-            leading: const Icon(Icons.border_color),
-            title: const Text('Feedback'),
-            onTap: () => {Navigator.of(context).pop()},
-          ),
-          ListTile(
-            leading: const Icon(Icons.exit_to_app),
-            title: const Text('Logout'),
             onTap: () => {Navigator.of(context).pop()},
           ),
         ],

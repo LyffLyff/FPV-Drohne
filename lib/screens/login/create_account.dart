@@ -24,7 +24,7 @@ class _CreateAccountState extends State<CreateAccount> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             SizedBox(
-              width: MediaQuery.of(context).size.width / 2,
+              width: MediaQuery.of(context).size.width - 10,
               child: TextField(
                 controller: _emailController,
                 decoration: const InputDecoration(hintText: 'Email'),
@@ -34,7 +34,7 @@ class _CreateAccountState extends State<CreateAccount> {
               height: 30.0,
             ),
             SizedBox(
-              width: MediaQuery.of(context).size.width / 2,
+              width: MediaQuery.of(context).size.width - 10,
               child: TextField(
                 controller: _passwordController,
                 obscureText: true,

@@ -5,15 +5,15 @@ ThemeData lightTheme = ThemeData(
   brightness: Brightness.light, // Text Black -> White Mode
   useMaterial3: true,
   textTheme: const TextTheme(
-    displayLarge: TextTheme(fontSize: 32) 
-  appBarTheme: const AppBarTheme(
+    displayLarge: TextStyle(fontSize: 32)
+  ),
+  appBarTheme: AppBarTheme(
     iconTheme: IconThemeData(
-      color: Colors.black
+      color: const Color.fromARGB(255, 87, 87, 87)
     ),
   ),
-  colorScheme: ColorScheme.fromSeed(seedColor: Color.fromARGB(255, 239, 239, 239)),
-  );
-)
+  colorScheme: ColorScheme.fromSeed(seedColor: Colors.green),
+);
 
 
 ThemeData darkTheme = ThemeData(

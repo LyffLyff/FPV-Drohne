@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:drone_2_0/screens/homepage/homepage.dart';
+import 'package:drone_2_0/screens/user_profile.dart';
 import 'package:drone_2_0/themes/main_themes.dart';
 import 'package:flutter/material.dart';
 import 'package:drone_2_0/screens/login/login.dart';
@@ -11,6 +12,7 @@ import 'firebase_options.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.android);
+
   runApp(const MyApp());
 }
 
@@ -55,6 +57,7 @@ late StreamSubscription<User?> user;
       routes: {
         HomePage.id: (context) => const LoginScreen(),
         LoginScreen.id: (context) => const HomePage(),
+        UserProfile.id: (context) => const UserProfile(),
       },
       home: const LoginScreen(),
     );
