@@ -1,4 +1,5 @@
 import 'package:drone_2_0/auth/auth_service.dart';
+import 'package:drone_2_0/widgets/utils/helper_widgets.dart';
 import 'package:flutter/material.dart';
 
 class CreateAccount extends StatefulWidget {
@@ -11,6 +12,9 @@ class CreateAccount extends StatefulWidget {
 class _CreateAccountState extends State<CreateAccount> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _sirNameController = TextEditingController();
+  final TextEditingController _userNameController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -30,9 +34,7 @@ class _CreateAccountState extends State<CreateAccount> {
                 decoration: const InputDecoration(hintText: 'Email'),
               ),
             ),
-            const SizedBox(
-              height: 30.0,
-            ),
+            addVerticalSpace(20),
             SizedBox(
               width: MediaQuery.of(context).size.width - 10,
               child: TextField(
@@ -43,18 +45,40 @@ class _CreateAccountState extends State<CreateAccount> {
                 ),
               ),
             ),
-            const SizedBox(
-              height: 30.0,
+            addVerticalSpace(20),
+            SizedBox(
+              width: MediaQuery.of(context).size.width - 10,
+              child: TextField(
+                controller: _userNameController,
+                decoration: const InputDecoration(hintText: 'Username'),
+              ),
+            ),
+            addVerticalSpace(20),
+            SizedBox(
+              width: MediaQuery.of(context).size.width - 10,
+              child: TextField(
+                controller: _nameController,
+                decoration: const InputDecoration(hintText: 'Name'),
+              ),
+            ),
+            addVerticalSpace(20),
+            SizedBox(
+              width: MediaQuery.of(context).size.width - 10,
+              child: TextField(
+                controller: _sirNameController,
+                decoration: const InputDecoration(hintText: 'Sirname'),
+              ),
             ),
             ElevatedButton(
               onPressed: () async {
                 final message = await AuthService().registration(
                   email: _emailController.text,
                   password: _passwordController.text,
+                  username: _userNameController.text,
+                  name: _nameController.text + _sirNameController.text,
                 );
                 if (message!.contains('Success')) {
-                  Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(builder: (context) => const Text("Very Goof")));
+                  Navigator.of(context).pushReplacementNamed("login");
                 }
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(

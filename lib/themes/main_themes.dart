@@ -7,9 +7,9 @@ ThemeData lightTheme = ThemeData(
   textTheme: const TextTheme(
     displayLarge: TextStyle(fontSize: 32)
   ),
-  appBarTheme: AppBarTheme(
+  appBarTheme: const AppBarTheme(
     iconTheme: IconThemeData(
-      color: const Color.fromARGB(255, 87, 87, 87)
+      color: Color.fromARGB(255, 87, 87, 87)
     ),
   ),
   colorScheme: ColorScheme.fromSeed(seedColor: Colors.green),
@@ -18,5 +18,5 @@ ThemeData lightTheme = ThemeData(
 
 ThemeData darkTheme = ThemeData(
      primaryColor: const Color.fromARGB(255, 255, 255, 255),
-     colorScheme: ColorScheme.dark().copyWith(primary: Colors.primaries.first),
+     colorScheme: const ColorScheme.dark().copyWith(primary: Colors.primaries.first),
   );

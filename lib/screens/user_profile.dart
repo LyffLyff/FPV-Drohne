@@ -46,8 +46,8 @@ class _UserProfileState extends State<UserProfile> {
             endIndent: 0,
             color: Colors.black,
           ),
-          Text("Username"),
-          Text("Email"),
+          const Text("Username"),
+          const Text("Email"),
         ]),
       ),
     );

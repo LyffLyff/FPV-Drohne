@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:drone_2_0/screens/login/login.dart';
 import "package:firebase_core/firebase_core.dart";
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:drone_2_0/auth/auth_service.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -25,14 +26,20 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
 late StreamSubscription<User?> user;
+late String? username = "";
+late String userEmail;
+
   @override
   void initState() {
     super.initState();
-    user = FirebaseAuth.instance.authStateChanges().listen((user) {
+    user = FirebaseAuth.instance.authStateChanges().listen((user) async {
       if (user == null) {
         print('User is currently signed out!');
       } else {
+        userEmail = user.email!;
         print('User is signed in!');
+        print(userEmail);
+        username = await AuthService().fetchUserData(email: userEmail);
       }
     });
   }
