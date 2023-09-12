@@ -1,4 +1,3 @@
-import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -97,7 +96,7 @@ class AuthService {
   Future<String?> initUserData({
     required UserModel newUser,
   }) async {
-    _firestore.collection("users").doc(newUser.email).set({
+    await _firestore.collection("users").doc(newUser.email).set({
       "email" : newUser.email,
       "name" : newUser.name,
       "profileImgURL" : "",
@@ -105,6 +104,7 @@ class AuthService {
       });
 
     print("Userdata Saved");
+    return null;
   }
 
   Future<String?> fetchUserData({required String email}) async {
@@ -116,5 +116,6 @@ class AuthService {
       return null;
     }
 }
+
 
 

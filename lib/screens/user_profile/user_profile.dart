@@ -1,6 +1,7 @@
+import 'package:drone_2_0/screens/user_profile/user_profile_options.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import '../themes/theme_constants.dart';
+import '../../themes/theme_constants.dart';
 
 class UserProfile extends StatefulWidget {
   const UserProfile({super.key});
@@ -48,6 +49,14 @@ class _UserProfileState extends State<UserProfile> {
           ),
           const Text("Username"),
           const Text("Email"),
+           TextButton(
+            child: const Text("Edit Userdata"),
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) => UserProfileOptions())
+              );
+            },
+          )
         ]),
       ),
     );

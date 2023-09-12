@@ -1,8 +1,10 @@
 import 'package:drone_2_0/screens/login/create_account.dart';
-import 'package:drone_2_0/auth/auth_service.dart';
+import 'package:drone_2_0/servide/auth/auth_service.dart';
 import 'package:drone_2_0/screens/homepage/homepage.dart';
 import 'package:drone_2_0/themes/theme_constants.dart';
+import 'package:drone_2_0/widgets/utils/helper_widgets.dart';
 import 'package:flutter/material.dart';
+import '../../widgets/input.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -16,7 +18,7 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,34 +27,23 @@ class _LoginScreenState extends State<LoginScreen> {
         centerTitle: true,
       ),
       body: Container(
-        margin: const EdgeInsets.only(left: Margins.stdMargin, right: Margins.stdMargin),
+        margin: const EdgeInsets.all(Margins.stdMargin),
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              SizedBox(
-                width: MediaQuery.of(context).size.width - 10,
-                child: TextField(
+              stdInputField(
+                  width: MediaQuery.of(context).size.width,
+                  hideText: false,
                   controller: _emailController,
-                  decoration: const InputDecoration(hintText: 'Email'),
-                ),
-              ),
-              const SizedBox(
-                height: 30.0,
-              ),
-              SizedBox(
-                width: MediaQuery.of(context).size.width - 10,
-                child: TextField(
+                  hintText: "Email"),
+              addVerticalSpace(30),
+              stdInputField(
+                  width: MediaQuery.of(context).size.width,
+                  hideText: true,
                   controller: _passwordController,
-                  obscureText: true,
-                  decoration: const InputDecoration(
-                    hintText: 'Password',
-                  ),
-                ),
-              ),
-              const SizedBox(
-                height: 30.0,
-              ),
+                  hintText: "Password"),
+              addVerticalSpace(30),
               ElevatedButton(
                 onPressed: () async {
                   print(
@@ -61,17 +52,16 @@ class _LoginScreenState extends State<LoginScreen> {
                     email: _emailController.text,
                     password: _passwordController.text,
                   );
-                  
+
                   if (message!.contains('Success')) {
-                    Navigator.of(context).pushReplacement(
-                        MaterialPageRoute(builder: (context) => const HomePage()));
+                    
+                    Navigator.of(context).pushReplacement(MaterialPageRoute(
+                      builder: (context) => const HomePage()));
                   }
                 },
                 child: const Text('Login'),
               ),
-              const SizedBox(
-                height: 30.0,
-              ),
+              addVerticalSpace(30),
               TextButton(
                 onPressed: () {
                   Navigator.of(context).pushReplacement(

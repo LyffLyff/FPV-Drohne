@@ -1,20 +1,33 @@
 import 'dart:async';
 
 import 'package:drone_2_0/screens/homepage/homepage.dart';
-import 'package:drone_2_0/screens/user_profile.dart';
+import 'package:drone_2_0/screens/user_profile/user_profile.dart';
 import 'package:drone_2_0/themes/main_themes.dart';
 import 'package:flutter/material.dart';
 import 'package:drone_2_0/screens/login/login.dart';
 import "package:firebase_core/firebase_core.dart";
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:drone_2_0/auth/auth_service.dart';
+import 'package:drone_2_0/servide/auth/auth_service.dart';
+import 'data/providers/user_model.dart';
 import 'firebase_options.dart';
+import 'package:provider/provider.dart';
+
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.android);
 
-  runApp(const MyApp());
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (_) => UserProvider(),
+          )
+      ],
+      child: const MyApp(),
+    )
+  );
 }
 
 class MyApp extends StatefulWidget {
@@ -26,7 +39,6 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
 late StreamSubscription<User?> user;
-late String? username = "";
 late String userEmail;
 
   @override
@@ -39,7 +51,8 @@ late String userEmail;
         userEmail = user.email!;
         print('User is signed in!');
         print(userEmail);
-        username = await AuthService().fetchUserData(email: userEmail);
+        Provider.of<UserProvider>(context, listen: false).changeUserEmail(userEmail);
+        Provider.of<UserProvider>(context, listen: false).changeUsername(await AuthService().fetchUserData(email: userEmail) ?? "");
       }
     });
   }
