@@ -13,8 +13,12 @@ class UserModel {
       required this.username,
       required this.profileImgURL});
 
-  Map<String, dynamic> toJson() =>
-      {"email": email, "name": name, "username": username, "profileImgURL": ""};
+  Map<String, dynamic> toJson() => {
+        "email": email,
+        "name": name,
+        "username": username,
+        "profileImgURL": ""
+      };
 
   static UserModel? fromSnap(DocumentSnapshot snap) {
     var snapshot = snap.data() as Map<String, dynamic>;
@@ -42,7 +46,7 @@ class AuthService {
   }) async {
     try {
       // Create User with Email and Password
-      await FirebaseAuth.instance.createUserWithEmailAndPassword(
+      FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
@@ -50,8 +54,9 @@ class AuthService {
       // Add Data to User Profile
       print("INITING USER");
       await initUserData(
-          newUser: UserModel(
-              email: email, name: name, username: username, profileImgURL: ""));
+        newUser: UserModel(
+            email: email, name: name, username: username, profileImgURL: ""),
+      );
 
       return 'Success';
     } on FirebaseAuthException catch (e) {
@@ -104,11 +109,24 @@ class AuthService {
     return null;
   }
 
-  Future<String?> fetchUserData({required String email}) async {
+  Future<Map<String, dynamic>?> fetchUserData({required String email}) async {
     var docSnapshot = await _firestore.collection("users").doc(email).get();
     if (docSnapshot.exists) {
       Map<String, dynamic>? data = docSnapshot.data();
-      return data?['username'];
+      return data;
+    }
+    return null;
+  }
+
+  Future<void> changeUserEmail({required String oldEmail, required String newEmail}) async {
+    // retrieving old Userdata
+    var docSnapshot = await _firestore.collection("users").doc(oldEmail).get();
+    if (docSnapshot.exists) {
+      // creating new document with new Email
+      Map<String, dynamic>? data = docSnapshot.data();
+      initUserData(newUser: UserModel(email: newEmail, name: data?["name"], username: data?["username"], profileImgURL: data?["profileImgURL"]));
+      // deleting old document
+      
     }
     return null;
   }

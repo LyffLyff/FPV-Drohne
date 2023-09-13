@@ -1,9 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:drone_2_0/screens/homepage/homepage.dart';
+import 'package:drone_2_0/screens/pre_login/welcome_screen.dart';
 import 'package:drone_2_0/screens/settings/settings.dart';
 import 'package:drone_2_0/screens/user_profile/user_profile.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../data/providers/user_model.dart';
 
 class NavDrawer extends StatelessWidget {
   const NavDrawer({super.key});
@@ -13,7 +17,7 @@ class NavDrawer extends StatelessWidget {
     void logout() async {
       await FirebaseAuth.instance.signOut();
       // ignore: use_build_context_synchronously
-      Navigator.pushReplacementNamed(context, HomePage.id);
+      Navigator.pushReplacementNamed(context, WelcomeScreen.id);
     }
 
     return Drawer(
@@ -24,23 +28,18 @@ class NavDrawer extends StatelessWidget {
               decoration: BoxDecoration(
                 color: Theme.of(context).canvasColor,
               ),
-              child: const Column(
+              child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  CircleAvatar(
-                    radius: 40,
+                  const CircleAvatar(
+                    radius: 50,
                     backgroundImage: NetworkImage(
                       'https://source.unsplash.com/200x200/?portrait',
                     ),
                   ),
                   Text(
-                    'Username',
+                    Provider.of<UserProvider>(context).username,
                     textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 30,
-                      fontWeight: FontWeight.bold,
-                    ),
                   ),
                 ],
               )),

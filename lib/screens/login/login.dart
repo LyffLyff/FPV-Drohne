@@ -4,6 +4,8 @@ import 'package:drone_2_0/screens/homepage/homepage.dart';
 import 'package:drone_2_0/themes/theme_constants.dart';
 import 'package:drone_2_0/widgets/utils/helper_widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../../data/providers/user_model.dart';
 import '../../widgets/input.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -54,6 +56,12 @@ class _LoginScreenState extends State<LoginScreen> {
                   );
 
                   if (message!.contains('Success')) {
+                    Map<String, dynamic>? userData = await AuthService().fetchUserData(email: _emailController.text);
+                    
+                    Provider.of<UserProvider>(context, listen: false)
+                        .changeUsername(userData?["username"]);
+                    Provider.of<UserProvider>(context, listen: false)
+                        .changeName(userData?["name"]);
                     
                     Navigator.of(context).pushReplacement(MaterialPageRoute(
                       builder: (context) => const HomePage()));

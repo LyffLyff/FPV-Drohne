@@ -25,31 +25,42 @@ class _SplashScreenState extends State<SplashScreen> {
       print('User is signed in!');
 
       // Initialize Usermodel
-      Future.microtask(() => {
-        Provider.of<UserProvider>(context, listen: false)
-          .changeUserEmail(user.email ?? ""),
-        }
+      Future.microtask(
+        () => {
+          Provider.of<UserProvider>(context, listen: false)
+              .changeUserEmail(user.email ?? ""),
+        },
       );
-      Future.microtask(() async => {
-        Provider.of<UserProvider>(context, listen: false).changeUsername(
-          await AuthService().fetchUserData(email: user.email ?? "") ?? ""),
-      }
+
+      Map<String, dynamic>? userData;
+      Future.microtask(
+        () async => {
+          userData = await AuthService().fetchUserData(email: user.email ?? ""),
+          print(userData?["name"]),
+          Provider.of<UserProvider>(context, listen: false)
+              .changeUsername(userData?["username"]),
+          Provider.of<UserProvider>(context, listen: false)
+              .changeName(userData?["name"]),
+        },
       );
 
       //Navigate to Home Screen
-      Future.microtask(() => {
-        Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (context) => const HomePage()),
-        ),
-        }
+      Future.microtask(
+        () => {
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (context) => const HomePage()),
+          ),
+        },
       );
     } else {
       print("No logged in User");
-      Future.microtask(() => {
-            Navigator.of(context).pushReplacement(
-              MaterialPageRoute(builder: (context) => const WelcomeScreen()),
-            ),
-          });
+      Future.microtask(
+        () => {
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (context) => const WelcomeScreen()),
+          ),
+        },
+      );
     }
   }
 

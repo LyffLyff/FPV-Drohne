@@ -24,6 +24,7 @@ class _UserProfileOptionsState extends State<UserProfileOptions> {
   Widget build(BuildContext context) {
     _emailController.text = context.read<UserProvider>().email;
     _userNameController.text = context.read<UserProvider>().username;
+    _nameController.text = context.read<UserProvider>().name;
     return Consumer<UserProvider>(builder: (context, value, child) => Scaffold(
       appBar: AppBar(
         title: const Text("User Options"),
@@ -32,12 +33,12 @@ class _UserProfileOptionsState extends State<UserProfileOptions> {
         margin: const EdgeInsets.all(Margins.stdMargin),
         child: Column(
           children: [
-            stdInputField(
+            /*stdInputField(
               width: MediaQuery.of(context).size.width,
               controller: _emailController,
               hintText: "Email",
               hideText: false
-            ),
+            ),*/
             addVerticalSpace(20),
             stdInputField(
               width: MediaQuery.of(context).size.width,
@@ -60,6 +61,10 @@ class _UserProfileOptionsState extends State<UserProfileOptions> {
               
               // Updating Name
               UserProfileService().editDocumentField(collection: "users", document: Provider.of<UserProvider>(context, listen: false).email, fieldTitle: "name", newFieldValue: _nameController.text);
+              Provider.of<UserProvider>(context, listen: false).changeName(_nameController.text);
+
+              // Back to UserProfile
+              Navigator.pop(context);
             })
           ],
         ),

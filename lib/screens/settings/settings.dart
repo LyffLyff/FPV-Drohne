@@ -9,11 +9,11 @@ class SettingsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<ThemeManager>(builder: (_, themeManager, __) => Scaffold(
       appBar: AppBar(
-        title: Text("Help"),
+        title: const Text("General Settings"),
       ),
       body: Column(
         children: [
-          TextButton(child: Text("Toggle Theme"), onPressed: () {
+          TextButton(child: const Text("Toggle Theme"), onPressed: () {
             print("Toggling ");
             themeManager.toggleTheme();
           },)

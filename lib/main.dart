@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:drone_2_0/screens/homepage/homepage.dart';
 import 'package:drone_2_0/screens/pre_login/splash_screen.dart';
+import 'package:drone_2_0/screens/pre_login/welcome_screen.dart';
 import 'package:drone_2_0/themes/main_themes.dart';
 import 'package:drone_2_0/themes/theme_manager.dart';
 import 'package:flutter/material.dart';
@@ -47,6 +48,7 @@ class _MyAppState extends State<MyApp> {
       initialRoute: SplashScreen.id,
       routes: {
         SplashScreen.id: (context) => SplashScreen(),
+        WelcomeScreen.id: (context) => WelcomeScreen(),
         HomePage.id: (context) => HomePage(),
       },
     );

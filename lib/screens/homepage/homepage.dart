@@ -28,16 +28,7 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       drawer: const NavDrawer(),
       appBar: AppBar(
-        title: const Text("FPV-DRONE"),
-        actions: [
-          IconButton(
-              tooltip: "Exit Application",
-              onPressed: () {
-                debugPrint("Exiting Application");
-                SystemNavigator.pop();
-              },
-              icon: const Icon(Icons.exit_to_app)),
-        ],
+        title: const Text("FPV-Drohne"),
       ),
       body: _pages[current_page_idx],
       bottomNavigationBar: NavigationBar(
