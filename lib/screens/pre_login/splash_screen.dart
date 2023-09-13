@@ -36,7 +36,7 @@ class _SplashScreenState extends State<SplashScreen> {
       Future.microtask(
         () async => {
           userData = await AuthService().fetchUserData(email: user.email ?? ""),
-          print(userData?["name"]),
+          //print(userData?["name"]),
           Provider.of<UserProvider>(context, listen: false)
               .changeUsername(userData?["username"]),
           Provider.of<UserProvider>(context, listen: false)

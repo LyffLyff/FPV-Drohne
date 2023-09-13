@@ -16,7 +16,7 @@ class WelcomeScreen extends StatelessWidget {
             children: [
               const Image(image: AssetImage("assets/images/drone.png")),
               TextButton(
-                child: Text("AlreadY have an account? Sign In"),
+                child: const Text("Already have an account? Sign In"),
                 onPressed: () {
                   Navigator.of(context).pushReplacement(
                     MaterialPageRoute(
@@ -26,7 +26,7 @@ class WelcomeScreen extends StatelessWidget {
                 },
               ),
               TextButton(
-                child: Text("Register as new User"),
+                child: const Text("Register as new User"),
                 onPressed: () {
                   Navigator.of(context).pushReplacement(
                     MaterialPageRoute(
