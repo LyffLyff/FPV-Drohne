@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:drone_2_0/screens/homepage/homepage.dart';
 import 'package:drone_2_0/screens/user_profile/user_profile.dart';
+import 'package:drone_2_0/screens/welcome_screen.dart';
 import 'package:drone_2_0/themes/main_themes.dart';
 import 'package:flutter/material.dart';
 import 'package:drone_2_0/screens/login/login.dart';
@@ -39,7 +40,6 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
 late StreamSubscription<User?> user;
-late String userEmail;
 
   @override
   void initState() {
@@ -48,11 +48,9 @@ late String userEmail;
       if (user == null) {
         print('User is currently signed out!');
       } else {
-        userEmail = user.email!;
         print('User is signed in!');
-        print(userEmail);
-        Provider.of<UserProvider>(context, listen: false).changeUserEmail(userEmail);
-        Provider.of<UserProvider>(context, listen: false).changeUsername(await AuthService().fetchUserData(email: userEmail) ?? "");
+        Provider.of<UserProvider>(context, listen: false).changeUserEmail(user.email ?? "");
+        Provider.of<UserProvider>(context, listen: false).changeUsername(await AuthService().fetchUserData(email: user.email ?? "") ?? "");
       }
     });
   }
@@ -71,15 +69,16 @@ late String userEmail;
       title: 'My Drone.JPEG',
 
       initialRoute:
-          FirebaseAuth.instance.currentUser == null ? HomePage.id : LoginScreen.id,
+          FirebaseAuth.instance.currentUser == null ? WelcomeScreen.id : HomePage.id,
 
       ///key value pair
       routes: {
-        HomePage.id: (context) => const LoginScreen(),
-        LoginScreen.id: (context) => const HomePage(),
+        WelcomeScreen.id: (context) => const WelcomeScreen(),
+        HomePage.id: (context) => const HomePage(),
+        LoginScreen.id: (context) => const LoginScreen(),
         UserProfile.id: (context) => const UserProfile(),
       },
-      home: const LoginScreen(),
+      home: const WelcomeScreen(),
     );
   }
 }
