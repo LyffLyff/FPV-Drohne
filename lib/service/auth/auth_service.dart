@@ -6,6 +6,7 @@ class UserModel {
   final String name;
   final String username;
   final String profileImgURL;
+  final Map<String, dynamic> settings = {};
 
   UserModel(
       {required this.email,
@@ -102,7 +103,8 @@ class AuthService {
       "email": newUser.email,
       "name": newUser.name,
       "profileImgURL": "",
-      "username": newUser.username
+      "username": newUser.username,
+      "settings": newUser.settings,
     });
 
     print("Userdata Saved");

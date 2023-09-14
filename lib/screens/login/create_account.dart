@@ -78,7 +78,7 @@ class _CreateAccountState extends State<CreateAccount> {
                   name: _nameController.text + _sirNameController.text,
                 );
                 if (message!.contains('Success')) {
-                  Navigator.of(context).pushReplacementNamed("login");
+                  Navigator.of(context).pushReplacementNamed("LoginScreen");
                 }
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(

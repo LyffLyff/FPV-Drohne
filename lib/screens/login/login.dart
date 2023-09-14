@@ -12,7 +12,7 @@ import '../../widgets/input.dart';
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
 
-  static String id = 'login';
+  static String id = 'LoginScreen';
 
   @override
   _LoginScreenState createState() => _LoginScreenState();

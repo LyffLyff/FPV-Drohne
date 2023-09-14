@@ -9,8 +9,7 @@ class WelcomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: Scaffold(
+    return Scaffold(
         body: Center(
           child: Column(
             children: [
@@ -38,7 +37,6 @@ class WelcomeScreen extends StatelessWidget {
             ],
           ),
         ),
-      )
     );
   }
 }

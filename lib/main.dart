@@ -1,4 +1,5 @@
 import 'package:drone_2_0/screens/homepage/homepage.dart';
+import 'package:drone_2_0/screens/login/login.dart';
 import 'package:drone_2_0/screens/pre_login/welcome_screen.dart';
 import 'package:drone_2_0/service/auth/auth_service.dart';
 import 'package:drone_2_0/themes/main_themes.dart';
@@ -45,6 +46,7 @@ class MyApp extends StatelessWidget {
       routes: {
         WelcomeScreen.id: (context) => const WelcomeScreen(),
         HomePage.id: (context) => const HomePage(),
+        LoginScreen.id: (context) => const LoginScreen(),
       },
       home: Consumer<AuthProvider>(
         builder: (context, authProvider, child) {
