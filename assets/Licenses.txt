@@ -1,0 +1,1 @@
+loading: the icon "loading" is provided by loading.io

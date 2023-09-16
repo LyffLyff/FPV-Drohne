@@ -12,29 +12,30 @@ class WelcomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Container(
+      body: SafeArea(
+        child: Container(
           margin: const EdgeInsets.all(Margins.stdMargin),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               addVerticalSpace(height: 40),
-              const Image(image: AssetImage("assets/images/logo.png"), fit: BoxFit.fill),
+              const Image(
+                  image: AssetImage("assets/images/logo.png"),
+                  fit: BoxFit.fill),
               const Divider(),
               addVerticalSpace(),
               Align(
-                alignment: Alignment.center,
-                child: Text(
-                  "Welcome to the \nFPV-Drone Application",
-                  textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.displayMedium)),
+                  alignment: Alignment.center,
+                  child: Text("Welcome to the \nFPV-Drone Application :)",
+                      textAlign: TextAlign.center,
+                      style: Theme.of(context).textTheme.displayMedium)),
               addVerticalSpace(),
               ElevatedButton(
                 child: const Text("Already have an account? Sign In"),
                 onPressed: () {
                   Navigator.of(context).push(
                     MaterialPageRoute(
-                      builder:  (context) => const LoginScreen()
-                    ),
+                        builder: (context) => const LoginScreen()),
                   );
                 },
               ),
@@ -43,8 +44,7 @@ class WelcomeScreen extends StatelessWidget {
                 onPressed: () {
                   Navigator.of(context).push(
                     MaterialPageRoute(
-                      builder:  (context) => const CreateAccount()
-                    ),
+                        builder: (context) => const CreateAccount()),
                   );
                 },
               ),
@@ -52,6 +52,7 @@ class WelcomeScreen extends StatelessWidget {
             ],
           ),
         ),
+      ),
     );
   }
 }

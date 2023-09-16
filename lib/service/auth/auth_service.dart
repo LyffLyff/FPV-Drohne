@@ -120,6 +120,15 @@ class AuthService {
     return null;
   }
 
+  Future<dynamic> fetchSingleSetting({required String email, required String settingKey}) async {
+    var docSnapshot = await _firestore.collection("users").doc(email).get();
+    if (docSnapshot.exists) {
+      Map<String, dynamic>? data = docSnapshot.data();
+      return data?["settings"][settingKey];
+    }
+    return null;
+  }
+
   Future<void> changeUserEmail({required String oldEmail, required String newEmail}) async {
     // retrieving old Userdata
     var docSnapshot = await _firestore.collection("users").doc(oldEmail).get();
@@ -130,6 +139,5 @@ class AuthService {
       // deleting old document
       
     }
-    return null;
   }
 }

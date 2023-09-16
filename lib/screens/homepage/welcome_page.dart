@@ -6,7 +6,7 @@ class WelcomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Column(
-      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Image(
@@ -14,7 +14,7 @@ class WelcomePage extends StatelessWidget {
               "assets/images/drone.png"),
           fit: BoxFit.fill,
         ),
-        Text("Welcome to the FPV-Drone App")
+        Text("Welcome to the FPV-Drone App :)")
       ],
     );
   }

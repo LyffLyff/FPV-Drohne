@@ -7,9 +7,12 @@ class LiveView extends StatelessWidget {
   Widget build(BuildContext context) {
     return const Column(
       mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Text("Live View")
+        Text(
+          "Live View", 
+          textAlign: TextAlign.center,
+        )
       ],
     );
   }

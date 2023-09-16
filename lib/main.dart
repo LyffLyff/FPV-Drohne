@@ -14,10 +14,10 @@ import 'data/providers/user_model.dart';
 import 'firebase_options.dart';
 import 'package:provider/provider.dart';
 
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);  // hide System NavigationBar
+  SystemChrome.setEnabledSystemUIMode(
+      SystemUiMode.immersiveSticky); // hide System NavigationBar
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   runApp(MultiProvider(
@@ -32,11 +32,13 @@ void main() async {
         create: (_) => ThemeManager(),
       )
     ],
-    child: MyApp(),
+    child: const MyApp(),
   ));
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -59,20 +61,25 @@ class MyApp extends StatelessWidget {
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   // While fetching data, show a loading indicator.
-                  return const CircularProgressIndicator();
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
                 } else if (snapshot.hasError) {
                   // Handle error, e.g., show an error message.
                   return Text("Error: ${snapshot.error}");
                 } else {
                   // Data has been fetched, update user info and navigate.
                   final userData = snapshot.data;
+                  if (!Provider.of<ThemeManager>(context, listen: false).isInitialized) {
+                      Provider.of<ThemeManager>(context, listen: true).initThemeSettings(user.email ?? "");
+                  }
                   SchedulerBinding.instance.addPostFrameCallback((_) {
                     Provider.of<UserProvider>(context, listen: false)
-                      .changeUserEmail(user.email ?? "?");
-                  Provider.of<UserProvider>(context, listen: false)
-                      .changeUsername(userData?["username"]);
-                  Provider.of<UserProvider>(context, listen: false)
-                      .changeName(userData?["name"]);
+                        .changeUserEmail(user.email ?? "?");
+                    Provider.of<UserProvider>(context, listen: false)
+                        .changeUsername(userData?["username"]);
+                    Provider.of<UserProvider>(context, listen: false)
+                        .changeName(userData?["name"]);
                   });
                   return const HomePage();
                 }

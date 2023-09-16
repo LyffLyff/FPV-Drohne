@@ -1,9 +1,6 @@
 // ignore_for_file: constant_identifier_names, non_constant_identifier_names
 
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
-import 'dart:async';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
 
 const OPEN_WEATHER_MAP_API_KEY = "e25cb6c3122c44cece85d59ed6104436";
@@ -25,7 +22,8 @@ class FlightRecords extends StatefulWidget {
 class _FlightRecordsState extends State<FlightRecords> {
   double current_temperature = -1;
 
-  Future<void> fetchWeatherData(String apiKey, String latitude, String longitude) async {
+  /*Future<void> fetchWeatherData(
+      String apiKey, String latitude, String longitude) async {
     try {
       final response = await http.get(Uri.parse(
           'https://api.openweathermap.org/data/2.5/forecast?lat=$latitude&lon=$longitude&units=metric&appid=$apiKey'));
@@ -41,30 +39,32 @@ class _FlightRecordsState extends State<FlightRecords> {
     } catch (e) {
       print('Failed to fetch weather data: $e');
     }
-  }
+  }*/
 
-  void startTimer() {
+  /*void startTimer() {
     Timer.periodic(const Duration(seconds: 6), (Timer timer) {
       fetchWeatherData(
           OPEN_WEATHER_MAP_API_KEY, LATITUDE_STAATZ, LONGITUDE_STAATZ);
     });
-  }
+  }*/
 
   @override
   void initState() {
     super.initState();
-    startTimer();
-    fetchWeatherData(
-        OPEN_WEATHER_MAP_API_KEY, LATITUDE_STAATZ, LONGITUDE_STAATZ);
+    //startTimer();
+    //fetchWeatherData(OPEN_WEATHER_MAP_API_KEY, LATITUDE_STAATZ, LONGITUDE_STAATZ);
   }
 
   @override
   Widget build(BuildContext context) {
     return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        const Text("Flight Records", style: TextStyle(fontSize: 32),),
+        const Text(
+          "Flight Records",
+          style: TextStyle(fontSize: 32),
+        ),
         SfRadialGauge(
           enableLoadingAnimation: true,
           axes: <RadialAxis>[
@@ -105,7 +105,10 @@ class _FlightRecordsState extends State<FlightRecords> {
             ),
           ],
         ),
-        const Text("Current Temperature in Staatz", style: TextStyle(fontSize: 24),),
+        const Text(
+          "Velocity in m/s",
+          //style: Theme.of(context).textTheme.displayMedium,
+        ),
       ],
     );
   }

@@ -2,7 +2,6 @@ import 'package:drone_2_0/widgets/side_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:drone_2_0/screens/homepage/flight_records.dart';
 import 'package:drone_2_0/screens/homepage/live_view.dart';
-import 'package:drone_2_0/screens/homepage/welcome_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -14,10 +13,9 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  int currentPageIdx = 1;
+  int currentPageIdx = 0;
 
   final _pages = <Widget>[
-    const WelcomePage(),
     const FlightRecords(),
     const LiveView(),
   ];

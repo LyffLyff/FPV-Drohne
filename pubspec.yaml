@@ -70,6 +70,7 @@ flutter:
   assets:
     - assets/
     - assets/images/
+    - assets/loading/
   fonts:
     - family: RobotoFlex
       fonts:

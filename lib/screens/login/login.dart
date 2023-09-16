@@ -36,46 +36,25 @@ class _LoginScreenState extends State<LoginScreen> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               stdInputField(
-                  width: MediaQuery.of(context).size.width,
-                  hideText: false,
-                  controller: _emailController,
-                  hintText: "Email",
-                  icon: Icons.person,
-                  ),
+                width: MediaQuery.of(context).size.width,
+                hideText: false,
+                controller: _emailController,
+                hintText: "Email",
+                icon: Icons.person,
+              ),
               addVerticalSpace(),
               stdInputField(
-                  width: MediaQuery.of(context).size.width,
-                  hideText: true,
-                  controller: _passwordController,
-                  hintText: "Password",
-                  icon: Icons.password,
-                  ),
+                width: MediaQuery.of(context).size.width,
+                hideText: true,
+                controller: _passwordController,
+                hintText: "Password",
+                icon: Icons.password,
+              ),
               addVerticalSpace(),
               ElevatedButton(
                 onPressed: () async {
-                  print(
-                      'Email: ${_emailController.text}, Password: ${_passwordController.text}');
-                  final message = await AuthService().login(
-                    email: _emailController.text,
-                    password: _passwordController.text,
-                  );
-
-                  if (message!.contains('Success')) {
-                    Map<String, dynamic>? userData = await AuthService()
-                        .fetchUserData(email: _emailController.text);
-
-                    SchedulerBinding.instance.addPostFrameCallback((_) {
-                      Provider.of<UserProvider>(context, listen: false)
-                          .changeUsername(userData?["username"]);
-                      Provider.of<UserProvider>(context, listen: false)
-                          .changeUserEmail(userData?["email"]);
-                      Provider.of<UserProvider>(context, listen: false)
-                          .changeName(userData?["name"]);
-                    });
-
-                    Navigator.of(context).pushReplacement(MaterialPageRoute(
-                        builder: (context) => const HomePage()));
-                  }
+                  _loginAndNavigate(
+                      context, _emailController.text, _passwordController.text);
                 },
                 child: const Text('Login'),
               ),
@@ -94,6 +73,63 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
         ),
       ),
+    );
+  }
+}
+
+void _loginAndNavigate(
+    BuildContext context, String email, String password) async {
+  final GlobalKey<State> _LoaderDialog = GlobalKey<State>();
+  LoaderDialog.showLoadingDialog(context, _LoaderDialog);
+
+  final message = await AuthService().login(
+    email: email,
+    password: password,
+  );
+
+  if (context.mounted) Navigator.of(context, rootNavigator: true).pop();
+
+  if (message!.contains('Success')) {
+    Map<String, dynamic>? userData =
+        await AuthService().fetchUserData(email: email);
+
+    if (context.mounted) {
+      Provider.of<UserProvider>(context, listen: false)
+          .changeUsername(userData?["username"]);
+      Provider.of<UserProvider>(context, listen: false)
+          .changeUserEmail(userData?["email"]);
+      Provider.of<UserProvider>(context, listen: false)
+          .changeName(userData?["name"]);
+
+      // Use Navigator to navigate to the HomePage
+      Navigator.of(context).pushReplacement(MaterialPageRoute(
+        builder: (context) => const HomePage(),
+      ));
+    }
+  }
+}
+
+class LoaderDialog {
+  static Future<void> showLoadingDialog(
+      BuildContext context, GlobalKey key) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return Dialog(
+            key: key,
+            backgroundColor: Colors.transparent,
+            child: SizedBox(
+              width: 60.0,
+              height: 60.0,
+              child: Image.asset(
+                'assets/loading/double_ring_200px.gif',
+                height: 60,
+                width: 60,
+                isAntiAlias: true,
+              ),
+            ));
+      },
     );
   }
 }

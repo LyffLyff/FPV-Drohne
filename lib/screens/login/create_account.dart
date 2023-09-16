@@ -78,8 +78,12 @@ class _CreateAccountState extends State<CreateAccount> {
                   username: _userNameController.text,
                   name: _nameController.text + _sirNameController.text,
                 );
+
+                // ignore: use_build_context_synchronously
+                if (!context.mounted) return;
+
                 if (message!.contains('Success')) {
-                  Navigator.of(context).pushReplacementNamed("LoginScreen");
+                     Navigator.of(context).pushReplacementNamed("LoginScreen");
                 }
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(

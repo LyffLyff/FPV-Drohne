@@ -1,6 +1,7 @@
 import 'package:drone_2_0/screens/pre_login/welcome_screen.dart';
 import 'package:drone_2_0/screens/settings/settings.dart';
 import 'package:drone_2_0/screens/user_profile/user_profile.dart';
+import 'package:drone_2_0/widgets/network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -27,17 +28,23 @@ class NavDrawer extends StatelessWidget {
                 color: Theme.of(context).canvasColor,
               ),
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  const CircleAvatar(
-                    radius: 50,
-                    backgroundImage: NetworkImage(
-                      'https://source.unsplash.com/200x200/?portrait',
+                  ClipOval(
+                    child: SizedBox(
+                      width: 100,
+                      height: 100,
+                      child: loadNetworkImage(
+                          "assets/loading/double_ring_200px_05.gif",
+                          "https://source.unsplash.com/100x100/?otter",
+                          "assets/images/drone.png"),
                     ),
                   ),
                   Text(
                     Provider.of<UserProvider>(context).username,
-                    textAlign: TextAlign.center,
+                    textAlign: TextAlign.start,
+                    style: Theme.of(context).textTheme.bodyMedium,
                   ),
                 ],
               )),

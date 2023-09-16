@@ -1,14 +1,50 @@
 import 'package:flutter/material.dart';
 
 const TextTheme _textTheme = TextTheme(
+    // Titles
+    titleLarge: TextStyle(
+      fontSize: 24,
+      fontWeight: FontWeight.w900,
+      fontStyle: FontStyle.normal
+      ),
+    titleMedium: TextStyle(
+      fontSize: 12,
+      fontWeight: FontWeight.w500,
+      fontStyle: FontStyle.normal
+      ),
+    titleSmall: TextStyle(
+      fontSize: 10,
+      fontWeight: FontWeight.w400,
+      fontStyle: FontStyle.normal
+      ),
+    
+    // Displays
     displayLarge: TextStyle(
-      fontSize: 32,
+      fontSize: 18,
       fontWeight: FontWeight.w400,
       ),
     displayMedium: TextStyle(
-      fontSize: 24,
+      fontSize: 12,
       fontWeight: FontWeight.w400,
-    )
+    ),
+    displaySmall: TextStyle(
+      fontSize: 10,
+      fontWeight: FontWeight.w300,
+    ),
+
+    // Body
+    bodyLarge: TextStyle(
+      fontSize: 18,
+      fontWeight: FontWeight.w400,
+    ),
+    bodyMedium: TextStyle(
+      fontSize: 12,
+      fontWeight: FontWeight.w400,
+    ),
+    bodySmall: TextStyle(
+      fontSize: 10,
+      fontWeight: FontWeight.w100,
+    ),
   );
 
 ThemeData lightTheme = ThemeData(
