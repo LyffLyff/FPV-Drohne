@@ -14,6 +14,7 @@ Widget stdInputField({required  width, required TextEditingController controller
       onEditingComplete: () => {
         SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky)
       },
+      textAlignVertical: TextAlignVertical.center,
     )
   );
 }

@@ -31,14 +31,27 @@ class NavDrawer extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  ClipOval(
-                    child: SizedBox(
-                      width: 100,
-                      height: 100,
-                      child: loadNetworkImage(
-                          "assets/loading/double_ring_200px_05.gif",
+                  GestureDetector(
+                    onTap: () {
+                      // Navigate to a different screen when the image is tapped
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              const UserProfile(), // Replace with the screen you want to navigate to
+                        ),
+                      );
+                    },
+                    child: ClipOval(
+                      child: SizedBox(
+                        width: 100,
+                        height: 100,
+                        child: loadNetworkImage(
+                          "assets/loading/double_ring_200px.gif",
                           "https://source.unsplash.com/100x100/?otter",
-                          "assets/images/drone.png"),
+                          "assets/images/drone.png",
+                        ),
+                      ),
                     ),
                   ),
                   Text(

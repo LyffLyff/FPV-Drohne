@@ -8,41 +8,41 @@ const TextTheme _textTheme = TextTheme(
       fontStyle: FontStyle.normal
       ),
     titleMedium: TextStyle(
-      fontSize: 12,
+      fontSize: 18,
       fontWeight: FontWeight.w500,
       fontStyle: FontStyle.normal
       ),
     titleSmall: TextStyle(
-      fontSize: 10,
+      fontSize: 12,
       fontWeight: FontWeight.w400,
       fontStyle: FontStyle.normal
       ),
     
     // Displays
     displayLarge: TextStyle(
-      fontSize: 18,
+      fontSize: 24,
       fontWeight: FontWeight.w400,
       ),
     displayMedium: TextStyle(
-      fontSize: 12,
+      fontSize: 18,
       fontWeight: FontWeight.w400,
     ),
     displaySmall: TextStyle(
-      fontSize: 10,
+      fontSize: 12,
       fontWeight: FontWeight.w300,
     ),
 
     // Body
     bodyLarge: TextStyle(
-      fontSize: 18,
+      fontSize: 24,
       fontWeight: FontWeight.w400,
     ),
     bodyMedium: TextStyle(
-      fontSize: 12,
+      fontSize: 18,
       fontWeight: FontWeight.w400,
     ),
     bodySmall: TextStyle(
-      fontSize: 10,
+      fontSize: 12,
       fontWeight: FontWeight.w100,
     ),
   );

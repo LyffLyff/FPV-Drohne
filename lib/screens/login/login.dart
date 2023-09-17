@@ -2,9 +2,9 @@ import 'package:drone_2_0/screens/login/create_account.dart';
 import 'package:drone_2_0/service/auth/auth_service.dart';
 import 'package:drone_2_0/screens/homepage/homepage.dart';
 import 'package:drone_2_0/themes/theme_constants.dart';
+import 'package:drone_2_0/widgets/utils/error_bar.dart';
 import 'package:drone_2_0/widgets/utils/helper_widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:provider/provider.dart';
 import '../../data/providers/user_model.dart';
 import '../../widgets/input.dart';
@@ -106,6 +106,11 @@ void _loginAndNavigate(
         builder: (context) => const HomePage(),
       ));
     }
+  } else {
+    print("Error");
+    ScaffoldMessenger.of(context).showSnackBar(
+      showErrorSnackBar(message),
+    );
   }
 }
 
@@ -115,19 +120,13 @@ class LoaderDialog {
     return showDialog<void>(
       context: context,
       barrierDismissible: false,
+      barrierColor: Colors.blue.withAlpha(120),
       builder: (BuildContext context) {
         return Dialog(
             key: key,
             backgroundColor: Colors.transparent,
-            child: SizedBox(
-              width: 60.0,
-              height: 60.0,
-              child: Image.asset(
-                'assets/loading/double_ring_200px.gif',
-                height: 60,
-                width: 60,
-                isAntiAlias: true,
-              ),
+            child: Image.asset(
+              'assets/loading/double_ring_200px.gif',
             ));
       },
     );
