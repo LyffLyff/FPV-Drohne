@@ -48,7 +48,7 @@ class _HomePageState extends State<HomePage> {
             currentPageIdx = index;
           });
         },
-
+    
         // highlights the button with the value of the current page value
         selectedIndex: currentPageIdx,
       ),

@@ -1,6 +1,7 @@
 import 'package:drone_2_0/service/auth/auth_service.dart';
 import 'package:drone_2_0/themes/theme_constants.dart';
 import 'package:drone_2_0/widgets/input.dart';
+import 'package:drone_2_0/widgets/utils/error_bar.dart';
 import 'package:drone_2_0/widgets/utils/helper_widgets.dart';
 import 'package:flutter/material.dart';
 
@@ -32,41 +33,41 @@ class _CreateAccountState extends State<CreateAccount> {
           children: [
             stdInputField(
               width: MediaQuery.of(context).size.width,
-              controller: _emailController, 
-              hintText: "Email", 
-              hideText: false, 
+              controller: _emailController,
+              hintText: "Email",
+              hideText: false,
               icon: Icons.person,
             ),
             addVerticalSpace(),
             stdInputField(
               width: MediaQuery.of(context).size.width,
-              controller: _passwordController, 
-              hintText: "Password", 
-              hideText: true, 
+              controller: _passwordController,
+              hintText: "Password",
+              hideText: true,
               icon: Icons.password,
             ),
             addVerticalSpace(),
             stdInputField(
               width: MediaQuery.of(context).size.width,
-              controller: _userNameController, 
-              hintText: "Username", 
-              hideText: false, 
+              controller: _userNameController,
+              hintText: "Username",
+              hideText: false,
               icon: Icons.perm_contact_cal,
             ),
             addVerticalSpace(),
             stdInputField(
               width: MediaQuery.of(context).size.width,
-              controller: _nameController, 
-              hintText: "Name", 
-              hideText: false, 
+              controller: _nameController,
+              hintText: "Name",
+              hideText: false,
               icon: Icons.perm_contact_cal,
             ),
             addVerticalSpace(),
             stdInputField(
               width: MediaQuery.of(context).size.width,
-              controller: _sirNameController, 
-              hintText: "Sirname", 
-              hideText: false, 
+              controller: _sirNameController,
+              hintText: "Sirname",
+              hideText: false,
               icon: Icons.perm_contact_cal,
             ),
             addVerticalSpace(height: 10),
@@ -83,13 +84,12 @@ class _CreateAccountState extends State<CreateAccount> {
                 if (!context.mounted) return;
 
                 if (message!.contains('Success')) {
-                     Navigator.of(context).pushReplacementNamed("LoginScreen");
+                  Navigator.of(context).pushReplacementNamed("LoginScreen");
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    showErrorSnackBar(message),
+                  );
                 }
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text(message),
-                  ),
-                );
               },
               child: const Text('Create Account'),
             ),

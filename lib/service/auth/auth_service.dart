@@ -124,7 +124,7 @@ class AuthService {
     var docSnapshot = await _firestore.collection("users").doc(email).get();
     if (docSnapshot.exists) {
       Map<String, dynamic>? data = docSnapshot.data();
-      return data?["settings"][settingKey];
+      return data?["settings"][settingKey] ?? "invalid key";
     }
     return null;
   }

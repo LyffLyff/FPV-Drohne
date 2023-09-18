@@ -3,6 +3,7 @@ import 'package:drone_2_0/screens/login/login.dart';
 import 'package:drone_2_0/themes/theme_constants.dart';
 import 'package:drone_2_0/widgets/utils/helper_widgets.dart';
 import 'package:flutter/material.dart';
+import '../../widgets/animations/animation_routes.dart';
 
 class WelcomeScreen extends StatelessWidget {
   const WelcomeScreen({super.key});
@@ -33,19 +34,13 @@ class WelcomeScreen extends StatelessWidget {
               ElevatedButton(
                 child: const Text("Already have an account? Sign In"),
                 onPressed: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                        builder: (context) => const LoginScreen()),
-                  );
+                  Navigator.of(context).push(pageRouteAnimation(const LoginScreen()));
                 },
               ),
               ElevatedButton(
                 child: const Text("Register as new User"),
                 onPressed: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                        builder: (context) => const CreateAccount()),
-                  );
+                  Navigator.of(context).push(pageRouteAnimation(const CreateAccount()));
                 },
               ),
               const Spacer(),

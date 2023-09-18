@@ -2,6 +2,7 @@ import 'package:drone_2_0/screens/login/create_account.dart';
 import 'package:drone_2_0/service/auth/auth_service.dart';
 import 'package:drone_2_0/screens/homepage/homepage.dart';
 import 'package:drone_2_0/themes/theme_constants.dart';
+import 'package:drone_2_0/widgets/animations/animation_routes.dart';
 import 'package:drone_2_0/widgets/utils/error_bar.dart';
 import 'package:drone_2_0/widgets/utils/helper_widgets.dart';
 import 'package:flutter/material.dart';
@@ -62,9 +63,7 @@ class _LoginScreenState extends State<LoginScreen> {
               TextButton(
                 onPressed: () {
                   Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => const CreateAccount(),
-                    ),
+                    pageRouteAnimation(const CreateAccount()),
                   );
                 },
                 child: const Text('Create Account >>'),

@@ -13,6 +13,7 @@ import 'data/providers/auth_provider.dart';
 import 'data/providers/user_model.dart';
 import 'firebase_options.dart';
 import 'package:provider/provider.dart';
+import 'package:logger/logger.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -36,8 +37,18 @@ void main() async {
   ));
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  bool isInitialized = false;
+  var logger = Logger(
+  printer: PrettyPrinter(),
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -65,13 +76,18 @@ class MyApp extends StatelessWidget {
                     child: CircularProgressIndicator(),
                   );
                 } else if (snapshot.hasError) {
-                  // Handle error, e.g., show an error message.
-                  return Text("Error: ${snapshot.error}");
+                  logger.i(snapshot.error.toString());
+                  return Text(snapshot.error.toString());
                 } else {
                   // Data has been fetched, update user info and navigate.
                   final userData = snapshot.data;
-                  if (!Provider.of<ThemeManager>(context, listen: false).isInitialized) {
-                      Provider.of<ThemeManager>(context, listen: true).initThemeSettings(user.email ?? "");
+                  if (!Provider.of<ThemeManager>(context, listen: false)
+                      .isInitialized) {
+                    Provider.of<ThemeManager>(context, listen: true)
+                        .initThemeSettings(user.email ?? "");
+                  } else {
+                    isInitialized = true;
+                    logger.i("Homepage Initialized");
                   }
                   SchedulerBinding.instance.addPostFrameCallback((_) {
                     Provider.of<UserProvider>(context, listen: false)
@@ -81,7 +97,10 @@ class MyApp extends StatelessWidget {
                     Provider.of<UserProvider>(context, listen: false)
                         .changeName(userData?["name"]);
                   });
-                  return const HomePage();
+                  return Visibility(
+                    visible: isInitialized,
+                    child: const HomePage(),
+                  );
                 }
               },
             );

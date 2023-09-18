@@ -30,8 +30,12 @@ class _UserProfileState extends State<UserProfile> {
             alignment: Alignment.bottomLeft,
             children: [
               Center(
-                child: 
-                  loadNetworkImage("assets/loading/double_ring_200px.gif", "https://source.unsplash.com/600x600/?otter", "assets/loading/double_ring_200px.gif"),
+                child: Hero(
+                    tag: "profile_image",
+                    child: loadNetworkImage(
+                        "assets/loading/double_ring_200px.gif",
+                        "https://source.unsplash.com/600x600/?otter",
+                        "assets/loading/double_ring_200px.gif")),
               ),
               Container(
                 margin: const EdgeInsets.all(Margins.stdMargin),

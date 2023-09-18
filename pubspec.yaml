@@ -45,6 +45,7 @@ dependencies:
   flutter_animated_button: ^2.0.3
   cloud_firestore: ^4.9.1
   provider: 
+  logger: ^2.0.2
 
 dev_dependencies:
   flutter_test:

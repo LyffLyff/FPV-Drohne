@@ -71,6 +71,6 @@ ThemeData lightTheme = ThemeData(
 
 ThemeData darkTheme = ThemeData(
   brightness: Brightness.dark,
-  primarySwatch: Colors.teal,
+  primarySwatch: Colors.cyan,
   textTheme: _textTheme,
 );
