@@ -7,7 +7,7 @@ import 'package:drone_2_0/widgets/utils/error_bar.dart';
 import 'package:drone_2_0/widgets/utils/helper_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../../data/providers/user_model.dart';
+import '../../data/providers/user_provider.dart';
 import '../../widgets/input.dart';
 
 class LoginScreen extends StatefulWidget {

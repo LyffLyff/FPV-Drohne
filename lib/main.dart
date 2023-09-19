@@ -10,7 +10,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'data/providers/auth_provider.dart';
-import 'data/providers/user_model.dart';
+import 'data/providers/user_provider.dart';
 import 'firebase_options.dart';
 import 'package:provider/provider.dart';
 import 'package:logger/logger.dart';

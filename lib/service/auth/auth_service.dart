@@ -1,36 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:drone_2_0/data/models/user_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-
-class UserModel {
-  final String email;
-  final String name;
-  final String username;
-  final String profileImgURL;
-  final Map<String, dynamic> settings = {};
-
-  UserModel(
-      {required this.email,
-      required this.name,
-      required this.username,
-      required this.profileImgURL});
-
-  Map<String, dynamic> toJson() => {
-        "email": email,
-        "name": name,
-        "username": username,
-        "profileImgURL": ""
-      };
-
-  static UserModel? fromSnap(DocumentSnapshot snap) {
-    var snapshot = snap.data() as Map<String, dynamic>;
-    return UserModel(
-      username: snapshot['username'],
-      name: snapshot['name'],
-      email: snapshot['email'],
-      profileImgURL: snapshot['profileImgURL'],
-    );
-  }
-}
 
 class AuthService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;

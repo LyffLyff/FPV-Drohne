@@ -1,8 +1,8 @@
 // ignore_for_file: constant_identifier_names, non_constant_identifier_names
 
+import 'package:drone_2_0/widgets/utils/helper_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
-
 
 class FlightRecords extends StatefulWidget {
   const FlightRecords({super.key});
@@ -12,7 +12,6 @@ class FlightRecords extends StatefulWidget {
 }
 
 class _FlightRecordsState extends State<FlightRecords> {
-
   @override
   void initState() {
     super.initState();
@@ -21,13 +20,14 @@ class _FlightRecordsState extends State<FlightRecords> {
   @override
   Widget build(BuildContext context) {
     return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        const Text(
-          "Flight Records",
-          style: TextStyle(fontSize: 32),
+        Text(
+          "Current Speed",
+          style: Theme.of(context).textTheme.titleLarge,
         ),
+        addVerticalSpace(),
         SfRadialGauge(
           enableLoadingAnimation: true,
           axes: <RadialAxis>[

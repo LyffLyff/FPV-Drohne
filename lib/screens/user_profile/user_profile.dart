@@ -1,4 +1,4 @@
-import 'package:drone_2_0/data/providers/user_model.dart';
+import 'package:drone_2_0/data/providers/user_provider.dart';
 import 'package:drone_2_0/screens/user_profile/user_profile_options.dart';
 import 'package:drone_2_0/widgets/utils/helper_widgets.dart';
 import 'package:flutter/material.dart';

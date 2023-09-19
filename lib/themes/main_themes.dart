@@ -3,18 +3,18 @@ import 'package:flutter/material.dart';
 const TextTheme _textTheme = TextTheme(
     // Titles
     titleLarge: TextStyle(
-      fontSize: 24,
+      fontSize: 32,
       fontWeight: FontWeight.w900,
       fontStyle: FontStyle.normal
       ),
     titleMedium: TextStyle(
-      fontSize: 18,
-      fontWeight: FontWeight.w500,
+      fontSize: 24,
+      fontWeight: FontWeight.w800,
       fontStyle: FontStyle.normal
       ),
     titleSmall: TextStyle(
-      fontSize: 12,
-      fontWeight: FontWeight.w400,
+      fontSize: 16,
+      fontWeight: FontWeight.w500,
       fontStyle: FontStyle.normal
       ),
     
@@ -54,14 +54,15 @@ ThemeData lightTheme = ThemeData(
   scaffoldBackgroundColor: Colors.white,
 
   //AppBar
-  appBarTheme: const AppBarTheme(
+  appBarTheme:  AppBarTheme(
     //color: Colors.white,
-    shadowColor: Colors.blueGrey
+    shadowColor: Colors.blueGrey,
+    titleTextStyle: _textTheme.titleMedium,
   ),
 
   //Navigation Bar
   //bottomNavigationBarTheme: NavigationBarTheme(),
-
+  // Appbar
   //Buttons
   buttonTheme: const ButtonThemeData(
     shape: RoundedRectangleBorder(),
@@ -73,4 +74,11 @@ ThemeData darkTheme = ThemeData(
   brightness: Brightness.dark,
   primarySwatch: Colors.cyan,
   textTheme: _textTheme,
+
+  //AppBar
+  appBarTheme:  AppBarTheme(
+    //color: Colors.white,
+    shadowColor: Colors.blueGrey,
+    titleTextStyle: _textTheme.titleMedium,
+  ),
 );
