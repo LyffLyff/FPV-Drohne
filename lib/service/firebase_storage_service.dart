@@ -1,5 +1,5 @@
 import 'dart:io';
-
+/*
 import 'package:firebase_storage/firebase_storage.dart';
 
 class FirebaseStorageService {
@@ -19,4 +19,4 @@ final mountainsRef = storageRef.child(filePath);
       // ...
     }
   }
-}
+}*/

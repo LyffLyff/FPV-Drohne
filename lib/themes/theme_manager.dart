@@ -2,7 +2,7 @@ import 'package:drone_2_0/service/auth/auth_service.dart';
 import 'package:flutter/material.dart';
 
 class ThemeManager extends ChangeNotifier {
-  ThemeMode _themeMode = ThemeMode.light;
+  ThemeMode _themeMode = ThemeMode.dark; // default is dark mode
   bool isInitialized = false;
   bool _isDark = false;
 

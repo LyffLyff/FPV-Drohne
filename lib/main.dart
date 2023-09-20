@@ -19,6 +19,8 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setEnabledSystemUIMode(
       SystemUiMode.immersiveSticky); // hide System NavigationBar
+
+  // Initialize App
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   runApp(MultiProvider(
@@ -47,11 +49,16 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   bool isInitialized = false;
   var logger = Logger(
-  printer: PrettyPrinter(),
+    printer: PrettyPrinter(),
   );
 
   @override
   Widget build(BuildContext context) {
+    // fetching Userdata to later load the Future Builder
+    User? user = AuthProvider().getUser;
+    final Future<Map<String, dynamic>?> userData =
+        AuthService().fetchUserData(email: user?.email ?? "");
+
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: lightTheme,
@@ -63,50 +70,40 @@ class _MyAppState extends State<MyApp> {
         HomePage.id: (context) => const HomePage(),
         LoginScreen.id: (context) => const LoginScreen(),
       },
-      home: Consumer<AuthProvider>(
-        builder: (context, authProvider, child) {
-          User? user = authProvider.getUser;
-          if (user != null) {
-            return FutureBuilder<Map<String, dynamic>?>(
-              future: AuthService().fetchUserData(email: user.email ?? ""),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  // While fetching data, show a loading indicator.
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
-                } else if (snapshot.hasError) {
-                  logger.i(snapshot.error.toString());
-                  return Text(snapshot.error.toString());
-                } else {
-                  // Data has been fetched, update user info and navigate.
-                  final userData = snapshot.data;
-                  if (!Provider.of<ThemeManager>(context, listen: false)
-                      .isInitialized) {
-                    Provider.of<ThemeManager>(context, listen: true)
-                        .initThemeSettings(user.email ?? "");
-                  } else {
-                    isInitialized = true;
-                    logger.i("Homepage Initialized");
-                  }
-                  SchedulerBinding.instance.addPostFrameCallback((_) {
-                    Provider.of<UserProvider>(context, listen: false)
-                        .changeUserEmail(user.email ?? "?");
-                    Provider.of<UserProvider>(context, listen: false)
-                        .changeUsername(userData?["username"]);
-                    Provider.of<UserProvider>(context, listen: false)
-                        .changeName(userData?["name"]);
-                  });
-                  return Visibility(
-                    visible: isInitialized,
-                    child: const HomePage(),
-                  );
-                }
-              },
+      home: FutureBuilder(
+        future: userData,
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            // While fetching data, show a loading indicator.
+            return const Center(
+              child: CircularProgressIndicator(),
             );
+          } else if (snapshot.hasError) {
+            logger.i(snapshot.error.toString());
+            return Text(snapshot.error.toString());
           } else {
-            // User is not logged in, navigate to the Login screen.
-            return const WelcomeScreen();
+            // Data has been fetched, update user info and navigate.
+            final userData = snapshot.data;
+            if (!Provider.of<ThemeManager>(context, listen: false)
+                .isInitialized) {
+              Provider.of<ThemeManager>(context, listen: true)
+                  .initThemeSettings(user?.email ?? "");
+            } else {
+              isInitialized = true;
+              logger.i("Homepage Initialized");
+            }
+            SchedulerBinding.instance.addPostFrameCallback((_) {
+              Provider.of<UserProvider>(context, listen: false)
+                  .changeUserEmail(user?.email ?? "?");
+              Provider.of<UserProvider>(context, listen: false)
+                  .changeUsername(userData?["username"]);
+              Provider.of<UserProvider>(context, listen: false)
+                  .changeName(userData?["name"]);
+            });
+            return Visibility(
+              visible: isInitialized,
+              child: const HomePage(),
+            );
           }
         },
       ),
