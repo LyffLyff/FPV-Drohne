@@ -1,10 +1,14 @@
 import 'package:drone_2_0/data/providers/user_provider.dart';
 import 'package:drone_2_0/screens/user_profile/user_profile_options.dart';
+import 'package:drone_2_0/service/storage_service.dart';
 import 'package:drone_2_0/widgets/utils/helper_widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 import '../../themes/theme_constants.dart';
 import '../../widgets/network_image.dart';
+import 'package:file_picker/file_picker.dart';
 
 class UserProfile extends StatefulWidget {
   const UserProfile({super.key});
@@ -29,7 +33,31 @@ class _UserProfileState extends State<UserProfile> {
           Stack(
             alignment: Alignment.bottomLeft,
             children: [
-              Center(
+              GestureDetector(
+                onTap: () async {
+                  try {
+                    final results = await FilePicker.platform.pickFiles(
+                      allowMultiple: false,
+                      type: FileType.image,
+                    );
+                    if (results == null) {
+                      // no file selected by user
+                      ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text("Why no file??")));
+                    } else {
+                      final path = results.files.single.path;
+                      final filename = results.files.single.name;
+                      StorageService()
+                          .uploadFile("test_images", path!, filename)
+                          .then((value) => print(
+                              "File Uploaded")); // print Message when done
+                      print(path);
+                    }
+                  } on PlatformException catch (error) {
+                    // Permission denied by user most likely
+                    Logger().e(error);
+                  }
+                },
                 child: Hero(
                     tag: "profile_image",
                     child: loadNetworkImage(

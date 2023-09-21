@@ -1,4 +1,4 @@
-import 'package:drone_2_0/screens/pre_login/welcome_screen.dart';
+/*import 'package:drone_2_0/screens/pre_login/welcome_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -72,4 +72,4 @@ class _SplashScreenState extends State<SplashScreen> {
       ),
     );
   }
-}
+}*/

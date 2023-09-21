@@ -17,7 +17,8 @@ class AuthService {
   }) async {
     try {
       // Create User with Email and Password
-      FirebaseAuth.instance.createUserWithEmailAndPassword(
+      UserCredential userCredentials =
+          await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
@@ -26,7 +27,11 @@ class AuthService {
       print("INITING USER");
       await initUserData(
         newUser: UserModel(
-            email: email, name: name, username: username, profileImgURL: ""),
+            userId: userCredentials.user!.uid,
+            email: email,
+            name: name,
+            username: username,
+            profileImgURL: ""),
       );
 
       return 'Success';
@@ -69,7 +74,7 @@ class AuthService {
   Future<String?> initUserData({
     required UserModel newUser,
   }) async {
-    await _firestore.collection("users").doc(newUser.email).set({
+    await _firestore.collection("users").doc(newUser.userId).set({
       "email": newUser.email,
       "name": newUser.name,
       "profileImgURL": "",
@@ -81,8 +86,11 @@ class AuthService {
     return null;
   }
 
-  Future<Map<String, dynamic>?> fetchUserData({required String email}) async {
-    var docSnapshot = await _firestore.collection("users").doc(email).get();
+  Future<Map<String, dynamic>?> fetchUserData({required String userId}) async {
+    if (userId.isEmpty) {
+      return {};
+    }
+    var docSnapshot = await _firestore.collection("users").doc(userId).get();
     if (docSnapshot.exists) {
       Map<String, dynamic>? data = docSnapshot.data();
       return data;
@@ -90,8 +98,12 @@ class AuthService {
     return null;
   }
 
-  Future<dynamic> fetchSingleSetting({required String email, required String settingKey}) async {
-    var docSnapshot = await _firestore.collection("users").doc(email).get();
+  Future<dynamic> fetchSingleSetting(
+      {required String userId, required String settingKey}) async {
+    if (userId.isEmpty) {
+      return null;
+    }
+    var docSnapshot = await _firestore.collection("users").doc(userId).get();
     if (docSnapshot.exists) {
       Map<String, dynamic>? data = docSnapshot.data();
       return data?["settings"][settingKey] ?? "invalid key";
@@ -99,15 +111,21 @@ class AuthService {
     return null;
   }
 
-  Future<void> changeUserEmail({required String oldEmail, required String newEmail}) async {
+  Future<void> changeUserEmail(
+      {required String oldEmail, required String newEmail}) async {
     // retrieving old Userdata
     var docSnapshot = await _firestore.collection("users").doc(oldEmail).get();
     if (docSnapshot.exists) {
       // creating new document with new Email
       Map<String, dynamic>? data = docSnapshot.data();
-      initUserData(newUser: UserModel(email: newEmail, name: data?["name"], username: data?["username"], profileImgURL: data?["profileImgURL"]));
+      /*initUserData(
+          newUser: UserModel(
+            userId: ,
+              email: newEmail,
+              name: data?["name"],
+              username: data?["username"],
+              profileImgURL: data?["profileImgURL"]));*/
       // deleting old document
-      
     }
   }
 }

@@ -5,10 +5,12 @@ class UserModel {
   final String name;
   final String username;
   final String profileImgURL;
+  final String userId;
   final Map<String, dynamic> settings = {};
 
   UserModel(
-      {required this.email,
+      {required this.userId,
+        required this.email,
       required this.name,
       required this.username,
       required this.profileImgURL});
@@ -27,6 +29,7 @@ class UserModel {
       name: snapshot['name'],
       email: snapshot['email'],
       profileImgURL: snapshot['profileImgURL'],
+      userId: "",
     );
   }
 }

@@ -1,3 +1,4 @@
+import 'package:drone_2_0/data/providers/auth_provider.dart';
 import 'package:drone_2_0/service/settings_service.dart';
 import 'package:drone_2_0/themes/theme_constants.dart';
 import 'package:drone_2_0/themes/theme_manager.dart';
@@ -6,17 +7,7 @@ import 'package:provider/provider.dart';
 
 import '../../data/providers/user_provider.dart';
 
-class SettingsScreen extends StatefulWidget {
-  const SettingsScreen({super.key});
-
-  @override
-  State<SettingsScreen> createState() => _SettingsScreenState();
-}
-
-class _SettingsScreenState extends State<SettingsScreen> {
-  bool darkMode = false;
-
-  // Icon for Dark Mode Switch
+// Icon for Dark Mode Switch
   final MaterialStateProperty<Icon?> themeModeIcon =
       MaterialStateProperty.resolveWith<Icon?>(
     (Set<MaterialState> states) {
@@ -27,11 +18,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
     },
   );
 
-  @override
-  void initState() {
-    super.initState();
-    darkMode = Provider.of<ThemeManager>(context, listen: false).isDark;
-  }
+class SettingsScreen extends StatelessWidget {
+  const SettingsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -46,22 +34,22 @@ class _SettingsScreenState extends State<SettingsScreen> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               SwitchListTile.adaptive(
-                value: darkMode,
+                value: themeManager.isDark,
                 title: const Text("Theme Mode"),
-                subtitle: Text('Light/Dark Mode Toggle',style: TextStyle(
-              color: Colors.blueGrey[600],
-            ),
-            ),
-            controlAffinity: ListTileControlAffinity.trailing,
+                subtitle: Text(
+                  'Light/Dark Mode Toggle',
+                  style: TextStyle(
+                    color: Colors.blueGrey[600],
+                  ),
+                ),
+                controlAffinity: ListTileControlAffinity.trailing,
                 onChanged: ((value) {
-                  setState(() {
-                    darkMode = value;
-                  });
+                  print(value);
                   themeManager.setTheme(value);
                   SettingsService().addNewSettings(
-                      userEmail:
-                          Provider.of<UserProvider>(context, listen: false)
-                              .email,
+                      userId:
+                          Provider.of<AuthProvider>(context, listen: false)
+                              .getUserId ?? "",
                       settings: {"isDark": themeManager.isDark});
                 }),
               ),

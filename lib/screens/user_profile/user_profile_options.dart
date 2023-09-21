@@ -65,7 +65,7 @@ class _UserProfileOptionsState extends State<UserProfileOptions> {
                           collection: "users",
                           document:
                               Provider.of<UserProvider>(context, listen: false)
-                                  .email,
+                                  .userId,
                           fieldTitle: "username",
                           newFieldValue: _userNameController.text);
                       // ignore: use_build_context_synchronously
@@ -78,7 +78,7 @@ class _UserProfileOptionsState extends State<UserProfileOptions> {
                           document:
                               // ignore: use_build_context_synchronously
                               Provider.of<UserProvider>(context, listen: false)
-                                  .email,
+                                  .userId,
                           fieldTitle: "name",
                           newFieldValue: _nameController.text);
                       Provider.of<UserProvider>(context, listen: false)

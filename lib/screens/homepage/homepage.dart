@@ -1,8 +1,10 @@
+import 'package:drone_2_0/themes/theme_manager.dart';
 import 'package:drone_2_0/widgets/side_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:drone_2_0/screens/homepage/flight_records.dart';
 import 'package:drone_2_0/screens/homepage/live_view.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
+import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -26,22 +28,27 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       drawer: const NavDrawer(),
       appBar: AppBar(
-        title: const Text("FPV-Drohne",),
+        title: const Text(
+          "FPV-Drohne",
+        ),
       ),
       bottomNavigationBar: Container(
-        color: Colors.grey.shade900,
+        color: Provider.of<ThemeManager>(context).isDark ? Colors.grey.shade900 : Colors.grey.shade100,
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
           child: GNav(
             // Style
-            activeColor: Colors.white,
+            activeColor: Provider.of<ThemeManager>(context).isDark ? Colors.white : Colors.black,
+            color: Provider.of<ThemeManager>(context).isDark
+                ? Colors.white
+                : Colors.grey.shade800,
             style: GnavStyle.google,
             iconSize: 28,
-            tabBackgroundColor: Colors.grey.shade800,
+            tabBackgroundColor: Provider.of<ThemeManager>(context).isDark  ? Colors.grey.shade800 : Colors.grey.shade300,
             padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 10),
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             gap: 10,
-        
+
             // Function
             selectedIndex: currentPageIdx,
             tabs: const [
@@ -54,7 +61,7 @@ class _HomePageState extends State<HomePage> {
                 text: "Live View",
               ),
             ],
-        
+
             onTabChange: (value) {
               setState(() {
                 currentPageIdx = value;

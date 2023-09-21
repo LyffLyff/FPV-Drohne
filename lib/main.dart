@@ -7,7 +7,6 @@ import 'package:drone_2_0/themes/theme_manager.dart';
 import 'package:flutter/material.dart';
 import "package:firebase_core/firebase_core.dart";
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'data/providers/auth_provider.dart';
 import 'data/providers/user_provider.dart';
@@ -22,43 +21,50 @@ void main() async {
 
   // Initialize App
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  User? user = AuthProvider().getUser;
+  final Map<String, dynamic>? userData =
+      await AuthService().fetchUserData(userId: user?.uid ?? "");
+  final ThemeManager themeManager = ThemeManager();
+  await themeManager.initThemeSettings(user?.uid ?? "");
+  final UserProvider userProvider = UserProvider();
+  userProvider.changeUserId(user?.uid ?? "");
+  userProvider.changeName(userData?["name"]);
+  userProvider.changeUsername(userData?["username"]);
+  userProvider.changeUserEmail(user?.email ?? "");
+
+
 
   runApp(MultiProvider(
     providers: [
       ChangeNotifierProvider(
-        create: (_) => UserProvider(),
+        create: (_) => userProvider,
       ),
       ChangeNotifierProvider(
         create: (_) => AuthProvider(),
       ),
       ChangeNotifierProvider(
-        create: (_) => ThemeManager(),
+        create: (_) => themeManager,
       )
     ],
-    child: const MyApp(),
+    child: MyApp(
+      userData: userData,
+      user: user,
+    ),
   ));
 }
 
-class MyApp extends StatefulWidget {
-  const MyApp({super.key});
-
-  @override
-  State<MyApp> createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
+class MyApp extends StatelessWidget {
   bool isInitialized = false;
+  final Map<String, dynamic>? userData;
+  final User? user;
   var logger = Logger(
     printer: PrettyPrinter(),
   );
 
+  MyApp({super.key, required this.userData, required this.user});
+
   @override
   Widget build(BuildContext context) {
-    // fetching Userdata to later load the Future Builder
-    User? user = AuthProvider().getUser;
-    final Future<Map<String, dynamic>?> userData =
-        AuthService().fetchUserData(email: user?.email ?? "");
-
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: lightTheme,
@@ -70,43 +76,27 @@ class _MyAppState extends State<MyApp> {
         HomePage.id: (context) => const HomePage(),
         LoginScreen.id: (context) => const LoginScreen(),
       },
-      home: FutureBuilder(
-        future: userData,
-        builder: (BuildContext context, AsyncSnapshot snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            // While fetching data, show a loading indicator.
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          } else if (snapshot.hasError) {
-            logger.i(snapshot.error.toString());
-            return Text(snapshot.error.toString());
-          } else {
-            // Data has been fetched, update user info and navigate.
-            final userData = snapshot.data;
-            if (!Provider.of<ThemeManager>(context, listen: false)
-                .isInitialized) {
-              Provider.of<ThemeManager>(context, listen: true)
-                  .initThemeSettings(user?.email ?? "");
-            } else {
-              isInitialized = true;
-              logger.i("Homepage Initialized");
-            }
-            SchedulerBinding.instance.addPostFrameCallback((_) {
-              Provider.of<UserProvider>(context, listen: false)
-                  .changeUserEmail(user?.email ?? "?");
-              Provider.of<UserProvider>(context, listen: false)
-                  .changeUsername(userData?["username"]);
-              Provider.of<UserProvider>(context, listen: false)
-                  .changeName(userData?["name"]);
-            });
-            return Visibility(
-              visible: isInitialized,
-              child: const HomePage(),
-            );
-          }
-        },
-      ),
+      home: user == null
+          ? const WelcomeScreen()
+          : FutureBuilder(
+              future: null,
+              builder: (BuildContext context,
+                  AsyncSnapshot<List<dynamic>> snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  // While fetching data, show a loading indicator.
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                } else if (snapshot.hasError) {
+                  logger.i(snapshot.error.toString());
+                  return Text(snapshot.error.toString());
+                } else {
+                  final userData = snapshot.data?[0];
+                  logger.i("Homepage Initialized");
+                  return const HomePage();
+                }
+              },
+            ),
     );
   }
 }

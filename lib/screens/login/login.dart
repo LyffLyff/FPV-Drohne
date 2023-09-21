@@ -1,3 +1,4 @@
+import 'package:drone_2_0/data/providers/auth_provider.dart';
 import 'package:drone_2_0/screens/login/create_account.dart';
 import 'package:drone_2_0/service/auth/auth_service.dart';
 import 'package:drone_2_0/screens/homepage/homepage.dart';
@@ -90,7 +91,7 @@ void _loginAndNavigate(
 
   if (message!.contains('Success')) {
     Map<String, dynamic>? userData =
-        await AuthService().fetchUserData(email: email);
+        await AuthService().fetchUserData(userId: Provider.of<AuthProvider>(context, listen: false).getUserId ?? "");
 
     if (context.mounted) {
       Provider.of<UserProvider>(context, listen: false)
