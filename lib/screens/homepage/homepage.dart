@@ -3,6 +3,7 @@ import 'package:drone_2_0/widgets/side_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:drone_2_0/screens/homepage/flight_records.dart';
 import 'package:drone_2_0/screens/homepage/live_view.dart';
+import 'package:flutter/services.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:provider/provider.dart';
 
@@ -18,6 +19,13 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   int currentPageIdx = 0;
 
+  @override
+  void initState() {
+    super.initState();
+    // TODO: implement initState
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
+  }
+
   final _pages = <Widget>[
     const FlightRecords(),
     const LiveView(),
@@ -25,6 +33,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    bool isDarkMode = Provider.of<ThemeManager>(context).isDark;
     return Scaffold(
       drawer: const NavDrawer(),
       appBar: AppBar(
@@ -33,18 +42,17 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
       bottomNavigationBar: Container(
-        color: Provider.of<ThemeManager>(context).isDark ? Colors.grey.shade900 : Colors.grey.shade100,
+        color: isDarkMode ? Colors.grey.shade900 : Colors.grey.shade100,
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
           child: GNav(
             // Style
-            activeColor: Provider.of<ThemeManager>(context).isDark ? Colors.white : Colors.black,
-            color: Provider.of<ThemeManager>(context).isDark
-                ? Colors.white
-                : Colors.grey.shade800,
+            activeColor: isDarkMode ? Colors.white : Colors.black,
+            color: isDarkMode ? Colors.white : Colors.grey.shade800,
             style: GnavStyle.google,
             iconSize: 28,
-            tabBackgroundColor: Provider.of<ThemeManager>(context).isDark  ? Colors.grey.shade800 : Colors.grey.shade300,
+            tabBackgroundColor:
+                isDarkMode ? Colors.grey.shade800 : Colors.grey.shade300,
             padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 10),
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             gap: 10,

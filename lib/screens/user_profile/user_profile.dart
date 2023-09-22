@@ -1,4 +1,5 @@
-import 'package:drone_2_0/data/providers/user_provider.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:drone_2_0/data/providers/auth_provider.dart';
 import 'package:drone_2_0/screens/user_profile/user_profile_options.dart';
 import 'package:drone_2_0/service/storage_service.dart';
 import 'package:drone_2_0/widgets/utils/helper_widgets.dart';
@@ -7,7 +8,6 @@ import 'package:flutter/services.dart';
 import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 import '../../themes/theme_constants.dart';
-import '../../widgets/network_image.dart';
 import 'package:file_picker/file_picker.dart';
 
 class UserProfile extends StatefulWidget {
@@ -36,6 +36,11 @@ class _UserProfileState extends State<UserProfile> {
               GestureDetector(
                 onTap: () async {
                   try {
+                    Logger().i(
+                      Provider.of<AuthProvider>(context, listen: false)
+                          .getUser
+                          ?.photoURL,
+                    );
                     final results = await FilePicker.platform.pickFiles(
                       allowMultiple: false,
                       type: FileType.image,
@@ -47,10 +52,16 @@ class _UserProfileState extends State<UserProfile> {
                     } else {
                       final path = results.files.single.path;
                       final filename = results.files.single.name;
-                      StorageService()
-                          .uploadFile("test_images", path!, filename)
-                          .then((value) => print(
-                              "File Uploaded")); // print Message when done
+                      const folder = "test_images";
+                      await StorageService()
+                          .uploadFile(folder, path!, filename);
+                      final storageURL = context.read<AuthProvider>().getUser?.photoURL;
+                      /*if (storageURL != null) {
+                        await StorageService().deleteFile(storageURL);
+                        Logger().i("Deleted Old Profile Image");
+                      }*/
+                      Provider.of<AuthProvider>(context, listen: false)
+                          .setProfileImageURL("$folder/$filename");
                       print(path);
                     }
                   } on PlatformException catch (error) {
@@ -58,17 +69,23 @@ class _UserProfileState extends State<UserProfile> {
                     Logger().e(error);
                   }
                 },
-                child: Hero(
+                child: SizedBox(
+                  width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.width,
+                  child: Hero(
                     tag: "profile_image",
-                    child: loadNetworkImage(
-                        "assets/loading/double_ring_200px.gif",
-                        "https://source.unsplash.com/600x600/?otter",
-                        "assets/loading/double_ring_200px.gif")),
+                    child: CachedNetworkImage(
+                      imageUrl: Provider.of<AuthProvider>(context)
+                          .getProfileImageDownloadURL,
+                      fit: BoxFit.fitWidth,
+                    ),
+                  ),
+                ),
               ),
               Container(
                 margin: const EdgeInsets.all(Margins.stdMargin),
                 child: Text(
-                  Provider.of<UserProvider>(context).name,
+                  Provider.of<AuthProvider>(context).username,
                   style: Theme.of(context).textTheme.titleLarge,
                 ),
               ),
@@ -76,11 +93,11 @@ class _UserProfileState extends State<UserProfile> {
           ),
           const Divider(),
           Text(
-            "Email: ${Provider.of<UserProvider>(context).email}",
+            "Email: ${Provider.of<AuthProvider>(context).email}",
             style: Theme.of(context).textTheme.displayMedium,
           ),
           Text(
-            "Username: ${Provider.of<UserProvider>(context).username}",
+            "Username: ${Provider.of<AuthProvider>(context).username}",
             style: Theme.of(context).textTheme.displayMedium,
           ),
           addVerticalSpace(),

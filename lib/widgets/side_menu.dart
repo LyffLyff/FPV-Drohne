@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:drone_2_0/screens/pre_login/welcome_screen.dart';
 import 'package:drone_2_0/screens/settings/settings.dart';
 import 'package:drone_2_0/screens/user_profile/user_profile.dart';
@@ -7,6 +8,7 @@ import 'package:drone_2_0/widgets/utils/radial_expansion.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../data/providers/auth_provider.dart';
 import '../data/providers/user_provider.dart';
 
 class NavDrawer extends StatelessWidget {
@@ -16,7 +18,7 @@ class NavDrawer extends StatelessWidget {
   static double kMaxRadius = 160.0;
 
   @override
-  Widget build(BuildContext context) {
+  Drawer build(BuildContext context) {
     void logout() async {
       await FirebaseAuth.instance.signOut();
       // ignore: use_build_context_synchronously
@@ -53,17 +55,17 @@ class NavDrawer extends StatelessWidget {
                         tag: "profile_image",
                         child: RadialExpansion(
                           maxRadius: kMaxRadius,
-                          child: loadNetworkImage(
-                            "assets/loading/double_ring_200px.gif",
-                            "https://source.unsplash.com/600x600/?otter",
-                            "assets/images/drone.png",
+                          child: CachedNetworkImage(
+                            imageUrl: Provider.of<AuthProvider>(context)
+                                .getProfileImageDownloadURL,
+                            fit: BoxFit.fitWidth,
                           ),
                         ),
                       ),
                     ),
                   ),
                   Text(
-                    Provider.of<UserProvider>(context).username,
+                    Provider.of<AuthProvider>(context).username,
                     textAlign: TextAlign.start,
                     style: Theme.of(context).textTheme.bodyMedium,
                   ),

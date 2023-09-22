@@ -1,8 +1,8 @@
+import 'package:drone_2_0/data/providers/auth_provider.dart';
 import 'package:drone_2_0/widgets/input.dart';
 import 'package:drone_2_0/widgets/utils/error_bar.dart';
 import 'package:drone_2_0/widgets/utils/helper_widgets.dart';
 import 'package:flutter/material.dart';
-import '../../data/providers/user_provider.dart';
 import '../../service/user_profile_service.dart';
 import '../../themes/theme_constants.dart';
 import 'package:provider/provider.dart';
@@ -21,11 +21,11 @@ class _UserProfileOptionsState extends State<UserProfileOptions> {
 
   @override
   Widget build(BuildContext context) {
-    _emailController.text = context.read<UserProvider>().email;
-    _userNameController.text = context.read<UserProvider>().username;
-    _nameController.text = context.read<UserProvider>().name;
-    return Consumer<UserProvider>(
-      builder: (context, value, child) => Scaffold(
+    String userId = context.read<AuthProvider>().userId;
+    _emailController.text = context.read<AuthProvider>().email;
+    _userNameController.text = context.read<AuthProvider>().username;
+    //_nameController.text = context.read<AuthProvider>().getName ?? "";
+    return Scaffold(
         appBar: AppBar(
           title: const Text("User Options"),
         ),
@@ -63,26 +63,24 @@ class _UserProfileOptionsState extends State<UserProfileOptions> {
                       // Updating Username
                       message = await UserProfileService().editDocumentField(
                           collection: "users",
-                          document:
-                              Provider.of<UserProvider>(context, listen: false)
-                                  .userId,
+                          document: userId,
                           fieldTitle: "username",
                           newFieldValue: _userNameController.text);
                       // ignore: use_build_context_synchronously
-                      Provider.of<UserProvider>(context, listen: false)
-                          .changeUsername(_userNameController.text);
+                      Provider.of<AuthProvider>(context, listen: false)
+                          .updateEmail(_userNameController.text);
 
                       // Updating Name
                       message = await UserProfileService().editDocumentField(
                           collection: "users",
                           document:
                               // ignore: use_build_context_synchronously
-                              Provider.of<UserProvider>(context, listen: false)
+                              Provider.of<AuthProvider>(context, listen: false)
                                   .userId,
                           fieldTitle: "name",
                           newFieldValue: _nameController.text);
-                      Provider.of<UserProvider>(context, listen: false)
-                          .changeName(_nameController.text);
+                      Provider.of<AuthProvider>(context, listen: false)
+                          .updateName(_nameController.text);
                       if (!message.contains("Success")) {
                         ScaffoldMessenger.of(context).showSnackBar(
                           showErrorSnackBar(message),
@@ -96,7 +94,6 @@ class _UserProfileOptionsState extends State<UserProfileOptions> {
             ],
           ),
         ),
-      ),
-    );
+      );
   }
 }

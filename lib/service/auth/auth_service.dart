@@ -23,6 +23,11 @@ class AuthService {
         password: password,
       );
 
+      // Set Additional Value for new Auth User Account
+      User? user = userCredentials.user;
+      await user?.updateDisplayName(username);
+      await user?.updatePhotoURL("test_images/download.jpeg");  // standard image
+
       // Add Data to User Profile
       print("INITING USER");
       await initUserData(
@@ -117,7 +122,7 @@ class AuthService {
     var docSnapshot = await _firestore.collection("users").doc(oldEmail).get();
     if (docSnapshot.exists) {
       // creating new document with new Email
-      Map<String, dynamic>? data = docSnapshot.data();
+      //Map<String, dynamic>? data = docSnapshot.data();
       /*initUserData(
           newUser: UserModel(
             userId: ,

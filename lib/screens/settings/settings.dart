@@ -5,8 +5,6 @@ import 'package:drone_2_0/themes/theme_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../data/providers/user_provider.dart';
-
 // Icon for Dark Mode Switch
   final MaterialStateProperty<Icon?> themeModeIcon =
       MaterialStateProperty.resolveWith<Icon?>(
@@ -48,8 +46,7 @@ class SettingsScreen extends StatelessWidget {
                   themeManager.setTheme(value);
                   SettingsService().addNewSettings(
                       userId:
-                          Provider.of<AuthProvider>(context, listen: false)
-                              .getUserId ?? "",
+                          Provider.of<AuthProvider>(context, listen: false).userId,
                       settings: {"isDark": themeManager.isDark});
                 }),
               ),

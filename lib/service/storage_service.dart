@@ -1,12 +1,15 @@
 import 'dart:io';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:firebase_core/firebase_core.dart' as firebase_core;
+import 'package:logger/logger.dart';
 
 class StorageService {
   final firebase_storage.FirebaseStorage storage =
       firebase_storage.FirebaseStorage.instance;
 
-  Future<void> uploadFile(String storageFolder, String filepath, String filename) async {
+  Future<void> uploadFile(
+      String storageFolder, String filepath, String filename) async {
     File file = File(filepath); // convert filepath to file object
 
     try {
@@ -25,12 +28,20 @@ class StorageService {
     return result;
   }
 
-  Future<String> downloadURL(String imageName) async {
-    if (imageName == "") {
-      return "";
+  Future<void> deleteFile(String storagePath) async {
+    final fileRef = storage.ref(storagePath);
+
+    return fileRef.parent == null ? null : await fileRef.delete();
+  }
+
+  Future<String> downloadURL(String storageURL) async {
+    if (storageURL == "") return "";
+    try {
+      String downloadURL = await storage.ref(storageURL).getDownloadURL();
+      return downloadURL;
+    } on FirebaseException catch (e) {
+      Logger().e(e);
     }
-    String downloadURL =
-        await storage.ref("test_images/$imageName").getDownloadURL();
-    return downloadURL;
+    return "https://source.unsplash.com/random/?otter";
   }
 }

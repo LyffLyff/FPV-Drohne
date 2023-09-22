@@ -8,7 +8,6 @@ import 'package:drone_2_0/widgets/utils/error_bar.dart';
 import 'package:drone_2_0/widgets/utils/helper_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../../data/providers/user_provider.dart';
 import '../../widgets/input.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -90,17 +89,10 @@ void _loginAndNavigate(
   if (context.mounted) Navigator.of(context, rootNavigator: true).pop();
 
   if (message!.contains('Success')) {
-    Map<String, dynamic>? userData =
-        await AuthService().fetchUserData(userId: Provider.of<AuthProvider>(context, listen: false).getUserId ?? "");
+    // replace profile image download url
+    await Provider.of<AuthProvider>(context, listen: false).fetchProfileDownloadURL();
 
     if (context.mounted) {
-      Provider.of<UserProvider>(context, listen: false)
-          .changeUsername(userData?["username"]);
-      Provider.of<UserProvider>(context, listen: false)
-          .changeUserEmail(userData?["email"]);
-      Provider.of<UserProvider>(context, listen: false)
-          .changeName(userData?["name"]);
-
       // Use Navigator to navigate to the HomePage
       Navigator.of(context).pushReplacement(MaterialPageRoute(
         builder: (context) => const HomePage(),

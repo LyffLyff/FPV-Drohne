@@ -3,8 +3,7 @@ import 'package:flutter/material.dart';
 
 class ThemeManager extends ChangeNotifier {
   ThemeMode _themeMode = ThemeMode.dark; // default is dark mode
-  bool isInitialized = false;
-  bool _isDark = false;
+  bool _isDark = true;
 
   get themeMode => _themeMode;
   get isDark => _isDark;
@@ -13,7 +12,6 @@ class ThemeManager extends ChangeNotifier {
     // Load data from the database here, e.g., using async/await
     // Replace this with your database query code
     final value = await AuthService().fetchSingleSetting(userId: userId, settingKey: "isDark");
-    isInitialized = true;
     if (value == "invalid key" || value == null) {
       return;
     }

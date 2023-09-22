@@ -8,6 +8,18 @@ Widget loadNetworkImage(String placeHolderAssetPath, String networkImageURL, Str
       return Image(
           image: AssetImage(errorImageAsset));
     },
-    fit: BoxFit.cover, // You can adjust the fit as needed
+    fit: BoxFit.fitWidth,
+  );
+}
+
+Widget loadUserProfileImage(String placeHolderAssetPath, String profileImgURL, String errorImageURL) {
+  return FadeInImage(
+    placeholder: AssetImage(placeHolderAssetPath),
+    image: NetworkImage(profileImgURL),
+    imageErrorBuilder: (context, error, stackTrace) {
+      return Image(
+          image: NetworkImage(errorImageURL));
+    },
+    fit: BoxFit.fitWidth, // You can adjust the fit as needed
   );
 }
