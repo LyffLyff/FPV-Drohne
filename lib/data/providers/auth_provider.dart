@@ -5,20 +5,32 @@ import 'package:logger/logger.dart';
 
 class AuthProvider with ChangeNotifier {
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  String _photoURL = "";
+  String _profileDownloadUrl = "";
+  String _localStorageUrl = "";
   String _name = "";
 
   User? get getUser => _auth.currentUser;
-  String get getProfileImageDownloadURL => _photoURL;
+  String get getProfileImageDownloadURL => _profileDownloadUrl;
   String get username => _auth.currentUser?.displayName ?? "";
   String get userId => _auth.currentUser?.uid ?? "";
   String get name => _name; // CHANGE TO ACTUAL NAME
   String get email => _auth.currentUser?.email ?? "";
+  String get storageUrl => _localStorageUrl;
+
+  void initPhotoUrl() {
+    _localStorageUrl = getUser?.photoURL ?? "";
+  }
 
   void setProfileImageURL(String newImgURL) {
-    // setting the profile image to the users
-    _auth.currentUser?.updatePhotoURL(newImgURL);
-    _photoURL = newImgURL;
+    // updating the actual link for downloading
+    _profileDownloadUrl = newImgURL;
+    notifyListeners();
+  }
+
+  void updatePhotoURL(String newPhotoURL) {
+    // updating the relative path within Firebase Storage
+    _localStorageUrl = newPhotoURL;
+    _auth.currentUser?.updatePhotoURL(newPhotoURL);
     notifyListeners();
   }
 
@@ -41,9 +53,9 @@ class AuthProvider with ChangeNotifier {
 
   Future<void> fetchProfileDownloadURL() async {
     // initializing the photo download url for later synchronous use
-    final imgURL = getUser?.photoURL;
-    if (imgURL != null) {
-      _photoURL = await StorageService().downloadURL(imgURL);
+    if (_localStorageUrl != "") {
+      _profileDownloadUrl = await StorageService().downloadURL(_localStorageUrl);
+      print("New Download Image URL: $_profileDownloadUrl");
     }
     notifyListeners();
   }

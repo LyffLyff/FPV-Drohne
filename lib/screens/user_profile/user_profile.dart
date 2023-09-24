@@ -55,13 +55,21 @@ class _UserProfileState extends State<UserProfile> {
                       const folder = "test_images";
                       await StorageService()
                           .uploadFile(folder, path!, filename);
-                      final storageURL = context.read<AuthProvider>().getUser?.photoURL;
-                      /*if (storageURL != null) {
-                        await StorageService().deleteFile(storageURL);
+                      
+                      // delete old profile image from Storage
+                      var oldStorageURL = context.read<AuthProvider>().getUser?.photoURL;
+                      if (oldStorageURL != null) {
+                        await StorageService().deleteFile(oldStorageURL);
                         Logger().i("Deleted Old Profile Image");
-                      }*/
+                      }
+
+                      // set new Storage URL in Auth User
+                      final newStorageURL = "$folder/$filename";
                       Provider.of<AuthProvider>(context, listen: false)
-                          .setProfileImageURL("$folder/$filename");
+                          .updatePhotoURL(newStorageURL);
+
+                      // Fetch new Download URL and update in UserProvider / AuthProvider
+                      await Provider.of<AuthProvider>(context, listen: false).fetchProfileDownloadURL();
                       print(path);
                     }
                   } on PlatformException catch (error) {

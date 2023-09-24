@@ -28,10 +28,21 @@ class StorageService {
     return result;
   }
 
+  Future<bool> fileExists(firebase_storage.Reference fileRef) async {
+    final results = await fileRef.listAll();
+    return results.items.isNotEmpty;
+  }
+
   Future<void> deleteFile(String storagePath) async {
     final fileRef = storage.ref(storagePath);
 
-    return fileRef.parent == null ? null : await fileRef.delete();
+    try {
+      await fileRef.delete();
+    } on FirebaseException catch (e) {
+      Logger().e(e);
+    }
+    /*if (await fileExists(fileRef))  {
+    }*/
   }
 
   Future<String> downloadURL(String storageURL) async {

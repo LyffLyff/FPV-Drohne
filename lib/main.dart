@@ -22,6 +22,7 @@ void main() async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   AuthProvider authProvider = AuthProvider();
   User? user = authProvider.getUser;
+  authProvider.initPhotoUrl();
   await authProvider.fetchProfileDownloadURL();
 
   final Map<String, dynamic>? userData =
