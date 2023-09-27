@@ -1,11 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:drone_2_0/data/models/user_model.dart';
+import 'package:drone_2_0/data/providers/auth_provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class AuthService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  Future<User?> getUser() async {
+  Future<User?> currentUser() async {
     return FirebaseAuth.instance.currentUser;
   }
 
@@ -14,6 +15,7 @@ class AuthService {
     required String password,
     required String username,
     required String name,
+    required AuthProvider authProvider,
   }) async {
     try {
       // Create User with Email and Password
@@ -25,20 +27,9 @@ class AuthService {
 
       // Set Additional Value for new Auth User Account
       User? user = userCredentials.user;
-      await user?.updateDisplayName(username);
-      await user?.updatePhotoURL("test_images/download.jpeg");  // standard image
-
-      // Add Data to User Profile
-      print("INITING USER");
-      await initUserData(
-        newUser: UserModel(
-            userId: userCredentials.user!.uid,
-            email: email,
-            name: name,
-            username: username,
-            profileImgURL: ""),
-      );
-
+      //user?.sendEmailVerification();
+      await authProvider.createUser(user!, UserDataModel(email: email, userId: user.uid, fullName: name, storagePath: '', username: username, ));
+     
       return 'Success';
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
@@ -76,61 +67,4 @@ class AuthService {
     }
   }
 
-  Future<String?> initUserData({
-    required UserModel newUser,
-  }) async {
-    await _firestore.collection("users").doc(newUser.userId).set({
-      "email": newUser.email,
-      "name": newUser.name,
-      "profileImgURL": "",
-      "username": newUser.username,
-      "settings": newUser.settings,
-    });
-
-    print("Userdata Saved");
-    return null;
-  }
-
-  Future<Map<String, dynamic>?> fetchUserData({required String userId}) async {
-    if (userId.isEmpty) {
-      return {};
-    }
-    var docSnapshot = await _firestore.collection("users").doc(userId).get();
-    if (docSnapshot.exists) {
-      Map<String, dynamic>? data = docSnapshot.data();
-      return data;
-    }
-    return null;
-  }
-
-  Future<dynamic> fetchSingleSetting(
-      {required String userId, required String settingKey}) async {
-    if (userId.isEmpty) {
-      return null;
-    }
-    var docSnapshot = await _firestore.collection("users").doc(userId).get();
-    if (docSnapshot.exists) {
-      Map<String, dynamic>? data = docSnapshot.data();
-      return data?["settings"][settingKey] ?? "invalid key";
-    }
-    return null;
-  }
-
-  Future<void> changeUserEmail(
-      {required String oldEmail, required String newEmail}) async {
-    // retrieving old Userdata
-    var docSnapshot = await _firestore.collection("users").doc(oldEmail).get();
-    if (docSnapshot.exists) {
-      // creating new document with new Email
-      //Map<String, dynamic>? data = docSnapshot.data();
-      /*initUserData(
-          newUser: UserModel(
-            userId: ,
-              email: newEmail,
-              name: data?["name"],
-              username: data?["username"],
-              profileImgURL: data?["profileImgURL"]));*/
-      // deleting old document
-    }
-  }
 }

@@ -1,4 +1,5 @@
 import 'package:drone_2_0/service/auth/auth_service.dart';
+import 'package:drone_2_0/service/settings_service.dart';
 import 'package:flutter/material.dart';
 
 class ThemeManager extends ChangeNotifier {
@@ -11,7 +12,7 @@ class ThemeManager extends ChangeNotifier {
   Future<void> initThemeSettings(String userId) async {
     // Load data from the database here, e.g., using async/await
     // Replace this with your database query code
-    final value = await AuthService().fetchSingleSetting(userId: userId, settingKey: "isDark");
+    final value = await SettingsService().fetchSingleSetting(userId: userId, settingKey: "isDark");
     if (value == "invalid key" || value == null) {
       return;
     }

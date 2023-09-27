@@ -38,7 +38,7 @@ class _UserProfileState extends State<UserProfile> {
                   try {
                     Logger().i(
                       Provider.of<AuthProvider>(context, listen: false)
-                          .getUser
+                          .currentUser
                           ?.photoURL,
                     );
                     final results = await FilePicker.platform.pickFiles(
@@ -55,9 +55,10 @@ class _UserProfileState extends State<UserProfile> {
                       const folder = "test_images";
                       await StorageService()
                           .uploadFile(folder, path!, filename);
-                      
+
                       // delete old profile image from Storage
-                      var oldStorageURL = context.read<AuthProvider>().getUser?.photoURL;
+                      var oldStorageURL =
+                          context.read<AuthProvider>().currentUser?.photoURL;
                       if (oldStorageURL != null) {
                         await StorageService().deleteFile(oldStorageURL);
                         Logger().i("Deleted Old Profile Image");
@@ -68,8 +69,6 @@ class _UserProfileState extends State<UserProfile> {
                       Provider.of<AuthProvider>(context, listen: false)
                           .updatePhotoURL(newStorageURL);
 
-                      // Fetch new Download URL and update in UserProvider / AuthProvider
-                      await Provider.of<AuthProvider>(context, listen: false).fetchProfileDownloadURL();
                       print(path);
                     }
                   } on PlatformException catch (error) {
@@ -82,11 +81,15 @@ class _UserProfileState extends State<UserProfile> {
                   height: MediaQuery.of(context).size.width,
                   child: Hero(
                     tag: "profile_image",
-                    child: CachedNetworkImage(
-                      imageUrl: Provider.of<AuthProvider>(context)
-                          .getProfileImageDownloadURL,
-                      fit: BoxFit.fitWidth,
-                    ),
+                    child: context.read<AuthProvider>().storageUrl != ""
+                        ? CachedNetworkImage(
+                            placeholder: (context, url) =>
+                                const CircularProgressIndicator(),
+                            imageUrl: Provider.of<AuthProvider>(context)
+                                .profileImageDownloadURL,
+                            fit: BoxFit.fitWidth,
+                          )
+                        : const Icon(Icons.help_outline_outlined),
                   ),
                 ),
               ),

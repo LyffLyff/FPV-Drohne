@@ -1,7 +1,6 @@
 import 'package:drone_2_0/screens/homepage/homepage.dart';
 import 'package:drone_2_0/screens/login/login.dart';
 import 'package:drone_2_0/screens/pre_login/welcome_screen.dart';
-import 'package:drone_2_0/service/auth/auth_service.dart';
 import 'package:drone_2_0/themes/main_themes.dart';
 import 'package:drone_2_0/themes/theme_manager.dart';
 import 'package:flutter/material.dart';
@@ -21,26 +20,14 @@ void main() async {
   // Initialize App
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   AuthProvider authProvider = AuthProvider();
-  User? user = authProvider.getUser;
-  authProvider.initPhotoUrl();
-  await authProvider.fetchProfileDownloadURL();
+  User? user = authProvider.currentUser;
+  await authProvider.initUser();
 
-  final Map<String, dynamic>? userData =
-      await AuthService().fetchUserData(userId: user?.uid ?? "");
   final ThemeManager themeManager = ThemeManager();
   await themeManager.initThemeSettings(user?.uid ?? "");
-  /*final UserProvider userProvider = UserProvider();
-  userProvider.setCurrentUser(user!);
-  userProvider.changeUserId(user.uid);
-  userProvider.changeName(userData?["name"]);
-  userProvider.changeUsername(userData?["username"]);
-  userProvider.changeUserEmail(user.email ?? "");*/
-
+ 
   runApp(MultiProvider(
     providers: [
-      /*ChangeNotifierProvider(
-        create: (_) => userProvider,
-      ),*/
       ChangeNotifierProvider(
         create: (_) => authProvider,
       ),
@@ -49,20 +36,18 @@ void main() async {
       )
     ],
     child: MyApp(
-      userData: userData,
       user: user,
     ),
   ));
 }
 
 class MyApp extends StatelessWidget {
-  final Map<String, dynamic>? userData;
   final User? user;
   var logger = Logger(
     printer: PrettyPrinter(),
   );
 
-  MyApp({super.key, required this.userData, required this.user});
+  MyApp({super.key, required this.user});
 
   @override
   Widget build(BuildContext context) {

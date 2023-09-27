@@ -4,12 +4,12 @@ import 'package:drone_2_0/screens/settings/settings.dart';
 import 'package:drone_2_0/screens/user_profile/user_profile.dart';
 import 'package:drone_2_0/widgets/animations/animation_routes.dart';
 import 'package:drone_2_0/widgets/network_image.dart';
+import 'package:drone_2_0/widgets/utils/helper_widgets.dart';
 import 'package:drone_2_0/widgets/utils/radial_expansion.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../data/providers/auth_provider.dart';
-import '../data/providers/user_provider.dart';
 
 class NavDrawer extends StatelessWidget {
   const NavDrawer({super.key});
@@ -55,15 +55,18 @@ class NavDrawer extends StatelessWidget {
                         tag: "profile_image",
                         child: RadialExpansion(
                           maxRadius: kMaxRadius,
-                          child: CachedNetworkImage(
+                          child: context.read<AuthProvider>().storageUrl != "" ? CachedNetworkImage(
+                            placeholder: (context, url) =>
+                                const CircularProgressIndicator(),
                             imageUrl: Provider.of<AuthProvider>(context)
-                                .getProfileImageDownloadURL,
+                                .profileImageDownloadURL,
                             fit: BoxFit.fitWidth,
-                          ),
+                          ) : const Icon(Icons.help_outline_outlined),
                         ),
                       ),
                     ),
                   ),
+                  addVerticalSpace(height: 10),
                   Text(
                     Provider.of<AuthProvider>(context).username,
                     textAlign: TextAlign.start,

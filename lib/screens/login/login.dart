@@ -1,5 +1,5 @@
 import 'package:drone_2_0/data/providers/auth_provider.dart';
-import 'package:drone_2_0/screens/login/create_account.dart';
+import 'package:drone_2_0/screens/login/registration.dart';
 import 'package:drone_2_0/service/auth/auth_service.dart';
 import 'package:drone_2_0/screens/homepage/homepage.dart';
 import 'package:drone_2_0/themes/theme_constants.dart';
@@ -63,7 +63,7 @@ class _LoginScreenState extends State<LoginScreen> {
               TextButton(
                 onPressed: () {
                   Navigator.of(context).push(
-                    pageRouteAnimation(const CreateAccount()),
+                    pageRouteAnimation(const Registration()),
                   );
                 },
                 child: const Text('Create Account >>'),
@@ -85,24 +85,22 @@ void _loginAndNavigate(
     email: email,
     password: password,
   );
+  if (context.mounted) {
+    if (message!.contains('Success')) {
+      // replace profile image download url
 
-  if (context.mounted) Navigator.of(context, rootNavigator: true).pop();
+      await context.read<AuthProvider>().initUser();
 
-  if (message!.contains('Success')) {
-    // replace profile image download url
-    await Provider.of<AuthProvider>(context, listen: false).fetchProfileDownloadURL();
-
-    if (context.mounted) {
       // Use Navigator to navigate to the HomePage
       Navigator.of(context).pushReplacement(MaterialPageRoute(
         builder: (context) => const HomePage(),
       ));
+    } else {
+      print("Error");
+      ScaffoldMessenger.of(context).showSnackBar(
+        showErrorSnackBar(message),
+      );
     }
-  } else {
-    print("Error");
-    ScaffoldMessenger.of(context).showSnackBar(
-      showErrorSnackBar(message),
-    );
   }
 }
 
@@ -112,13 +110,17 @@ class LoaderDialog {
     return showDialog<void>(
       context: context,
       barrierDismissible: false,
-      barrierColor: Colors.blue.withAlpha(120),
+      barrierColor: const Color.fromARGB(255, 39, 39, 39).withAlpha(120),
       builder: (BuildContext context) {
-        return Dialog(
+        return Dialog.fullscreen(
+            insetAnimationDuration: const Duration(milliseconds: 500),
+            insetAnimationCurve: Curves.decelerate,
             key: key,
-            backgroundColor: Colors.transparent,
+            backgroundColor:
+                const Color.fromARGB(255, 39, 39, 39).withAlpha(120),
             child: Image.asset(
               'assets/loading/double_ring_200px.gif',
+              scale: 2.0, // scaling down 2x
             ));
       },
     );

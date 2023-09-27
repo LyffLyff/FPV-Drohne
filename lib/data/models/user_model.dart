@@ -1,35 +1,41 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class UserModel {
+Map<String, dynamic> defaultSettings = {
+  "isDark": true,
+};
+
+class UserDataModel {
   final String email;
-  final String name;
+  final String fullName;
   final String username;
-  final String profileImgURL;
+  final String storagePath;
   final String userId;
-  final Map<String, dynamic> settings = {};
+  String downloadURL = "";
+  Map<String, dynamic> settings = defaultSettings;
 
-  UserModel(
+  UserDataModel(
       {required this.userId,
-        required this.email,
-      required this.name,
+      required this.email,
+      required this.fullName,
       required this.username,
-      required this.profileImgURL});
+      required this.storagePath});
 
-  Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toMap() => {
         "email": email,
-        "name": name,
+        "fullName": fullName,
         "username": username,
-        "profileImgURL": ""
+        "storagePath": storagePath,
+        "settings" : defaultSettings,
       };
 
-  static UserModel? fromSnap(DocumentSnapshot snap) {
+  static UserDataModel? fromSnap(DocumentSnapshot snap) {
     var snapshot = snap.data() as Map<String, dynamic>;
-    return UserModel(
+    return UserDataModel(
       username: snapshot['username'],
-      name: snapshot['name'],
+      fullName: snapshot['name'],
       email: snapshot['email'],
-      profileImgURL: snapshot['profileImgURL'],
-      userId: "",
+      storagePath: snapshot['storagePath'],
+      userId: snapshot["userId"],
     );
   }
 }

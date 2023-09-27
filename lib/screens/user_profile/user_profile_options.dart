@@ -21,79 +21,82 @@ class _UserProfileOptionsState extends State<UserProfileOptions> {
 
   @override
   Widget build(BuildContext context) {
-    String userId = context.read<AuthProvider>().userId;
     _emailController.text = context.read<AuthProvider>().email;
     _userNameController.text = context.read<AuthProvider>().username;
-    //_nameController.text = context.read<AuthProvider>().getName ?? "";
+    _nameController.text = context.read<AuthProvider>().fullName;
     return Scaffold(
-        appBar: AppBar(
-          title: const Text("User Options"),
-        ),
-        body: Container(
-          margin: const EdgeInsets.all(Margins.stdMargin),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              /*stdInputField(
-              width: MediaQuery.of(context).size.width,
-              controller: _emailController,
-              hintText: "Email",
-              hideText: false
-            ),*/
-              addVerticalSpace(),
-              stdInputField(
-                  icon: Icons.person,
-                  width: MediaQuery.of(context).size.width,
-                  controller: _userNameController,
-                  hintText: "Username",
-                  hideText: false),
-              addVerticalSpace(),
-              stdInputField(
-                  icon: Icons.person_rounded,
-                  width: MediaQuery.of(context).size.width,
-                  controller: _nameController,
-                  hintText: "Name",
-                  hideText: false),
-              addVerticalSpace(),
-              ElevatedButton(
-                  child: const Text("Save Userdata"),
-                  onPressed: () async {
-                    if (context.mounted) {
-                      String message;
-                      // Updating Username
-                      message = await UserProfileService().editDocumentField(
-                          collection: "users",
-                          document: userId,
-                          fieldTitle: "username",
-                          newFieldValue: _userNameController.text);
-                      // ignore: use_build_context_synchronously
-                      Provider.of<AuthProvider>(context, listen: false)
-                          .updateEmail(_userNameController.text);
-
-                      // Updating Name
-                      message = await UserProfileService().editDocumentField(
-                          collection: "users",
-                          document:
-                              // ignore: use_build_context_synchronously
-                              Provider.of<AuthProvider>(context, listen: false)
-                                  .userId,
-                          fieldTitle: "name",
-                          newFieldValue: _nameController.text);
-                      Provider.of<AuthProvider>(context, listen: false)
-                          .updateName(_nameController.text);
-                      if (!message.contains("Success")) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          showErrorSnackBar(message),
-                        );
-                      }
+      appBar: AppBar(
+        title: const Text("User Options"),
+      ),
+      body: Container(
+        margin: const EdgeInsets.all(Margins.stdMargin),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            stdInputField(
+                icon: Icons.person_rounded,
+                width: MediaQuery.of(context).size.width,
+                controller: _emailController,
+                hintText: "Email",
+                hideText: false),
+            addVerticalSpace(),
+            stdInputField(
+                icon: Icons.person,
+                width: MediaQuery.of(context).size.width,
+                controller: _userNameController,
+                hintText: "Username",
+                hideText: false),
+            addVerticalSpace(),
+            stdInputField(
+                icon: Icons.person_rounded,
+                width: MediaQuery.of(context).size.width,
+                controller: _nameController,
+                hintText: "Name",
+                hideText: false),
+            addVerticalSpace(),
+            ElevatedButton(
+                child: const Text("Save Userdata"),
+                onPressed: () async {
+                  final userProvider =
+                      Provider.of<AuthProvider>(context, listen: false);
+                  if (context.mounted) {
+                    var message = await _saveUserdata(
+                        userProvider,
+                        _emailController.text,
+                        _userNameController.text,
+                        _nameController.text);
+                    if (!message.contains("Success")) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        showErrorSnackBar(message),
+                      );
                     }
-
-                    // Back to UserProfile
-                    Navigator.pop(context);
-                  })
-            ],
-          ),
+                  }
+                  // Back to UserProfile
+                  Navigator.pop(context);
+                })
+          ],
         ),
-      );
+      ),
+    );
   }
+}
+
+Future<String> _saveUserdata(AuthProvider userProvider, String newEmail,
+    String newUsername, String newName) async {
+  String message;
+
+  // Updating Email
+  await userProvider.updateEmail(newEmail);
+  //-- This operation is sensitive and requires recent authentication. Log in again before retrying this request.
+
+  // Updating UserData in UserObject
+  await userProvider.updateName(newName);
+  await userProvider.updateUsername(newUsername);
+
+  // Updating UserData in FireStore
+  return UserProfileService()
+      .setMultipleUserValues(userId: userProvider.userId, newUserdata: {
+    "username": newUsername,
+    "fullName": newName,
+  });
 }

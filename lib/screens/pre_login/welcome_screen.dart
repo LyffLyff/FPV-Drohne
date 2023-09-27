@@ -1,4 +1,4 @@
-import 'package:drone_2_0/screens/login/create_account.dart';
+import 'package:drone_2_0/screens/login/registration.dart';
 import 'package:drone_2_0/screens/login/login.dart';
 import 'package:drone_2_0/themes/theme_constants.dart';
 import 'package:drone_2_0/widgets/utils/helper_widgets.dart';
@@ -40,7 +40,7 @@ class WelcomeScreen extends StatelessWidget {
               ElevatedButton(
                 child: const Text("Register as new User"),
                 onPressed: () {
-                  Navigator.of(context).push(pageRouteAnimation(const CreateAccount()));
+                  Navigator.of(context).push(pageRouteAnimation(const Registration()));
                 },
               ),
               const Spacer(),
