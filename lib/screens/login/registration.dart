@@ -101,4 +101,14 @@ class _RegistrationState extends State<Registration> {
       ),
     );
   }
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    _nameController.dispose();
+    _userNameController.dispose();
+    _sirNameController.dispose();
+    super.dispose();
+  }
 }

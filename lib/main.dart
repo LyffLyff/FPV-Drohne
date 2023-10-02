@@ -1,12 +1,12 @@
 import 'package:drone_2_0/screens/homepage/homepage.dart';
 import 'package:drone_2_0/screens/login/login.dart';
 import 'package:drone_2_0/screens/pre_login/welcome_screen.dart';
+import 'package:drone_2_0/screens/settings/app_settings.dart';
 import 'package:drone_2_0/themes/main_themes.dart';
 import 'package:drone_2_0/themes/theme_manager.dart';
 import 'package:flutter/material.dart';
 import "package:firebase_core/firebase_core.dart";
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/services.dart';
 import 'data/providers/auth_provider.dart';
 import 'firebase_options.dart';
 import 'package:provider/provider.dart';
@@ -14,8 +14,7 @@ import 'package:logger/logger.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  SystemChrome.setEnabledSystemUIMode(
-      SystemUiMode.immersiveSticky); // hide System NavigationBar
+  defaultAppSettings();
 
   // Initialize App
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
@@ -25,7 +24,7 @@ void main() async {
 
   final ThemeManager themeManager = ThemeManager();
   await themeManager.initThemeSettings(user?.uid ?? "");
- 
+
   runApp(MultiProvider(
     providers: [
       ChangeNotifierProvider(
@@ -54,7 +53,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: lightTheme,
-      darkTheme: darkTheme,
+      darkTheme: darkTheme,             
       themeMode: Provider.of<ThemeManager>(context).themeMode,
       title: 'My Drone.JPEG',
       routes: {
@@ -78,7 +77,7 @@ class MyApp extends StatelessWidget {
                   return Text(snapshot.error.toString());
                 } else {
                   //final userData = snapshot.data?[0];
-                  
+
                   logger.i("Homepage Initialized");
                   return const HomePage();
                 }

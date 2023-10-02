@@ -79,6 +79,14 @@ class _UserProfileOptionsState extends State<UserProfileOptions> {
       ),
     );
   }
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _nameController.dispose();
+    _userNameController.dispose();
+    super.dispose();
+  }
 }
 
 Future<String> _saveUserdata(AuthProvider userProvider, String newEmail,

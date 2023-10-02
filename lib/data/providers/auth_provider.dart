@@ -26,16 +26,18 @@ class AuthProvider with ChangeNotifier {
 
   // Profile Image Methods
   Future<void> initStoragePath() async {
-    updatePhotoURL(currentUser?.photoURL ?? "");
+    updatePhotoURL(_storagePath);
   }
 
-  void updatePhotoURL(String newStoragePath) {
+  Future<void> updatePhotoURL(String newStoragePath) async {
     // updating the relative path within Firebase Storage
     _storagePath = newStoragePath;
     _auth.currentUser?.updatePhotoURL(newStoragePath);
+    await _userDocument.setUserValue(
+        userId: userId, key: "storagePath", value: newStoragePath);
 
     // fetching the new download url
-    _fetchProfileDownloadURL();
+    await _fetchProfileDownloadURL();
 
     notifyListeners();
   }
@@ -92,8 +94,10 @@ class AuthProvider with ChangeNotifier {
   Future<void> initUser() async {
     // called on startup of Application -> setting all needed values
     Map<String, dynamic>? data = await _userDocument.fetchUserData(userId: userId);
-    _fullName = data?["fullName"];
-    _username = data?["username"];
+    _fullName = data?["fullName"] ?? "";
+    _username = data?["username"] ?? "";
+    _storagePath = data?["storagePath"] ?? "";
+    
     await initStoragePath();
   }
 }

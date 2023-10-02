@@ -4,6 +4,7 @@ import 'package:drone_2_0/service/auth/auth_service.dart';
 import 'package:drone_2_0/screens/homepage/homepage.dart';
 import 'package:drone_2_0/themes/theme_constants.dart';
 import 'package:drone_2_0/widgets/animations/animation_routes.dart';
+import 'package:drone_2_0/widgets/loading_icons.dart';
 import 'package:drone_2_0/widgets/utils/error_bar.dart';
 import 'package:drone_2_0/widgets/utils/helper_widgets.dart';
 import 'package:flutter/material.dart';
@@ -36,13 +37,18 @@ class _LoginScreenState extends State<LoginScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              stdInputField(
+              TextField(
+                controller: _emailController,
+                autocorrect: false,
+                enableIMEPersonalizedLearning: false,
+              ),
+              /*stdInputField(
                 width: MediaQuery.of(context).size.width,
                 hideText: false,
                 controller: _emailController,
                 hintText: "Email",
                 icon: Icons.person,
-              ),
+              ),*/
               addVerticalSpace(),
               stdInputField(
                 width: MediaQuery.of(context).size.width,
@@ -74,6 +80,13 @@ class _LoginScreenState extends State<LoginScreen> {
       ),
     );
   }
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
 }
 
 void _loginAndNavigate(
@@ -96,6 +109,7 @@ void _loginAndNavigate(
         builder: (context) => const HomePage(),
       ));
     } else {
+      Navigator.pop(context);
       print("Error");
       ScaffoldMessenger.of(context).showSnackBar(
         showErrorSnackBar(message),
@@ -113,15 +127,12 @@ class LoaderDialog {
       barrierColor: const Color.fromARGB(255, 39, 39, 39).withAlpha(120),
       builder: (BuildContext context) {
         return Dialog.fullscreen(
-            insetAnimationDuration: const Duration(milliseconds: 500),
-            insetAnimationCurve: Curves.decelerate,
-            key: key,
-            backgroundColor:
-                const Color.fromARGB(255, 39, 39, 39).withAlpha(120),
-            child: Image.asset(
-              'assets/loading/double_ring_200px.gif',
-              scale: 2.0, // scaling down 2x
-            ));
+          insetAnimationDuration: const Duration(milliseconds: 500),
+          insetAnimationCurve: Curves.decelerate,
+          key: key,
+          backgroundColor: const Color.fromARGB(255, 39, 39, 39).withAlpha(120),
+          child: circularLoadingIcon(),
+        );
       },
     );
   }
