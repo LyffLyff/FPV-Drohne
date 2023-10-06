@@ -37,18 +37,13 @@ class _LoginScreenState extends State<LoginScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              TextField(
-                controller: _emailController,
-                autocorrect: false,
-                enableIMEPersonalizedLearning: false,
-              ),
-              /*stdInputField(
+              stdInputField(
                 width: MediaQuery.of(context).size.width,
                 hideText: false,
                 controller: _emailController,
                 hintText: "Email",
                 icon: Icons.person,
-              ),*/
+              ),
               addVerticalSpace(),
               stdInputField(
                 width: MediaQuery.of(context).size.width,

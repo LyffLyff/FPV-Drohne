@@ -103,7 +103,7 @@ Future<String> _saveUserdata(AuthProvider userProvider, String newEmail,
 
   // Updating UserData in FireStore
   return UserProfileService()
-      .setMultipleUserValues(userId: userProvider.userId, newUserdata: {
+      .updateMultipleUserValues(userId: userProvider.userId, newUserdata: {
     "username": newUsername,
     "fullName": newName,
   });

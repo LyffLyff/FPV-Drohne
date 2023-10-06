@@ -7,10 +7,14 @@ class SettingsService {
   Future<String?> addNewSettings(
       {required String userId, required Map<String, dynamic> settings}) async {
     // Creating new Document or Adding to Already existing one
-    await _firestore
-        .collection("users")
-        .doc(userId)
-        .set({"settings": settings}, SetOptions(merge: true));
+    try {
+      await _firestore
+          .collection("users")
+          .doc(userId)
+          .update({"settings": settings});
+    } on FirebaseException catch (e) {
+      Logger().e(e);
+    }
 
     return null;
   }
