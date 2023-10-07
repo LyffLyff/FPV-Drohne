@@ -104,7 +104,7 @@ class _UserProfileState extends State<UserProfile> {
             "Username: ${Provider.of<AuthProvider>(context).username}",
             style: Theme.of(context).textTheme.displayMedium,
           ),
-          addVerticalSpace(),
+          VerticalSpace(),
           ElevatedButton(
             child: const Text("Edit Userdata"),
             onPressed: () {

@@ -33,27 +33,27 @@ class _UserProfileOptionsState extends State<UserProfileOptions> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            stdInputField(
+            StdInputField(
                 icon: Icons.person_rounded,
                 width: MediaQuery.of(context).size.width,
                 controller: _emailController,
                 hintText: "Email",
                 hideText: false),
-            addVerticalSpace(),
-            stdInputField(
+            const VerticalSpace(),
+            StdInputField(
                 icon: Icons.person,
                 width: MediaQuery.of(context).size.width,
                 controller: _userNameController,
                 hintText: "Username",
                 hideText: false),
-            addVerticalSpace(),
-            stdInputField(
+            const VerticalSpace(),
+            StdInputField(
                 icon: Icons.person_rounded,
                 width: MediaQuery.of(context).size.width,
                 controller: _nameController,
                 hintText: "Name",
                 hideText: false),
-            addVerticalSpace(),
+            const VerticalSpace(),
             ElevatedButton(
                 child: const Text("Save Userdata"),
                 onPressed: () async {

@@ -33,46 +33,46 @@ class _RegistrationState extends State<Registration> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            stdInputField(
+            StdInputField(
               width: MediaQuery.of(context).size.width,
               controller: _emailController,
               hintText: "Email",
               hideText: false,
               icon: Icons.person,
             ),
-            addVerticalSpace(),
-            stdInputField(
+            VerticalSpace(),
+            StdInputField(
               width: MediaQuery.of(context).size.width,
               controller: _passwordController,
               hintText: "Password",
               hideText: true,
               icon: Icons.password,
             ),
-            addVerticalSpace(),
-            stdInputField(
+            VerticalSpace(),
+            StdInputField(
               width: MediaQuery.of(context).size.width,
               controller: _userNameController,
               hintText: "Username",
               hideText: false,
               icon: Icons.perm_contact_cal,
             ),
-            addVerticalSpace(),
-            stdInputField(
+            VerticalSpace(),
+            StdInputField(
               width: MediaQuery.of(context).size.width,
               controller: _nameController,
               hintText: "Name",
               hideText: false,
               icon: Icons.perm_contact_cal,
             ),
-            addVerticalSpace(),
-            stdInputField(
+            VerticalSpace(),
+            StdInputField(
               width: MediaQuery.of(context).size.width,
               controller: _sirNameController,
               hintText: "Sirname",
               hideText: false,
               icon: Icons.perm_contact_cal,
             ),
-            addVerticalSpace(height: 10),
+            VerticalSpace(height: 10),
             ElevatedButton(
               onPressed: () async {
                 final message = await AuthService().registration(

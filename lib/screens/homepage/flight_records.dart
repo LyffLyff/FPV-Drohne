@@ -27,7 +27,7 @@ class _FlightRecordsState extends State<FlightRecords> {
           "Current Speed",
           style: Theme.of(context).textTheme.titleLarge,
         ),
-        addVerticalSpace(),
+        const VerticalSpace(),
         SfRadialGauge(
           enableLoadingAnimation: true,
           axes: <RadialAxis>[

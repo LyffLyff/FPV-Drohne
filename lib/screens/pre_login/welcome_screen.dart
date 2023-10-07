@@ -19,18 +19,18 @@ class WelcomeScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              addVerticalSpace(height: 40),
+              const VerticalSpace(height: 40),
               const Image(
                   image: AssetImage("assets/images/logo.png"),
                   fit: BoxFit.fill),
               const Divider(),
-              addVerticalSpace(),
+              const VerticalSpace(),
               Align(
                   alignment: Alignment.center,
                   child: Text("Welcome to the \nFPV-Drone Application :)",
                       textAlign: TextAlign.center,
                       style: Theme.of(context).textTheme.displayMedium)),
-              addVerticalSpace(),
+              const VerticalSpace(),
               ElevatedButton(
                 child: const Text("Already have an account? Sign In"),
                 onPressed: () {

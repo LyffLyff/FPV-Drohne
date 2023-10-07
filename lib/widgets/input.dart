@@ -1,8 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-Widget stdInputField({required  width, required TextEditingController controller, required String hintText, required bool hideText, IconData? icon}){
-  return SizedBox(
+class StdInputField extends StatelessWidget {
+  const StdInputField({
+    super.key,
+    required this.hintText,
+    required this.width,
+    required this.hideText,
+    required this.controller,
+    this.icon,
+  });
+
+  final String hintText;
+  final bool hideText;
+  final double width;
+  final TextEditingController controller;
+  final IconData? icon;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
     width: width,
     child: TextField(
       controller: controller,
@@ -22,4 +39,5 @@ Widget stdInputField({required  width, required TextEditingController controller
       )
     )
   );
+  }
 }

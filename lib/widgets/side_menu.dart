@@ -59,7 +59,7 @@ class NavDrawer extends StatelessWidget {
                       ),
                     ),
                   ),
-                  addVerticalSpace(height: 10),
+                  const VerticalSpace(height: 10),
                   Text(
                     Provider.of<AuthProvider>(context).username,
                     textAlign: TextAlign.start,

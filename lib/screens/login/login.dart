@@ -37,22 +37,22 @@ class _LoginScreenState extends State<LoginScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              stdInputField(
+              StdInputField(
                 width: MediaQuery.of(context).size.width,
                 hideText: false,
                 controller: _emailController,
                 hintText: "Email",
                 icon: Icons.person,
               ),
-              addVerticalSpace(),
-              stdInputField(
+              const VerticalSpace(),
+              StdInputField(
                 width: MediaQuery.of(context).size.width,
                 hideText: true,
                 controller: _passwordController,
                 hintText: "Password",
                 icon: Icons.password,
               ),
-              addVerticalSpace(),
+              const VerticalSpace(),
               ElevatedButton(
                 onPressed: () async {
                   _loginAndNavigate(
@@ -60,7 +60,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 },
                 child: const Text('Login'),
               ),
-              addVerticalSpace(height: 10),
+              const VerticalSpace(height: 10),
               TextButton(
                 onPressed: () {
                   Navigator.of(context).push(

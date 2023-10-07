@@ -80,7 +80,6 @@ class AuthProvider with ChangeNotifier {
   // Initializers
   Future<void> createUser(User newUser, UserDataModel userDataModel) async {
     // called when registering a new account
-
     // init firestore user document
     await _userDocument.setMultipleUserValues(
         userId: newUser.uid, newUserdata: userDataModel.toMap());
