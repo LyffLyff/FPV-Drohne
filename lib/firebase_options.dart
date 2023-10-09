@@ -54,6 +54,7 @@ class DefaultFirebaseOptions {
     appId: '1:731202696493:android:9249ca9aa791ffef13cfa4',
     messagingSenderId: '731202696493',
     projectId: 'fpv-drohne',
+    databaseURL: 'https://fpv-drohne-default-rtdb.europe-west1.firebasedatabase.app',
     storageBucket: 'fpv-drohne.appspot.com',
   );
 
@@ -62,6 +63,7 @@ class DefaultFirebaseOptions {
     appId: '1:731202696493:ios:be87663332d94f1413cfa4',
     messagingSenderId: '731202696493',
     projectId: 'fpv-drohne',
+    databaseURL: 'https://fpv-drohne-default-rtdb.europe-west1.firebasedatabase.app',
     storageBucket: 'fpv-drohne.appspot.com',
     iosClientId: '731202696493-4gq05ea52jj8uf8vmn715ug1tvjtig7h.apps.googleusercontent.com',
     iosBundleId: 'com.example.drone20',

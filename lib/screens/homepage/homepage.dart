@@ -27,7 +27,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   final _pages = <Widget>[
-    const FlightRecords(),
+    FlightRecords(),
     const LiveView(),
   ];
 

@@ -28,6 +28,7 @@ class StdInputField extends StatelessWidget {
         prefixIcon: Icon(icon),
         ),
       obscureText: hideText,
+      textInputAction: TextInputAction.next,
       onEditingComplete: () => {
         SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky)
       },
