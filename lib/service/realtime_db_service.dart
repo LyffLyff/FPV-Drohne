@@ -20,7 +20,7 @@ class RealtimeDatabaseService {
 
   // reading data
   Stream<DatabaseEvent> fetchVelocity() {
-    DatabaseReference velocityRef = FirebaseDatabase.instance.ref("flight_records/velocity");
+    DatabaseReference velocityRef = FirebaseDatabase.instance.ref("velocity");
     return velocityRef.onValue;
   }
 }

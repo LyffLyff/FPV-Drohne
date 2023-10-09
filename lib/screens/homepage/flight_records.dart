@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:drone_2_0/service/realtime_db_service.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -16,9 +14,8 @@ class ChartData {
 
 Stream<dynamic> combinedStreams() {
   try {
-    final DatabaseReference databaseRef =
-        FirebaseDatabase.instance.ref("velocity");
-    final Stream<DatabaseEvent> rtdbStream = databaseRef.onValue;
+    final Stream<DatabaseEvent> rtdbStream =
+        RealtimeDatabaseService().fetchVelocity();
     final periodicStream = Stream<int>.periodic(
       const Duration(seconds: 1),
       (count) => count, // Emit the current count
@@ -45,74 +42,58 @@ Stream<dynamic> combinedStreams() {
   }
 }
 
-Stream<DatabaseEvent> rtdbStream() {
-  final DatabaseReference databaseRef =
-      FirebaseDatabase.instance.ref("velocity");
-  //StreamSubscription<DatabaseEvent> subscription = rtdbStream().listen((event) {
-  //  Logger().i(event.snapshot.value);
-  // });
-  return databaseRef.onValue;
-}
+final List<ChartData> chart_data = [];
+int timeAxisValue = 0;
+int LastMeasurement = 1;
 
-List<ChartData> chart_data = [];
-
-class FlightRecords extends StatefulWidget {
+class FlightRecords extends StatelessWidget {
   const FlightRecords({super.key});
 
   @override
-  State<FlightRecords> createState() => _FlightRecordsState();
-}
-
-class _FlightRecordsState extends State<FlightRecords> {
-  int _velocity = 0;
-  late DatabaseReference _velocityRef;
-  late StreamSubscription<DatabaseEvent> _velocitySubscription;
-
-  bool initialized = false;
-  FirebaseException? _error;
-
-  @override
-  void initState() {
-    init();
-    super.initState();
-  }
-
-  Future<void> init() async {
-    _velocityRef = FirebaseDatabase.instance.ref('velocity');
-
-    setState(() {
-      initialized = true;
-    });
-
-    _velocitySubscription = _velocityRef.onValue.listen(
-      (DatabaseEvent event) {
-        setState(() {
-          _error = null;
-          _velocity = (event.snapshot.value ?? 0) as int;
-        });
-      },
-      onError: (Object o) {
-        final error = o as FirebaseException;
-        setState(() {
-          _error = error;
-        });
-      },
-    );
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    _velocitySubscription.cancel();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    if (!initialized) return const Text("Not Inited");
-    return Center(
-      child: Text(
-        _velocity.toString(),
-      ),
+    return StreamBuilder(
+      stream: combinedStreams(),
+      builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          return Center(
+            child: Text('Error: ${snapshot.error}'),
+          );
+        }
+
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+
+        // Extract data from the snapshot
+        final data = snapshot.data;
+        final periodicValue = data['periodicValue'];
+        final firebaseData = data['firebaseData'];
+
+        timeAxisValue++;
+
+        if (periodicValue != null) {
+          chart_data.add(ChartData(timeAxisValue, LastMeasurement));
+        } else if (firebaseData != null) {
+          chart_data.add(ChartData(timeAxisValue, firebaseData));
+          LastMeasurement = firebaseData;
+        }
+
+        return SfCartesianChart(
+          // Chart title
+          title: ChartTitle(text: 'Current Velocity'),
+          series: <LineSeries<ChartData, int>>[
+            LineSeries<ChartData, int>(
+                dataSource: chart_data,
+                xValueMapper: (ChartData time, _) => time.x,
+                yValueMapper: (ChartData velocity, _) => velocity.y,
+                // Enable data label
+                dataLabelSettings: const DataLabelSettings(isVisible: true))
+          ],
+        );
+        
+      },
     );
   }
 }
