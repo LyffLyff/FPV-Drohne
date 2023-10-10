@@ -1,10 +1,8 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:drone_2_0/data/models/user_model.dart';
 import 'package:drone_2_0/data/providers/auth_provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class AuthService {
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   Future<User?> currentUser() async {
     return FirebaseAuth.instance.currentUser;

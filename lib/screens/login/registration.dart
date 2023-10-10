@@ -40,7 +40,7 @@ class _RegistrationState extends State<Registration> {
               hideText: false,
               icon: Icons.person,
             ),
-            VerticalSpace(),
+            const VerticalSpace(),
             StdInputField(
               width: MediaQuery.of(context).size.width,
               controller: _passwordController,
@@ -48,7 +48,7 @@ class _RegistrationState extends State<Registration> {
               hideText: true,
               icon: Icons.password,
             ),
-            VerticalSpace(),
+            const VerticalSpace(),
             StdInputField(
               width: MediaQuery.of(context).size.width,
               controller: _userNameController,
@@ -56,7 +56,7 @@ class _RegistrationState extends State<Registration> {
               hideText: false,
               icon: Icons.perm_contact_cal,
             ),
-            VerticalSpace(),
+            const VerticalSpace(),
             StdInputField(
               width: MediaQuery.of(context).size.width,
               controller: _nameController,
@@ -64,7 +64,7 @@ class _RegistrationState extends State<Registration> {
               hideText: false,
               icon: Icons.perm_contact_cal,
             ),
-            VerticalSpace(),
+            const VerticalSpace(),
             StdInputField(
               width: MediaQuery.of(context).size.width,
               controller: _sirNameController,
@@ -72,7 +72,7 @@ class _RegistrationState extends State<Registration> {
               hideText: false,
               icon: Icons.perm_contact_cal,
             ),
-            VerticalSpace(height: 10),
+            const VerticalSpace(height: 10),
             ElevatedButton(
               onPressed: () async {
                 final message = await AuthService().registration(

@@ -1,4 +1,3 @@
-import 'package:drone_2_0/service/auth/auth_service.dart';
 import 'package:drone_2_0/service/settings_service.dart';
 import 'package:flutter/material.dart';
 

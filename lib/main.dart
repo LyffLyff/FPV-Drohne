@@ -42,7 +42,7 @@ void main() async {
 
 class MyApp extends StatelessWidget {
   final User? user;
-  var logger = Logger(
+  final logger = Logger(
     printer: PrettyPrinter(),
   );
 
@@ -79,7 +79,7 @@ class MyApp extends StatelessWidget {
                   //final userData = snapshot.data?[0];
 
                   logger.i("Homepage Initialized");
-                  return const HomePage();
+                  return const SafeArea(child: HomePage());
                 }
               },
             ),

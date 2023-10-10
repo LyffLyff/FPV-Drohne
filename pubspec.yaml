@@ -50,18 +50,20 @@ dependencies:
   firebase_database: ^10.2.7
   syncfusion_flutter_charts: ^22.2.12
   async: ^2.11.0
+  flutter_native_splash: ^2.3.3
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-
-  # The "flutter_lints" package below contains a set of recommended lints to
-  # encourage good coding practices. The lint set provided by the package is
-  # activated in the `analysis_options.yaml` file located at the root of your
-  # package. See that file for information about deactivating specific lint
-  # rules and activating additional ones.
   flutter_lints: ^2.0.0
   flutter_launcher_icons: ^0.13.1
+
+flutter_native_splash:
+  image: "assets/images/logo.png"
+  color: "#f9f9f9"
+  image_dark: "assets/images/logo.png"
+  color_dark: "#181818"
+  fullscreen: true
 
 flutter_icons:
  image_path: "assets/images/icon.png"

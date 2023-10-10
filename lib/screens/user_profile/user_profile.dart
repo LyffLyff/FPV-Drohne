@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:drone_2_0/data/providers/auth_provider.dart';
 import 'package:drone_2_0/screens/user_profile/user_profile_options.dart';
 import 'package:drone_2_0/service/storage_service.dart';
@@ -104,7 +103,7 @@ class _UserProfileState extends State<UserProfile> {
             "Username: ${Provider.of<AuthProvider>(context).username}",
             style: Theme.of(context).textTheme.displayMedium,
           ),
-          VerticalSpace(),
+          const VerticalSpace(),
           ElevatedButton(
             child: const Text("Edit Userdata"),
             onPressed: () {

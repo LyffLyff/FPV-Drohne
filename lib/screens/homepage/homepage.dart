@@ -22,14 +22,27 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    // TODO: implement initState
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
+    SystemChrome.setSystemUIOverlayStyle(
+      SystemUiOverlayStyle(
+        statusBarColor: Colors.grey.shade900,
+      ),
+      //systemNavigationBarColor: Colors.grey.shade900,
+    );
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
   }
 
   final _pages = <Widget>[
-    FlightRecords(),
+    const FlightRecords(),
     const LiveView(),
   ];
+
+  Color getBarColor(isDarkMode) {
+    return isDarkMode ? Colors.grey.shade900 : Colors.grey.shade400;
+  }
+
+  Color getBackgroundColor(isDarkMode) {
+    return isDarkMode ? Colors.grey.shade900 : Colors.grey.shade400;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,22 +50,24 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       drawer: const NavDrawer(),
       appBar: AppBar(
+        backgroundColor: getBarColor(isDarkMode),
+        foregroundColor: isDarkMode ? Colors.white : Colors.black,
         title: const Text(
-          "FPV-Drohne",
+          "FPV-Drone",
         ),
+        centerTitle: true,
       ),
       bottomNavigationBar: Container(
-        color: isDarkMode ? Colors.grey.shade900 : Colors.grey.shade100,
+        color: getBarColor(isDarkMode),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
           child: GNav(
             // Style
             activeColor: isDarkMode ? Colors.white : Colors.black,
-            color: isDarkMode ? Colors.white : Colors.grey.shade800,
+            color: getBarColor(isDarkMode),
             style: GnavStyle.google,
             iconSize: 28,
-            tabBackgroundColor:
-                isDarkMode ? Colors.grey.shade800 : Colors.grey.shade300,
+            tabBackgroundColor: getBarColor(isDarkMode),
             padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 10),
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             gap: 10,
@@ -82,6 +97,7 @@ class _HomePageState extends State<HomePage> {
         index: currentPageIdx,
         children: _pages,
       ),
+      backgroundColor: getBarColor(isDarkMode).withAlpha(128),
     );
   }
 }

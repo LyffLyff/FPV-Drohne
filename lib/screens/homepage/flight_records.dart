@@ -42,58 +42,62 @@ Stream<dynamic> combinedStreams() {
   }
 }
 
-final List<ChartData> chart_data = [];
+final List<ChartData> chartData = [];
 int timeAxisValue = 0;
-int LastMeasurement = 1;
+int lastMeasurement = 1;
 
 class FlightRecords extends StatelessWidget {
   const FlightRecords({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder(
-      stream: combinedStreams(),
-      builder: (context, snapshot) {
-        if (snapshot.hasError) {
-          return Center(
-            child: Text('Error: ${snapshot.error}'),
-          );
-        }
+    return Column(
+      children: [
+        StreamBuilder(
+          stream: combinedStreams(),
+          builder: (context, snapshot) {
+            if (snapshot.hasError) {
+              return Center(
+                child: Text('Error: ${snapshot.error}'),
+              );
+            }
 
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        }
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }
 
-        // Extract data from the snapshot
-        final data = snapshot.data;
-        final periodicValue = data['periodicValue'];
-        final firebaseData = data['firebaseData'];
+            // Extract data from the snapshot
+            final data = snapshot.data;
+            final periodicValue = data['periodicValue'];
+            final firebaseData = data['firebaseData'];
 
-        timeAxisValue++;
+            timeAxisValue++;
 
-        if (periodicValue != null) {
-          chart_data.add(ChartData(timeAxisValue, LastMeasurement));
-        } else if (firebaseData != null) {
-          chart_data.add(ChartData(timeAxisValue, firebaseData));
-          LastMeasurement = firebaseData;
-        }
+            if (periodicValue != null) {
+              chartData.add(ChartData(timeAxisValue, lastMeasurement));
+            } else if (firebaseData != null) {
+              chartData.add(ChartData(timeAxisValue, firebaseData));
+              lastMeasurement = firebaseData;
+            }
 
-        return SfCartesianChart(
-          // Chart title
-          title: ChartTitle(text: 'Current Velocity'),
-          series: <LineSeries<ChartData, int>>[
-            LineSeries<ChartData, int>(
-                dataSource: chart_data,
-                xValueMapper: (ChartData time, _) => time.x,
-                yValueMapper: (ChartData velocity, _) => velocity.y,
-                // Enable data label
-                dataLabelSettings: const DataLabelSettings(isVisible: true))
-          ],
-        );
-        
-      },
+            return SfCartesianChart(
+              // Chart title
+              title: ChartTitle(text: 'Current Velocity'),
+              series: <LineSeries<ChartData, int>>[
+                LineSeries<ChartData, int>(
+                    dataSource: chartData,
+                    xValueMapper: (ChartData time, _) => time.x,
+                    yValueMapper: (ChartData velocity, _) => velocity.y,
+                    // Enable data label
+                    dataLabelSettings: const DataLabelSettings(isVisible: true))
+              ],
+            );
+            
+          },
+        ),
+      ],
     );
   }
 }

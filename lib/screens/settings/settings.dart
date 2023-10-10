@@ -6,15 +6,15 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 // Icon for Dark Mode Switch
-  final MaterialStateProperty<Icon?> themeModeIcon =
-      MaterialStateProperty.resolveWith<Icon?>(
-    (Set<MaterialState> states) {
-      if (states.contains(MaterialState.selected)) {
-        return const Icon(Icons.check);
-      }
-      return const Icon(Icons.close);
-    },
-  );
+final MaterialStateProperty<Icon?> themeModeIcon =
+    MaterialStateProperty.resolveWith<Icon?>(
+  (Set<MaterialState> states) {
+    if (states.contains(MaterialState.selected)) {
+      return const Icon(Icons.check);
+    }
+    return const Icon(Icons.close);
+  },
+);
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
@@ -42,12 +42,14 @@ class SettingsScreen extends StatelessWidget {
                 ),
                 controlAffinity: ListTileControlAffinity.trailing,
                 onChanged: ((value) {
-                  print(value);
                   themeManager.setTheme(value);
                   SettingsService().addNewSettings(
-                      userId:
-                          Provider.of<AuthProvider>(context, listen: false).userId,
-                      settings: {"isDark": themeManager.isDark});
+                    userId: Provider.of<AuthProvider>(context, listen: false)
+                        .userId,
+                    settings: {
+                      "isDark": themeManager.isDark,
+                    },
+                  );
                 }),
               ),
             ],

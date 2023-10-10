@@ -14,10 +14,6 @@ class ChartData {
   final int y;
 }
 
-class FlightData with ChangeNotifier {
-  final int _velocity = 0;
-}
-
 Stream<dynamic> combinedStreams() {
   try {
     final Stream<DatabaseEvent> rtdbStream =
@@ -115,9 +111,9 @@ class FlightRecords extends StatelessWidget {
           timeAxisValue++;
 
           /*if (periodicValue != null) {
-            chart_data.add(ChartData(timeAxisValue, LastMeasurement));
+            chartData.add(ChartData(timeAxisValue, LastMeasurement));
           } else if (firebaseData != null) {
-            chart_data.add(ChartData(timeAxisValue, firebaseData));
+            chartData.add(ChartData(timeAxisValue, firebaseData));
             LastMeasurement = firebaseData;
           }*/
 

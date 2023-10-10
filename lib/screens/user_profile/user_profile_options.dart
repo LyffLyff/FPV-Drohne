@@ -66,6 +66,7 @@ class _UserProfileOptionsState extends State<UserProfileOptions> {
                         _userNameController.text,
                         _nameController.text);
                     if (!message.contains("Success")) {
+                      // ignore: use_build_context_synchronously
                       ScaffoldMessenger.of(context).showSnackBar(
                         showErrorSnackBar(message),
                       );
@@ -91,8 +92,6 @@ class _UserProfileOptionsState extends State<UserProfileOptions> {
 
 Future<String> _saveUserdata(AuthProvider userProvider, String newEmail,
     String newUsername, String newName) async {
-  String message;
-
   // Updating Email
   await userProvider.updateEmail(newEmail);
   //-- This operation is sensitive and requires recent authentication. Log in again before retrying this request.
