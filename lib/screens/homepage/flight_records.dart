@@ -14,13 +14,13 @@ class ChartData {
 
 Stream<dynamic> combinedStreams() {
   try {
-    final Stream<DatabaseEvent> rtdbStream =
-        RealtimeDatabaseService().fetchVelocity();
+    final Stream<DatabaseEvent> velocityStream =
+        RealtimeDatabaseService().listenToValue("velocity");
     final periodicStream = Stream<int>.periodic(
       const Duration(seconds: 1),
       (count) => count, // Emit the current count
     );
-    final combinedStream = StreamGroup.merge([periodicStream, rtdbStream]);
+    final combinedStream = StreamGroup.merge([periodicStream, velocityStream]);
 
     return combinedStream.map((event) {
       if (event is int) {
@@ -42,6 +42,15 @@ Stream<dynamic> combinedStreams() {
   }
 }
 
+Future<Map> _initChartData() async {
+  // Reading the initial value from the Database before listening to changes
+  final ref = RealtimeDatabaseService();
+  final int vel = await ref.readValueOnce("velocity");
+  return {
+    "velocity": vel,
+  };
+}
+
 final List<ChartData> chartData = [];
 int timeAxisValue = 0;
 int lastMeasurement = 1;
@@ -51,53 +60,67 @@ class FlightRecords extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        StreamBuilder(
-          stream: combinedStreams(),
-          builder: (context, snapshot) {
-            if (snapshot.hasError) {
-              return Center(
-                child: Text('Error: ${snapshot.error}'),
-              );
-            }
+    return FutureBuilder(
+      future: _initChartData(),
+      builder: (context, AsyncSnapshot<Map> snapshot) {
+        if (snapshot.hasData) {
 
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            }
+          chartData.add(ChartData(timeAxisValue, snapshot.data?["velocity"]));
 
-            // Extract data from the snapshot
-            final data = snapshot.data;
-            final periodicValue = data['periodicValue'];
-            final firebaseData = data['firebaseData'];
+          // Widget return
+          return Column(
+            children: [
+              StreamBuilder(
+                stream: combinedStreams(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasError) {
+                    return Center(
+                      child: Text('Error: ${snapshot.error}'),
+                    );
+                  }
 
-            timeAxisValue++;
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
 
-            if (periodicValue != null) {
-              chartData.add(ChartData(timeAxisValue, lastMeasurement));
-            } else if (firebaseData != null) {
-              chartData.add(ChartData(timeAxisValue, firebaseData));
-              lastMeasurement = firebaseData;
-            }
+                  // Extract data from the snapshot
+                  final data = snapshot.data;
+                  final periodicValue = data['periodicValue'];
+                  final firebaseData = data['firebaseData'];
 
-            return SfCartesianChart(
-              // Chart title
-              title: ChartTitle(text: 'Current Velocity'),
-              series: <LineSeries<ChartData, int>>[
-                LineSeries<ChartData, int>(
-                    dataSource: chartData,
-                    xValueMapper: (ChartData time, _) => time.x,
-                    yValueMapper: (ChartData velocity, _) => velocity.y,
-                    // Enable data label
-                    dataLabelSettings: const DataLabelSettings(isVisible: true))
-              ],
-            );
-            
-          },
-        ),
-      ],
+                  timeAxisValue++;
+
+                  if (periodicValue != null) {
+                    chartData.add(ChartData(timeAxisValue, lastMeasurement));
+                  } else if (firebaseData != null) {
+                    chartData.add(ChartData(timeAxisValue, firebaseData));
+                    lastMeasurement = firebaseData;
+                  }
+
+                  return SfCartesianChart(
+                    // Chart title
+                    title: ChartTitle(text: 'Current Velocity'),
+                    series: <LineSeries<ChartData, int>>[
+                      LineSeries<ChartData, int>(
+                          dataSource: chartData,
+                          xValueMapper: (ChartData time, _) => time.x,
+                          yValueMapper: (ChartData velocity, _) => velocity.y,
+                          // Enable data label
+                          dataLabelSettings:
+                              const DataLabelSettings(isVisible: true))
+                    ],
+                  );
+                },
+              ),
+            ],
+          );
+        }
+        else {
+          return const CircularProgressIndicator.adaptive();
+        }
+      },
     );
   }
 }

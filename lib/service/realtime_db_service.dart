@@ -1,26 +1,26 @@
 import 'dart:async';
-
 import 'package:firebase_database/firebase_database.dart';
-import 'package:firebase_database/ui/utils/stream_subscriber_mixin.dart';
 
 class RealtimeDatabaseService {
-  Future<void> setData(String path, Map<String, dynamic> data) async {
-    final DatabaseReference ref = FirebaseDatabase.instance.ref(path);
+  final DatabaseReference ref = FirebaseDatabase.instance.ref();
 
+  Future<void> setData(String path, Map<String, dynamic> data) async {
     // write to DB, setting NOT updating
-    await ref.set(data);
+    await ref.child(path).set(data);
   }
 
   Future<void> updateData(String path, Map<String, dynamic> data) async {
-    final DatabaseReference ref = FirebaseDatabase.instance.ref(path);
-
     // update values in DB
-    await ref.update(data);
+    await ref.child(path).update(data);
   }
 
   // reading data
-  Stream<DatabaseEvent> fetchVelocity() {
-    DatabaseReference velocityRef = FirebaseDatabase.instance.ref("velocity");
-    return velocityRef.onValue;
+  Stream<DatabaseEvent> listenToValue(String dbPath) {
+    return ref.child(dbPath).onValue;
+  }
+
+  Future<dynamic> readValueOnce(String dbPath) async {
+    final DataSnapshot snapshot = await ref.child(dbPath).get();
+    return snapshot.value;
   }
 }

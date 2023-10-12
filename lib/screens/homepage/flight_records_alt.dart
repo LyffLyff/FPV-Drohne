@@ -16,13 +16,13 @@ class ChartData {
 
 Stream<dynamic> combinedStreams() {
   try {
-    final Stream<DatabaseEvent> rtdbStream =
-        RealtimeDatabaseService().fetchVelocity();
+    final Stream<DatabaseEvent> velocityStream =
+        RealtimeDatabaseService().listenToValue("velocity");
     final periodicStream = Stream<int>.periodic(
       const Duration(seconds: 1),
       (count) => count, // Emit the current count
     );
-    final combinedStream = StreamGroup.merge([periodicStream, rtdbStream]);
+    final combinedStream = StreamGroup.merge([periodicStream, velocityStream]);
 
     return combinedStream.map((event) {
       if (event is int) {

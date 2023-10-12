@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_nav_bar/google_nav_bar.dart';
 
 const TextTheme _textTheme = TextTheme(
   // Titles
@@ -51,13 +52,17 @@ ThemeData lightTheme = ThemeData(
 
   //AppBar
   appBarTheme: AppBarTheme(
-    //color: Colors.white,
+    color: Colors.black,
+    foregroundColor: Colors.black,
     shadowColor: Colors.blueGrey,
-    titleTextStyle: _textTheme.titleMedium,
+    titleTextStyle: _textTheme.titleMedium?.copyWith(
+      color: Colors.black
+    ),
   ),
 
   //Navigation Bar
-  //bottomNavigationBarTheme: NavigationBarTheme(),
+  bottomAppBarTheme: BottomAppBarTheme(color: Colors.grey.shade900),
+
   // Appbar
   //Buttons
   buttonTheme: const ButtonThemeData(
@@ -76,10 +81,13 @@ ThemeData darkTheme = ThemeData(
     backgroundColor: Colors.black,
   ),
 
+  scaffoldBackgroundColor: Colors.grey.shade800,
+
   //AppBar
   appBarTheme: AppBarTheme(
+    foregroundColor: Colors.white,
+    backgroundColor: Colors.grey.shade900,
     //color: Colors.white,
-    shadowColor: Colors.blueGrey,
     titleTextStyle: _textTheme.titleMedium,
   ),
 );

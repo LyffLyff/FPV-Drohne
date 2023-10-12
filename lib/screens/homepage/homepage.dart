@@ -26,7 +26,6 @@ class _HomePageState extends State<HomePage> {
       SystemUiOverlayStyle(
         statusBarColor: Colors.grey.shade900,
       ),
-      //systemNavigationBarColor: Colors.grey.shade900,
     );
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
   }
@@ -36,68 +35,56 @@ class _HomePageState extends State<HomePage> {
     const LiveView(),
   ];
 
-  Color getBarColor(isDarkMode) {
-    return isDarkMode ? Colors.grey.shade900 : Colors.grey.shade400;
-  }
-
-  Color getBackgroundColor(isDarkMode) {
-    return isDarkMode ? Colors.grey.shade900 : Colors.grey.shade400;
-  }
-
   @override
   Widget build(BuildContext context) {
     bool isDarkMode = Provider.of<ThemeManager>(context).isDark;
     return Scaffold(
       drawer: const NavDrawer(),
       appBar: AppBar(
-        backgroundColor: getBarColor(isDarkMode),
-        foregroundColor: isDarkMode ? Colors.white : Colors.black,
+        elevation: 0.0, // remove shadow
         title: const Text(
           "FPV-Drone",
         ),
         centerTitle: true,
       ),
-      bottomNavigationBar: Container(
-        color: getBarColor(isDarkMode),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-          child: GNav(
-            // Style
-            activeColor: isDarkMode ? Colors.white : Colors.black,
-            color: getBarColor(isDarkMode),
-            style: GnavStyle.google,
-            iconSize: 28,
-            tabBackgroundColor: getBarColor(isDarkMode),
-            padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 10),
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            gap: 10,
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
+        child: GNav(
+          // Style
+          backgroundColor: Theme.of(context).appBarTheme.backgroundColor ?? Theme.of(context).primaryColor,
+          activeColor: isDarkMode ? Colors.white : Colors.black,
+          color: Theme.of(context).hintColor,
+          style: GnavStyle.google,
+          iconSize: 28,
+          tabBackgroundColor: Theme.of(context).hoverColor,
+          padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 10),
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          gap: 10,
 
-            // Function
-            selectedIndex: currentPageIdx,
-            tabs: const [
-              GButton(
-                icon: Icons.data_exploration,
-                text: "Flight Records",
-              ),
-              GButton(
-                icon: Icons.video_camera_back,
-                text: "Live View",
-              ),
-            ],
+          // Function
+          selectedIndex: currentPageIdx,
+          tabs: const [
+            GButton(
+              icon: Icons.data_exploration,
+              text: "Flight Records",
+            ),
+            GButton(
+              icon: Icons.video_camera_back,
+              text: "Live View",
+            ),
+          ],
 
-            onTabChange: (value) {
-              setState(() {
-                currentPageIdx = value;
-              });
-            },
-          ),
+          onTabChange: (value) {
+            setState(() {
+              currentPageIdx = value;
+            });
+          },
         ),
       ),
       body: IndexedStack(
         index: currentPageIdx,
         children: _pages,
       ),
-      backgroundColor: getBarColor(isDarkMode).withAlpha(128),
     );
   }
 }
