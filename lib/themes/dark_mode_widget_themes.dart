@@ -20,7 +20,7 @@ class DarkThemeWidgets {
       backgroundColor: DarkColors.accentColor,
       foregroundColor: DarkColors.textColor,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(16),
       ),
     ),
   );

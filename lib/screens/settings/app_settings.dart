@@ -21,6 +21,7 @@ void colorSettings(bool darkMode) {
       statusBarColor: Colors.grey.shade900,
       statusBarIconBrightness: Brightness.light,
       systemNavigationBarIconBrightness: Brightness.light,
+      systemNavigationBarContrastEnforced: true,
       systemNavigationBarColor: Colors.grey.shade900,
     );
   } else {

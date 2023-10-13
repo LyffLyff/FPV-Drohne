@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class VerticalSpace extends StatelessWidget {
   const VerticalSpace({
     super.key,
-    this.height = 20,
+    this.height = 16,
   });
 
   final int height;

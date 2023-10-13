@@ -27,7 +27,7 @@ class StdInputField extends StatelessWidget {
               contentPadding: const EdgeInsets.symmetric(vertical: 8.0),
               hintText: hintText,
               prefixIcon: Icon(icon),
-              isCollapsed: true,
+              isCollapsed: true,  // fixing hintText not being centered correctly when prefixIcon exists
               border: const OutlineInputBorder(
                 borderRadius: BorderRadius.all(
                   Radius.circular(16),
@@ -40,6 +40,6 @@ class StdInputField extends StatelessWidget {
                 {SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge)},
             textAlignVertical: TextAlignVertical.center,
             autocorrect: false,
-            style: Theme.of(context).textTheme.displayMedium));
+            style: Theme.of(context).textTheme.labelLarge));
   }
 }

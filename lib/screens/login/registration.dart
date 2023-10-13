@@ -25,14 +25,21 @@ class _RegistrationState extends State<Registration> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Register Account'),
+        title: const Text('Return'),
       ),
       body: Container(
         margin: const EdgeInsets.all(Margins.stdMargin),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
+            const Spacer(),
+            Text(
+              "SIGN UP",
+              style: Theme.of(context).textTheme.headlineLarge,
+            ),
+            const VerticalSpace(
+              height: 128,
+            ),
             StdInputField(
               width: MediaQuery.of(context).size.width,
               controller: _emailController,
@@ -73,29 +80,33 @@ class _RegistrationState extends State<Registration> {
               icon: Icons.perm_contact_cal,
             ),
             const VerticalSpace(height: 10),
-            ElevatedButton(
-              onPressed: () async {
-                final message = await AuthService().registration(
-                  email: _emailController.text,
-                  password: _passwordController.text,
-                  username: _userNameController.text,
-                  name: _nameController.text + _sirNameController.text,
-                  authProvider: context.read<AuthProvider>(),
-                );
-
-                // ignore: use_build_context_synchronously
-                if (!context.mounted) return;
-
-                if (message!.contains('Success')) {
-                  Navigator.of(context).pushReplacementNamed("LoginScreen");
-                } else {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    showErrorSnackBar(message),
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                onPressed: () async {
+                  final message = await AuthService().registration(
+                    email: _emailController.text,
+                    password: _passwordController.text,
+                    username: _userNameController.text,
+                    name: _nameController.text + _sirNameController.text,
+                    authProvider: context.read<AuthProvider>(),
                   );
-                }
-              },
-              child: const Text('Create Account'),
+            
+                  // ignore: use_build_context_synchronously
+                  if (!context.mounted) return;
+            
+                  if (message!.contains('Success')) {
+                    Navigator.of(context).pushReplacementNamed("LoginScreen");
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      showErrorSnackBar(message),
+                    );
+                  }
+                },
+                child: const Text('Create Account'),
+              ),
             ),
+            const Spacer(),
           ],
         ),
       ),

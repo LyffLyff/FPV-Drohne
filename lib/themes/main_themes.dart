@@ -9,6 +9,7 @@ class AppTheme {
     brightness: Brightness.light, // Text Black -> White Mode
     primarySwatch: createMaterialColor(LightColors.primaryColor),
     primaryColor: LightColors.primaryColor,
+    hintColor: LightColors.accentColor,
 
     // Text
     textTheme: TextThemes.lightTextTheme,
@@ -18,6 +19,9 @@ class AppTheme {
 
     //Navigation Bar
     bottomAppBarTheme: BottomAppBarTheme(color: Colors.grey.shade900),
+
+    // Scaffold
+    scaffoldBackgroundColor: LightColors.secondaryColor,
 
      // Elevated Button
     elevatedButtonTheme: LightThemeWidgets.elevatedButtonThemeData,
@@ -37,7 +41,7 @@ class AppTheme {
     navigationBarTheme: DarkThemeWidgets.navigationBarTheme,
 
     // Scaffold
-    //scaffoldBackgroundColor: DarkColors.scaffoldBackgroundColor,
+    scaffoldBackgroundColor: DarkColors.secondaryColor,
 
     //AppBar
     appBarTheme: DarkThemeWidgets.appBarTheme,

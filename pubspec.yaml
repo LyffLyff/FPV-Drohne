@@ -59,10 +59,10 @@ dev_dependencies:
   flutter_launcher_icons: ^0.13.1
 
 flutter_native_splash:
-  image: "assets/images/logo.png"
-  color: "#f9f9f9"
-  image_dark: "assets/images/logo.png"
-  color_dark: "#181818"
+  image: "assets/images/logo2.png"
+  color: "#e3e9ed"
+  image_dark: "assets/images/logo2.png"
+  color_dark: "#12181c"
   fullscreen: true
 
 flutter_icons:
@@ -77,16 +77,34 @@ flutter_icons:
 
 # The following section is specific to Flutter packages.
 flutter:
-
-  # The following line ensures that the Material Icons font is
-  # included with your application, so that you can use the icons in
-  # the material Icons class.
   uses-material-design: true
   assets:
     - assets/
     - assets/images/
+    - assets/images/company_logos/
     - assets/loading/
+    - assets/fonts/
   fonts:
-    - family: RobotoFlex
+  # Differentiation of Weights based on naming convention 
+    - family: Raleway
+      fonts: 
+        - asset: assets/fonts/raleway/Raleway-ExtraLight.ttf
+    - family: Moderne-Sans
       fonts:
-        - asset: fonts/RobotoFlex-Regular.ttf
+        - asset: assets/fonts/moderne_sans.ttf
+    - family: Switzer
+      fonts:
+        # regular
+        - asset: assets/fonts/switzer/Switzer-Regular.otf
+        - asset: assets/fonts/switzer/Switzer-Light.otf
+        - asset: assets/fonts/switzer/Switzer-Semibold.otf
+        - asset: assets/fonts/switzer/Switzer-Bold.otf
+        - asset: assets/fonts/switzer/Switzer-Extrabold.otf
+
+        # italic
+        - asset: assets/fonts/switzer/Switzer-Italic.otf
+        - asset: assets/fonts/switzer/Switzer-LightItalic.otf
+        - asset: assets/fonts/switzer/Switzer-SemiboldItalic.otf
+        - asset: assets/fonts/switzer/Switzer-BoldItalic.otf
+        - asset: assets/fonts/switzer/Switzer-ExtraboldItalic.otf
+

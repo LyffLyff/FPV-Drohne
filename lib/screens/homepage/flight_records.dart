@@ -9,7 +9,7 @@ import 'package:async/async.dart';
 class ChartData {
   ChartData(this.x, this.y);
   final int x;
-  final int y;
+  final num y;
 }
 
 Stream<dynamic> combinedStreams() {
@@ -45,7 +45,7 @@ Stream<dynamic> combinedStreams() {
 Future<Map> _initChartData() async {
   // Reading the initial value from the Database before listening to changes
   final ref = RealtimeDatabaseService();
-  final int vel = await ref.readValueOnce("velocity");
+  final dynamic vel = await ref.readValueOnce("velocity");
   return {
     "velocity": vel,
   };
@@ -53,7 +53,7 @@ Future<Map> _initChartData() async {
 
 final List<ChartData> chartData = [];
 int timeAxisValue = 0;
-int lastMeasurement = 1;
+num lastMeasurement = 1;
 
 class FlightRecords extends StatelessWidget {
   const FlightRecords({super.key});
@@ -103,8 +103,21 @@ class FlightRecords extends StatelessWidget {
                   return SfCartesianChart(
                     // Chart title
                     title: ChartTitle(
-                        text: 'Current Velocity',
+                        text: 'Drone Speed',
                         textStyle: Theme.of(context).textTheme.bodyMedium),
+
+                    // Style
+                    //enableAxisAnimation: true,
+                    primaryXAxis: NumericAxis(
+                      name: "Time",
+                      title: AxisTitle(text: "Seconds since start"),
+                    ),
+                    primaryYAxis: NumericAxis(
+                      name: "Velocity",
+                      title: AxisTitle(text: "Velocity in m/s"),
+                    ),
+
+                    // Data
                     series: <LineSeries<ChartData, int>>[
                       LineSeries<ChartData, int>(
                           dataSource: chartData,

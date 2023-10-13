@@ -27,55 +27,107 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: const Text('Login'),
+        title: const Text('Return'),
       ),
       body: Container(
         margin: const EdgeInsets.all(Margins.stdMargin),
-        child: Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Text("LOGIN"),
-              const VerticalSpace(height: 32),
-              StdInputField(
-                width: MediaQuery.of(context).size.width,
-                hideText: false,
-                controller: _emailController,
-                hintText: "Email",
-                icon: Icons.person,
-              ),
-              const VerticalSpace(height: 8),
-              StdInputField(
-                width: MediaQuery.of(context).size.width,
-                hideText: true,
-                controller: _passwordController,
-                hintText: "Password",
-                icon: Icons.password,
-              ),
-              const VerticalSpace(height: 8),
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: () async {
-                    _loginAndNavigate(
-                        context, _emailController.text, _passwordController.text);
-                  },
-                  child: const Text('Login'),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Spacer(),
+            Text(
+              "LOGIN",
+              style: Theme.of(context).textTheme.headlineLarge,
+            ),
+            const VerticalSpace(height: 128),
+            StdInputField(
+              width: MediaQuery.of(context).size.width,
+              hideText: false,
+              controller: _emailController,
+              hintText: "Email",
+              icon: Icons.person,
+            ),
+            const VerticalSpace(height: 8),
+            StdInputField(
+              width: MediaQuery.of(context).size.width,
+              hideText: true,
+              controller: _passwordController,
+              hintText: "Password",
+              icon: Icons.password,
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).push(
+                  pageRouteAnimation(const Text("Reset Password")),
+                );
+              },
+              child: const Align(
+                alignment: Alignment.bottomRight,
+                child: Text(
+                  "Forgot Password?",
                 ),
               ),
-              const VerticalSpace(height: 10),
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).push(
-                    pageRouteAnimation(const Registration()),
-                  );
+            ),
+            const VerticalSpace(height: 8),
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                onPressed: () async {
+                  _loginAndNavigate(context, _emailController.text,
+                      _passwordController.text);
                 },
-                child: const Text('Create Account >>'),
+                child: const Text('Login'),
               ),
-            ],
-          ),
+            ),
+            const VerticalSpace(height: 64),
+            Row(
+              children: [
+                const Expanded(
+                    child: Divider(
+                  thickness: 1,
+                  color: Colors.grey,
+                )),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  child: Text(
+                    "Or Sign in with",
+                    style: Theme.of(context).textTheme.displaySmall,
+                  ),
+                ),
+                const Expanded(
+                    child: Divider(
+                  thickness: 1,
+                  color: Colors.grey,
+                ))
+              ],
+            ),
+            const VerticalSpace(),
+            const Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Icon(Icons.apple_sharp, size: 32),
+                Icon(Icons.android, size: 32),
+                Image(
+                  image: AssetImage(
+                      "assets/images/company_logos/google_dark_normal.png"),
+                  width: 32,
+                  height: 32,
+                ),
+              ],
+            ),
+            const Spacer(),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).push(
+                  pageRouteAnimation(const Registration()),
+                );
+              },
+              child: Text("Don't have an account? Sign up", style: Theme.of(context).textTheme.bodySmall),
+            ),
+          ],
         ),
       ),
     );
