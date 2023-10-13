@@ -1,93 +1,48 @@
+import 'package:drone_2_0/themes/colors.dart';
+import 'package:drone_2_0/themes/dark_mode_widget_themes.dart';
+import 'package:drone_2_0/themes/light_mode_widget_themes.dart';
+import 'package:drone_2_0/themes/text_themes.dart';
 import 'package:flutter/material.dart';
-import 'package:google_nav_bar/google_nav_bar.dart';
 
-const TextTheme _textTheme = TextTheme(
-  // Titles
-  titleLarge: TextStyle(
-      fontSize: 32, fontWeight: FontWeight.w900, fontStyle: FontStyle.normal),
-  titleMedium: TextStyle(
-      fontSize: 24, fontWeight: FontWeight.w800, fontStyle: FontStyle.normal),
-  titleSmall: TextStyle(
-      fontSize: 16, fontWeight: FontWeight.w500, fontStyle: FontStyle.normal),
+class AppTheme {
+  static ThemeData lightTheme = ThemeData(
+    brightness: Brightness.light, // Text Black -> White Mode
+    primarySwatch: createMaterialColor(LightColors.primaryColor),
+    primaryColor: LightColors.primaryColor,
 
-  // Displays
-  displayLarge: TextStyle(
-    fontSize: 24,
-    fontWeight: FontWeight.w400,
-  ),
-  displayMedium: TextStyle(
-    fontSize: 18,
-    fontWeight: FontWeight.w400,
-  ),
-  displaySmall: TextStyle(
-    fontSize: 12,
-    fontWeight: FontWeight.w300,
-  ),
+    // Text
+    textTheme: TextThemes.lightTextTheme,
 
-  // Body
-  bodyLarge: TextStyle(
-    fontSize: 24,
-    fontWeight: FontWeight.w400,
-  ),
-  bodyMedium: TextStyle(
-    fontSize: 18,
-    fontWeight: FontWeight.w400,
-  ),
-  bodySmall: TextStyle(
-    fontSize: 12,
-    fontWeight: FontWeight.w100,
-  ),
-);
+    //AppBar
+    appBarTheme: LightThemeWidgets.appBarTheme,
 
-ThemeData lightTheme = ThemeData(
-  brightness: Brightness.light, // Text Black -> White Mode
-  primarySwatch: Colors.indigo,
-  primaryColor: Colors.white,
-  textTheme: _textTheme,
-  scaffoldBackgroundColor: Colors.white,
+    //Navigation Bar
+    bottomAppBarTheme: BottomAppBarTheme(color: Colors.grey.shade900),
 
-  navigationBarTheme: const NavigationBarThemeData(
-    backgroundColor: Colors.black,
-  ),
+     // Elevated Button
+    elevatedButtonTheme: LightThemeWidgets.elevatedButtonThemeData,
+  );
 
-  //AppBar
-  appBarTheme: AppBarTheme(
-    color: Colors.black,
-    foregroundColor: Colors.black,
-    shadowColor: Colors.blueGrey,
-    titleTextStyle: _textTheme.titleMedium?.copyWith(
-      color: Colors.black
-    ),
-  ),
+  static ThemeData darkTheme = ThemeData(
+    // General
+    brightness: Brightness.dark,
+    primarySwatch: createMaterialColor(DarkColors.primaryColor),
+    primaryColor: DarkColors.primaryColor,
+    hintColor: DarkColors.accentColor,
 
-  //Navigation Bar
-  bottomAppBarTheme: BottomAppBarTheme(color: Colors.grey.shade900),
+    // Text
+    textTheme: TextThemes.darkTextTheme,
 
-  // Appbar
-  //Buttons
-  buttonTheme: const ButtonThemeData(
-    shape: RoundedRectangleBorder(),
-    textTheme: ButtonTextTheme.primary,
-  ),
-);
+    // NavigationBar
+    navigationBarTheme: DarkThemeWidgets.navigationBarTheme,
 
-ThemeData darkTheme = ThemeData(
-  brightness: Brightness.dark,
-  primarySwatch: Colors.cyan,
-  primaryColor: Colors.black,
-  textTheme: _textTheme,
+    // Scaffold
+    //scaffoldBackgroundColor: DarkColors.scaffoldBackgroundColor,
 
-  navigationBarTheme: const NavigationBarThemeData(
-    backgroundColor: Colors.black,
-  ),
+    //AppBar
+    appBarTheme: DarkThemeWidgets.appBarTheme,
 
-  scaffoldBackgroundColor: Colors.grey.shade800,
-
-  //AppBar
-  appBarTheme: AppBarTheme(
-    foregroundColor: Colors.white,
-    backgroundColor: Colors.grey.shade900,
-    //color: Colors.white,
-    titleTextStyle: _textTheme.titleMedium,
-  ),
-);
+    // Elevated Button
+    elevatedButtonTheme: DarkThemeWidgets.elevatedButtonThemeData,
+  );
+}

@@ -34,7 +34,7 @@ class NavDrawer extends StatelessWidget {
               ),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
                   GestureDetector(
                     onTap: () {
@@ -48,13 +48,17 @@ class NavDrawer extends StatelessWidget {
                       );
                     },
                     child: SizedBox(
-                      width: kMaxRadius / 2.0,
-                      height: kMaxRadius / 2.0,
+                      width: kMaxRadius / 1.6,
+                      height: kMaxRadius / 1.6,
                       child: Hero(
                         tag: "profile_image",
                         child: RadialExpansion(
                           maxRadius: kMaxRadius,
-                          child: profileImage(context.read<AuthProvider>().storageUrl, context.read<AuthProvider>().profileImageDownloadURL),
+                          child: profileImage(
+                              context.read<AuthProvider>().storageUrl,
+                              context
+                                  .read<AuthProvider>()
+                                  .profileImageDownloadURL),
                         ),
                       ),
                     ),
@@ -69,7 +73,11 @@ class NavDrawer extends StatelessWidget {
               )),
           ListTile(
             leading: const Icon(Icons.account_box),
-            title: const Text('Profile'),
+            titleAlignment: ListTileTitleAlignment.center,
+            title: Text(
+              'Profile',
+              style: Theme.of(context).textTheme.displayMedium,
+            ),
             onTap: () => {
               Navigator.of(context).push(
                 MaterialPageRoute(builder: (context) => const UserProfile()),
@@ -78,7 +86,11 @@ class NavDrawer extends StatelessWidget {
           ),
           ListTile(
             leading: const Icon(Icons.settings),
-            title: const Text('Settings'),
+            titleAlignment: ListTileTitleAlignment.center,
+            title: Text(
+              'Settings',
+              style: Theme.of(context).textTheme.displayMedium,
+            ),
             onTap: () => {
               Navigator.of(context)
                   .push(pageRouteAnimation(const SettingsScreen())),
@@ -86,7 +98,11 @@ class NavDrawer extends StatelessWidget {
           ),
           ListTile(
             leading: const Icon(Icons.input),
-            title: const Text('Logout'),
+            titleAlignment: ListTileTitleAlignment.center,
+            title: Text(
+              'Logout',
+              style: Theme.of(context).textTheme.displayMedium,
+            ),
             onTap: () => {logout()},
           ),
         ],

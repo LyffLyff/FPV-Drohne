@@ -97,11 +97,11 @@ class _UserProfileState extends State<UserProfile> {
           const Divider(),
           Text(
             "Email: ${Provider.of<AuthProvider>(context).email}",
-            style: Theme.of(context).textTheme.displayMedium,
+            //style: Theme.of(context).textTheme.displaySmall,
           ),
           Text(
             "Username: ${Provider.of<AuthProvider>(context).username}",
-            style: Theme.of(context).textTheme.displayMedium,
+            //style: Theme.of(context).textTheme.displaySmall,
           ),
           const VerticalSpace(),
           ElevatedButton(

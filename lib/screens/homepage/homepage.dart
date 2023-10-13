@@ -3,7 +3,6 @@ import 'package:drone_2_0/widgets/side_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:drone_2_0/screens/homepage/flight_records.dart';
 import 'package:drone_2_0/screens/homepage/live_view.dart';
-import 'package:flutter/services.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:provider/provider.dart';
 
@@ -22,12 +21,6 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    SystemChrome.setSystemUIOverlayStyle(
-      SystemUiOverlayStyle(
-        statusBarColor: Colors.grey.shade900,
-      ),
-    );
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
   }
 
   final _pages = <Widget>[
@@ -47,39 +40,37 @@ class _HomePageState extends State<HomePage> {
         ),
         centerTitle: true,
       ),
-      bottomNavigationBar: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
-        child: GNav(
-          // Style
-          backgroundColor: Theme.of(context).appBarTheme.backgroundColor ?? Theme.of(context).primaryColor,
-          activeColor: isDarkMode ? Colors.white : Colors.black,
-          color: Theme.of(context).hintColor,
-          style: GnavStyle.google,
-          iconSize: 28,
-          tabBackgroundColor: Theme.of(context).hoverColor,
-          padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 10),
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          gap: 10,
+      bottomNavigationBar: GNav(
+        // Style
+        backgroundColor: Theme.of(context).appBarTheme.backgroundColor ?? Theme.of(context).primaryColor,
+        activeColor: isDarkMode ? Colors.white : Colors.black,
+        color: Theme.of(context).hintColor,
+        style: GnavStyle.google,
+        iconSize: 28,
+        tabBackgroundColor: Theme.of(context).hoverColor,
+        tabMargin: const EdgeInsets.symmetric(vertical: 5),               // setting the space between buttons and end of bar
+        padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 10), // setting thickness of button and bar in general
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        gap: 10,
 
-          // Function
-          selectedIndex: currentPageIdx,
-          tabs: const [
-            GButton(
-              icon: Icons.data_exploration,
-              text: "Flight Records",
-            ),
-            GButton(
-              icon: Icons.video_camera_back,
-              text: "Live View",
-            ),
-          ],
+        // Function
+        selectedIndex: currentPageIdx,
+        tabs: const [
+          GButton(
+            icon: Icons.data_exploration,
+            text: "Flight Records",
+          ),
+          GButton(
+            icon: Icons.video_camera_back,
+            text: "Live View",
+          ),
+        ],
 
-          onTabChange: (value) {
-            setState(() {
-              currentPageIdx = value;
-            });
-          },
-        ),
+        onTabChange: (value) {
+          setState(() {
+            currentPageIdx = value;
+          });
+        },
       ),
       body: IndexedStack(
         index: currentPageIdx,

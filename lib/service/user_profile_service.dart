@@ -24,15 +24,18 @@ class UserProfileService {
       required String document,
       required String key,
       required dynamic newFieldValue}) async {
-    try {
-      await _firestore
-          .collection(collection)
-          .doc(document)
-          .update({key: newFieldValue});
-      return "Success";
-    } on FirebaseException catch (e) {
-      return e.toString();
-    }
+    if (document.isNotEmpty) {
+      try {
+        await _firestore
+            .collection(collection)
+            .doc(document)
+            .update({key: newFieldValue});
+        return "Success";
+      } on FirebaseException catch (e) {
+        return e.toString();
+      }
+  }
+    return "No Document Provided";
   }
 
   Future<String> editMultipleDocumentFields(

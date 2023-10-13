@@ -20,25 +20,26 @@ class StdInputField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-    width: width,
-    child: TextField(
-      controller: controller,
-      decoration: InputDecoration(
-        hintText: hintText,
-        prefixIcon: Icon(icon),
-        ),
-      obscureText: hideText,
-      textInputAction: TextInputAction.next,
-      onEditingComplete: () => {
-        SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky)
-      },
-      textAlignVertical: TextAlignVertical.center,
-      autocorrect: false,
-      
-      style: const TextStyle(
-        fontSize: 16
-      )
-    )
-  );
+        width: width,
+        child: TextField(
+            controller: controller,
+            decoration: InputDecoration(
+              contentPadding: const EdgeInsets.symmetric(vertical: 8.0),
+              hintText: hintText,
+              prefixIcon: Icon(icon),
+              isCollapsed: true,
+              border: const OutlineInputBorder(
+                borderRadius: BorderRadius.all(
+                  Radius.circular(16),
+                ),
+              ),
+            ),
+            obscureText: hideText,
+            textInputAction: TextInputAction.next,
+            onEditingComplete: () =>
+                {SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge)},
+            textAlignVertical: TextAlignVertical.center,
+            autocorrect: false,
+            style: Theme.of(context).textTheme.displayMedium));
   }
 }

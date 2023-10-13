@@ -25,6 +25,9 @@ void main() async {
   final ThemeManager themeManager = ThemeManager();
   await themeManager.initThemeSettings(user?.uid ?? "");
 
+  // reinitialize colors after theme loaded
+  colorSettings(themeManager.isDark);
+
   runApp(MultiProvider(
     providers: [
       ChangeNotifierProvider(
@@ -52,10 +55,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: lightTheme,
-      darkTheme: darkTheme,             
+      theme: AppTheme.lightTheme,
+      darkTheme: AppTheme.darkTheme,             
       themeMode: Provider.of<ThemeManager>(context).themeMode,
-      title: 'My Drone.JPEG',
+      title: 'FPV-Drone-Application',
       routes: {
         WelcomeScreen.id: (context) => const WelcomeScreen(),
         HomePage.id: (context) => const HomePage(),

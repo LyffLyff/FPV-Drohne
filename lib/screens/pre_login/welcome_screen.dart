@@ -21,26 +21,30 @@ class WelcomeScreen extends StatelessWidget {
             children: [
               const VerticalSpace(height: 40),
               const Image(
-                  image: AssetImage("assets/images/logo.png"),
+                  image: AssetImage("assets/images/logo2.png"),
                   fit: BoxFit.fill),
               const Divider(),
-              const VerticalSpace(),
+              const VerticalSpace(height: 10),
               Align(
                   alignment: Alignment.center,
-                  child: Text("Welcome to the \nFPV-Drone Application :)",
-                      textAlign: TextAlign.center,
-                      style: Theme.of(context).textTheme.displayMedium)),
-              const VerticalSpace(),
+                  child: Text(
+                    "Welcome to the \nFPV-Drone Application :)",
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  )),
+              const VerticalSpace(height: 10),
               ElevatedButton(
                 child: const Text("Already have an account? Sign In"),
                 onPressed: () {
-                  Navigator.of(context).push(pageRouteAnimation(const LoginScreen()));
+                  Navigator.of(context)
+                      .push(pageRouteAnimation(const LoginScreen()));
                 },
               ),
               ElevatedButton(
                 child: const Text("Register as new User"),
                 onPressed: () {
-                  Navigator.of(context).push(pageRouteAnimation(const Registration()));
+                  Navigator.of(context)
+                      .push(pageRouteAnimation(const Registration()));
                 },
               ),
               const Spacer(),

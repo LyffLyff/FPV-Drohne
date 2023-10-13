@@ -32,11 +32,13 @@ class _LoginScreenState extends State<LoginScreen> {
       ),
       body: Container(
         margin: const EdgeInsets.all(Margins.stdMargin),
-        child: Center(
+        child: Expanded(
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
+              const Text("LOGIN"),
+              const VerticalSpace(height: 32),
               StdInputField(
                 width: MediaQuery.of(context).size.width,
                 hideText: false,
@@ -44,7 +46,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 hintText: "Email",
                 icon: Icons.person,
               ),
-              const VerticalSpace(),
+              const VerticalSpace(height: 8),
               StdInputField(
                 width: MediaQuery.of(context).size.width,
                 hideText: true,
@@ -52,13 +54,16 @@ class _LoginScreenState extends State<LoginScreen> {
                 hintText: "Password",
                 icon: Icons.password,
               ),
-              const VerticalSpace(),
-              ElevatedButton(
-                onPressed: () async {
-                  _loginAndNavigate(
-                      context, _emailController.text, _passwordController.text);
-                },
-                child: const Text('Login'),
+              const VerticalSpace(height: 8),
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: () async {
+                    _loginAndNavigate(
+                        context, _emailController.text, _passwordController.text);
+                  },
+                  child: const Text('Login'),
+                ),
               ),
               const VerticalSpace(height: 10),
               TextButton(
@@ -88,6 +93,9 @@ void _loginAndNavigate(
     BuildContext context, String email, String password) async {
   final GlobalKey<State> _LoaderDialog = GlobalKey<State>();
   LoaderDialog.showLoadingDialog(context, _LoaderDialog);
+
+  // fixing issue that autocompletes adds SPACES at the end -> making email "badly formatted"
+  email = email.trimRight();
 
   final message = await AuthService().login(
     email: email,

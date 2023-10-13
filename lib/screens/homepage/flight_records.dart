@@ -64,7 +64,6 @@ class FlightRecords extends StatelessWidget {
       future: _initChartData(),
       builder: (context, AsyncSnapshot<Map> snapshot) {
         if (snapshot.hasData) {
-
           chartData.add(ChartData(timeAxisValue, snapshot.data?["velocity"]));
 
           // Widget return
@@ -80,8 +79,10 @@ class FlightRecords extends StatelessWidget {
                   }
 
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(
-                      child: CircularProgressIndicator(),
+                    return const Expanded(
+                      child: Center(
+                        child: CircularProgressIndicator(),
+                      ),
                     );
                   }
 
@@ -101,7 +102,9 @@ class FlightRecords extends StatelessWidget {
 
                   return SfCartesianChart(
                     // Chart title
-                    title: ChartTitle(text: 'Current Velocity'),
+                    title: ChartTitle(
+                        text: 'Current Velocity',
+                        textStyle: Theme.of(context).textTheme.bodyMedium),
                     series: <LineSeries<ChartData, int>>[
                       LineSeries<ChartData, int>(
                           dataSource: chartData,
@@ -116,9 +119,10 @@ class FlightRecords extends StatelessWidget {
               ),
             ],
           );
-        }
-        else {
-          return const CircularProgressIndicator.adaptive();
+        } else {
+          return const Center(
+            child: CircularProgressIndicator.adaptive(),
+          );
         }
       },
     );
