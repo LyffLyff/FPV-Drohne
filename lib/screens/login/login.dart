@@ -7,6 +7,7 @@ import 'package:drone_2_0/widgets/animations/animation_routes.dart';
 import 'package:drone_2_0/widgets/loading_icons.dart';
 import 'package:drone_2_0/widgets/utils/error_bar.dart';
 import 'package:drone_2_0/widgets/utils/helper_widgets.dart';
+import 'package:drone_2_0/extensions/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../widgets/input.dart';
@@ -40,7 +41,7 @@ class _LoginScreenState extends State<LoginScreen> {
             const Spacer(),
             Text(
               "LOGIN",
-              style: Theme.of(context).textTheme.headlineLarge,
+              style: context.textTheme.headlineLarge,
             ),
             const VerticalSpace(height: 128),
             StdInputField(
@@ -94,7 +95,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   padding: const EdgeInsets.symmetric(horizontal: 8.0),
                   child: Text(
                     "Or Sign in with",
-                    style: Theme.of(context).textTheme.displaySmall,
+                    style: context.textTheme.displaySmall,
                   ),
                 ),
                 const Expanded(
@@ -125,7 +126,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   pageRouteAnimation(const Registration()),
                 );
               },
-              child: Text("Don't have an account? Sign up", style: Theme.of(context).textTheme.bodySmall),
+              child: Text("Don't have an account? Sign up", style: context.textTheme.bodySmall),
             ),
           ],
         ),

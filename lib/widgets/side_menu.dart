@@ -9,6 +9,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../data/providers/auth_provider.dart';
+import 'package:drone_2_0/extensions/extensions.dart';
 
 class NavDrawer extends StatelessWidget {
   const NavDrawer({super.key});
@@ -30,7 +31,7 @@ class NavDrawer extends StatelessWidget {
         children: <Widget>[
           DrawerHeader(
               decoration: BoxDecoration(
-                color: Theme.of(context).canvasColor,
+                color: context.canvasColor,
               ),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -67,7 +68,7 @@ class NavDrawer extends StatelessWidget {
                   Text(
                     Provider.of<AuthProvider>(context).username,
                     textAlign: TextAlign.start,
-                    style: Theme.of(context).textTheme.bodyMedium,
+                    style: context.textTheme.bodyMedium,
                   ),
                 ],
               )),
@@ -76,7 +77,7 @@ class NavDrawer extends StatelessWidget {
             titleAlignment: ListTileTitleAlignment.center,
             title: Text(
               'Profile',
-              style: Theme.of(context).textTheme.displayMedium,
+              style: context.textTheme.displayMedium,
             ),
             onTap: () => {
               Navigator.of(context).push(
@@ -89,7 +90,7 @@ class NavDrawer extends StatelessWidget {
             titleAlignment: ListTileTitleAlignment.center,
             title: Text(
               'Settings',
-              style: Theme.of(context).textTheme.displayMedium,
+              style: context.textTheme.displayMedium,
             ),
             onTap: () => {
               Navigator.of(context)
@@ -101,7 +102,7 @@ class NavDrawer extends StatelessWidget {
             titleAlignment: ListTileTitleAlignment.center,
             title: Text(
               'Logout',
-              style: Theme.of(context).textTheme.displayMedium,
+              style: context.textTheme.displayMedium,
             ),
             onTap: () => {logout()},
           ),

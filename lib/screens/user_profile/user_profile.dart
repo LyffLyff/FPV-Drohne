@@ -1,4 +1,5 @@
 import 'package:drone_2_0/data/providers/auth_provider.dart';
+import 'package:drone_2_0/extensions/extensions.dart';
 import 'package:drone_2_0/screens/user_profile/user_profile_options.dart';
 import 'package:drone_2_0/service/storage_service.dart';
 import 'package:drone_2_0/widgets/profile_image.dart';
@@ -89,7 +90,7 @@ class _UserProfileState extends State<UserProfile> {
                 margin: const EdgeInsets.all(Margins.stdMargin),
                 child: Text(
                   Provider.of<AuthProvider>(context).username,
-                  style: Theme.of(context).textTheme.titleLarge,
+                  style: context.textTheme.titleLarge,
                 ),
               ),
             ],
@@ -97,11 +98,11 @@ class _UserProfileState extends State<UserProfile> {
           const Divider(),
           Text(
             "Email: ${Provider.of<AuthProvider>(context).email}",
-            //style: Theme.of(context).textTheme.displaySmall,
+            //style: context.textTheme.displaySmall,
           ),
           Text(
             "Username: ${Provider.of<AuthProvider>(context).username}",
-            //style: Theme.of(context).textTheme.displaySmall,
+            //style: context.textTheme.displaySmall,
           ),
           const VerticalSpace(),
           ElevatedButton(

@@ -4,6 +4,7 @@ import 'package:drone_2_0/screens/pre_login/welcome_screen.dart';
 import 'package:drone_2_0/screens/settings/app_settings.dart';
 import 'package:drone_2_0/themes/main_themes.dart';
 import 'package:drone_2_0/themes/theme_manager.dart';
+import 'package:drone_2_0/widgets/loading_icons.dart';
 import 'package:flutter/material.dart';
 import "package:firebase_core/firebase_core.dart";
 import 'package:firebase_auth/firebase_auth.dart';
@@ -56,7 +57,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: AppTheme.lightTheme,
-      darkTheme: AppTheme.darkTheme,             
+      darkTheme: AppTheme.darkTheme,
       themeMode: Provider.of<ThemeManager>(context).themeMode,
       title: 'FPV-Drone-Application',
       routes: {
@@ -72,9 +73,7 @@ class MyApp extends StatelessWidget {
                   AsyncSnapshot<List<dynamic>> snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   // While fetching data, show a loading indicator.
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
+                  return circularLoadingIcon();
                 } else if (snapshot.hasError) {
                   logger.i(snapshot.error.toString());
                   return Text(snapshot.error.toString());

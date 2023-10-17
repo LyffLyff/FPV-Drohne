@@ -1,4 +1,6 @@
+import 'package:drone_2_0/extensions/extensions.dart';
 import 'package:drone_2_0/service/realtime_db_service.dart';
+import 'package:drone_2_0/widgets/loading_icons.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
@@ -79,10 +81,8 @@ class FlightRecords extends StatelessWidget {
                   }
 
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Expanded(
-                      child: Center(
-                        child: CircularProgressIndicator(),
-                      ),
+                    return  const Expanded(
+                      child: CircularLoadingIcon(),
                     );
                   }
 
@@ -104,7 +104,7 @@ class FlightRecords extends StatelessWidget {
                     // Chart title
                     title: ChartTitle(
                         text: 'Drone Speed',
-                        textStyle: Theme.of(context).textTheme.bodyMedium),
+                        textStyle: context.textTheme.bodyMedium),
 
                     // Style
                     //enableAxisAnimation: true,
@@ -133,9 +133,7 @@ class FlightRecords extends StatelessWidget {
             ],
           );
         } else {
-          return const Center(
-            child: CircularProgressIndicator.adaptive(),
-          );
+          return const CircularLoadingIcon();
         }
       },
     );

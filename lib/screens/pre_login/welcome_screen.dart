@@ -4,6 +4,7 @@ import 'package:drone_2_0/themes/theme_constants.dart';
 import 'package:drone_2_0/widgets/utils/helper_widgets.dart';
 import 'package:flutter/material.dart';
 import '../../widgets/animations/animation_routes.dart';
+import 'package:drone_2_0/extensions/extensions.dart';
 
 class WelcomeScreen extends StatelessWidget {
   const WelcomeScreen({super.key});
@@ -12,6 +13,8 @@ class WelcomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    const String logoPath = "assets/images/logo2.png";
+    precacheImage(const AssetImage(logoPath), context);
     return Scaffold(
       body: SafeArea(
         child: Container(
@@ -21,7 +24,7 @@ class WelcomeScreen extends StatelessWidget {
             children: [
               const VerticalSpace(height: 40),
               const Image(
-                  image: AssetImage("assets/images/logo2.png"),
+                  image: AssetImage(logoPath),
                   fit: BoxFit.fill),
               const Divider(),
               const VerticalSpace(height: 10),
@@ -30,7 +33,7 @@ class WelcomeScreen extends StatelessWidget {
                   child: Text(
                     "Welcome to the \nFPV-Drone Application :)",
                     textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.bodyMedium,
+                    style: context.textTheme.bodyMedium,
                   )),
               const VerticalSpace(height: 10),
               ElevatedButton(

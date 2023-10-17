@@ -6,6 +6,7 @@ import 'package:drone_2_0/widgets/utils/error_bar.dart';
 import 'package:drone_2_0/widgets/utils/helper_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:drone_2_0/extensions/extensions.dart';
 
 class Registration extends StatefulWidget {
   const Registration({Key? key}) : super(key: key);
@@ -35,7 +36,7 @@ class _RegistrationState extends State<Registration> {
             const Spacer(),
             Text(
               "SIGN UP",
-              style: Theme.of(context).textTheme.headlineLarge,
+              style: context.textTheme.headlineLarge,
             ),
             const VerticalSpace(
               height: 128,

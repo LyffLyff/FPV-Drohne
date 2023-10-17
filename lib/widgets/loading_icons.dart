@@ -1,8 +1,15 @@
 import 'package:flutter/material.dart';
 
-Widget circularLoadingIcon() {
-  return Image.asset(
-    'assets/loading/double_ring_200px.gif',
-    scale: 2.0, // scaling down 2x
-  );
+class CircularLoadingIcon extends StatelessWidget {
+  final double length;
+  const CircularLoadingIcon({super.key, this.length = 40});
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: length,
+      height: length,
+      child: const CircularLoadingIcon(),
+    );
+  }
 }

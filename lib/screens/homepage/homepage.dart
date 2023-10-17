@@ -1,3 +1,4 @@
+import 'package:drone_2_0/extensions/extensions.dart';
 import 'package:drone_2_0/widgets/side_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:drone_2_0/screens/homepage/flight_records.dart';
@@ -39,13 +40,13 @@ class _HomePageState extends State<HomePage> {
       ),
       bottomNavigationBar: GNav(
         // Style
-        backgroundColor: Theme.of(context).appBarTheme.backgroundColor ??
-            Theme.of(context).primaryColor,
-        activeColor: Theme.of(context).primaryColor,
-        color: Theme.of(context).disabledColor,
+        backgroundColor: context.appBarTheme.backgroundColor ??
+            context.primaryColor,
+        activeColor: context.primaryColor,
+        color: context.disabledColor,
         style: GnavStyle.google,
         iconSize: 28,
-        tabBackgroundColor: Theme.of(context).hoverColor,
+        tabBackgroundColor: context.hoverColor,
         tabMargin: const EdgeInsets.symmetric(
             vertical: 5), // setting the space between buttons and end of bar
         padding: const EdgeInsets.symmetric(

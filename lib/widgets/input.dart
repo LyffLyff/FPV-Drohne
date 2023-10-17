@@ -1,3 +1,4 @@
+import 'package:drone_2_0/extensions/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -40,6 +41,6 @@ class StdInputField extends StatelessWidget {
                 {SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge)},
             textAlignVertical: TextAlignVertical.center,
             autocorrect: false,
-            style: Theme.of(context).textTheme.labelLarge));
+            style: context.textTheme.labelLarge));
   }
 }
