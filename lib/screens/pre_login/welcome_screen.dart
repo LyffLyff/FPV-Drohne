@@ -23,9 +23,12 @@ class WelcomeScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               const VerticalSpace(height: 40),
-              const Image(
-                  image: AssetImage(logoPath),
-                  fit: BoxFit.fill),
+              const FadeInImage(
+                // TODO: workaround for image pop-in
+                image: AssetImage(logoPath),
+                fit: BoxFit.fill,
+                placeholder: AssetImage(logoPath),
+              ),
               const Divider(),
               const VerticalSpace(height: 10),
               Align(

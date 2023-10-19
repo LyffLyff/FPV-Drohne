@@ -88,13 +88,30 @@ class AuthProvider with ChangeNotifier {
     newUser.updateDisplayName(userDataModel.username);
   }
 
+  Future<void> createAltLoginDocument(User altLoginUser) async {
+    // creating document for users logged in with alternative Login method -> Google, Apple, Github,...
+    // trying to fetch userdata if already logged in once -> always called on any new login
+    Map<String, dynamic>? userData = await _userDocument.fetchUserData(userId: altLoginUser.uid);
+    
+    UserDataModel altLoginUserData = UserDataModel(
+        userId: altLoginUser.uid,
+        email: altLoginUser.email ?? "",
+        fullName: userData?["fullName"] ?? "",
+        username: userData?["userName"] ?? altLoginUser.displayName,
+        storagePath:  userData?["storagePath"] ?? "");
+      
+    await _userDocument.setMultipleUserValues(
+        userId: altLoginUser.uid, newUserdata: altLoginUserData.toMap());
+  }
+
   Future<void> initUser() async {
     // called on startup of Application -> setting all needed values
-    Map<String, dynamic>? data = await _userDocument.fetchUserData(userId: userId);
+    Map<String, dynamic>? data =
+        await _userDocument.fetchUserData(userId: userId);
     _fullName = data?["fullName"] ?? "";
     _username = data?["username"] ?? "";
     _storagePath = data?["storagePath"] ?? "";
-    
+
     await initStoragePath();
   }
 }

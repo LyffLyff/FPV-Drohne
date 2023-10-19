@@ -30,48 +30,51 @@ class NavDrawer extends StatelessWidget {
         padding: EdgeInsets.zero,
         children: <Widget>[
           DrawerHeader(
-              decoration: BoxDecoration(
-                color: context.canvasColor,
-              ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  GestureDetector(
-                    onTap: () {
-                      // Navigate to a different screen when the image is tapped
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) =>
-                              const UserProfile(), // Replace with the screen you want to navigate to
-                        ),
-                      );
-                    },
-                    child: SizedBox(
-                      width: kMaxRadius / 1.6,
-                      height: kMaxRadius / 1.6,
-                      child: Hero(
-                        tag: "profile_image",
-                        child: RadialExpansion(
-                          maxRadius: kMaxRadius,
-                          child: profileImage(
-                              context.read<AuthProvider>().storageUrl,
-                              context
-                                  .read<AuthProvider>()
-                                  .profileImageDownloadURL),
-                        ),
+            decoration: BoxDecoration(
+              color: context.canvasColor,
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                GestureDetector(
+                  onTap: () {
+                    // Navigate to a different screen when the image is tapped
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            const UserProfile(), // Replace with the screen you want to navigate to
+                      ),
+                    );
+                  },
+                  child: SizedBox(
+                    width: kMaxRadius / 1.6,
+                    height: kMaxRadius / 1.6,
+                    child: Hero(
+                      tag: "profile_image",
+                      child: RadialExpansion(
+                        maxRadius: kMaxRadius,
+                        child: profileImage(
+                            context.read<AuthProvider>().storageUrl,
+                            context
+                                .read<AuthProvider>()
+                                .profileImageDownloadURL),
                       ),
                     ),
                   ),
-                  const VerticalSpace(height: 10),
-                  Text(
-                    Provider.of<AuthProvider>(context).username,
-                    textAlign: TextAlign.start,
-                    style: context.textTheme.bodyMedium,
-                  ),
-                ],
-              )),
+                ),
+                const VerticalSpace(height: 10),
+                Text(
+                  Provider.of<AuthProvider>(context).username,
+                  textAlign: TextAlign.start,
+                  overflow: TextOverflow.fade,
+                  softWrap: false,
+                  style: context.textTheme.bodyMedium,
+                ),
+              ],
+            ),
+          ),
           ListTile(
             leading: const Icon(Icons.account_box),
             titleAlignment: ListTileTitleAlignment.center,

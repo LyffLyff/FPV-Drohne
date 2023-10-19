@@ -52,8 +52,14 @@ class MyApp extends StatelessWidget {
 
   MyApp({super.key, required this.user});
 
+  void cachingImages(BuildContext context) {
+    // preventing pop-in of assets
+    precacheImage(const AssetImage("assets/images/logo2.png"), context);
+  }
+
   @override
   Widget build(BuildContext context) {
+    cachingImages(context);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: AppTheme.lightTheme,
@@ -73,7 +79,7 @@ class MyApp extends StatelessWidget {
                   AsyncSnapshot<List<dynamic>> snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   // While fetching data, show a loading indicator.
-                  return circularLoadingIcon();
+                  return const CircularLoadingIcon();
                 } else if (snapshot.hasError) {
                   logger.i(snapshot.error.toString());
                   return Text(snapshot.error.toString());

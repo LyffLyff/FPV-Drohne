@@ -8,6 +8,7 @@ import 'package:drone_2_0/widgets/loading_icons.dart';
 import 'package:drone_2_0/widgets/utils/error_bar.dart';
 import 'package:drone_2_0/widgets/utils/helper_widgets.dart';
 import 'package:drone_2_0/extensions/extensions.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../widgets/input.dart';
@@ -77,8 +78,8 @@ class _LoginScreenState extends State<LoginScreen> {
               width: double.infinity,
               child: ElevatedButton(
                 onPressed: () async {
-                  _loginAndNavigate(context, _emailController.text,
-                      _passwordController.text);
+                  _loginWithEmailAndPassword(
+                      context, _emailController.text, _passwordController.text);
                 },
                 child: const Text('Login'),
               ),
@@ -106,16 +107,21 @@ class _LoginScreenState extends State<LoginScreen> {
               ],
             ),
             const VerticalSpace(),
-            const Row(
+            Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                Icon(Icons.apple_sharp, size: 32),
-                Icon(Icons.android, size: 32),
-                Image(
-                  image: AssetImage(
-                      "assets/images/company_logos/google_dark_normal.png"),
-                  width: 32,
-                  height: 32,
+                const Icon(Icons.apple_sharp, size: 32),
+                const Icon(Icons.android, size: 32),
+                GestureDetector(
+                  onTap: () {
+                    _googleLogin(context);
+                  },
+                  child: const Image(
+                    image: AssetImage(
+                        "assets/images/company_logos/google_dark_normal.png"),
+                    width: 32,
+                    height: 32,
+                  ),
                 ),
               ],
             ),
@@ -126,7 +132,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   pageRouteAnimation(const Registration()),
                 );
               },
-              child: Text("Don't have an account? Sign up", style: context.textTheme.bodySmall),
+              child: Text("Don't have an account? Sign up",
+                  style: context.textTheme.bodySmall),
             ),
           ],
         ),
@@ -142,7 +149,7 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 }
 
-void _loginAndNavigate(
+void _loginWithEmailAndPassword(
     BuildContext context, String email, String password) async {
   final GlobalKey<State> _LoaderDialog = GlobalKey<State>();
   LoaderDialog.showLoadingDialog(context, _LoaderDialog);
@@ -156,14 +163,7 @@ void _loginAndNavigate(
   );
   if (context.mounted) {
     if (message!.contains('Success')) {
-      // replace profile image download url
-
-      await context.read<AuthProvider>().initUser();
-
-      // Use Navigator to navigate to the HomePage
-      Navigator.of(context).pushReplacement(MaterialPageRoute(
-        builder: (context) => const HomePage(),
-      ));
+      _navigate(context: context);
     } else {
       Navigator.pop(context);
       print("Error");
@@ -172,6 +172,37 @@ void _loginAndNavigate(
       );
     }
   }
+}
+
+void _googleLogin(BuildContext context) async {
+  final GlobalKey<State> _LoaderDialog = GlobalKey<State>();
+  LoaderDialog.showLoadingDialog(context, _LoaderDialog);
+
+  final UserCredential credentials = await AuthService().signInWithGoogle();
+
+  if (context.mounted) {
+    if (credentials != null) {
+      // initializing document for user
+      User? user = credentials.user;
+      context.read<AuthProvider>().createAltLoginDocument(user!);
+      
+      _navigate(context: context);
+    } else {
+      Navigator.pop(context);
+      ScaffoldMessenger.of(context).showSnackBar(
+        showErrorSnackBar("ERROR ON GOOGLE SIGN IN"),
+      );
+    }
+  }
+}
+
+void _navigate({required BuildContext context}) async {
+
+  await context.read<AuthProvider>().initUser();
+  // Use Navigator to navigate to the HomePage
+  Navigator.of(context).pushReplacement(MaterialPageRoute(
+    builder: (context) => const HomePage(),
+  ));
 }
 
 class LoaderDialog {
@@ -187,7 +218,7 @@ class LoaderDialog {
           insetAnimationCurve: Curves.decelerate,
           key: key,
           backgroundColor: const Color.fromARGB(255, 39, 39, 39).withAlpha(120),
-          child: circularLoadingIcon(),
+          child: const CircularLoadingIcon(),
         );
       },
     );

@@ -6,10 +6,12 @@ class CircularLoadingIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: length,
-      height: length,
-      child: const CircularLoadingIcon(),
+    return Center(
+      child: SizedBox(
+        width: length,
+        height: length,
+        child: const CircularProgressIndicator.adaptive(),
+      ),
     );
   }
 }

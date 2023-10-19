@@ -2,6 +2,7 @@ import 'package:drone_2_0/data/providers/auth_provider.dart';
 import 'package:drone_2_0/extensions/extensions.dart';
 import 'package:drone_2_0/screens/user_profile/user_profile_options.dart';
 import 'package:drone_2_0/service/storage_service.dart';
+import 'package:drone_2_0/service/user_profile_service.dart';
 import 'package:drone_2_0/widgets/profile_image.dart';
 import 'package:drone_2_0/widgets/utils/helper_widgets.dart';
 import 'package:flutter/material.dart';
@@ -21,6 +22,46 @@ class UserProfile extends StatefulWidget {
 }
 
 class _UserProfileState extends State<UserProfile> {
+
+  Future<void> _selectProfileImage({required BuildContext context}) async {
+    try {
+      Logger().i(
+        Provider.of<AuthProvider>(context, listen: false).currentUser?.photoURL,
+      );
+      final results = await FilePicker.platform.pickFiles(
+        allowMultiple: false,
+        type: FileType.image,
+      );
+      if (results == null) {
+        // no file selected by user
+        ScaffoldMessenger.of(context)
+            .showSnackBar(const SnackBar(content: Text("Why no file??")));
+      } else {
+        final path = results.files.single.path;
+        final filename = results.files.single.name;
+        const folder = "test_images";
+        await StorageService().uploadFile(folder, path!, filename);
+
+        // delete old profile image from Storage
+        var oldStorageURL = context.read<AuthProvider>().storageUrl;
+        if (oldStorageURL != null) {
+          await StorageService().deleteFile(oldStorageURL);
+          Logger().i("Deleted Old Profile Image");
+        }
+
+        // set new Storage URL in Auth User
+        final newStorageURL = "$folder/$filename";
+        await Provider.of<AuthProvider>(context, listen: false)
+            .updatePhotoURL(newStorageURL);
+
+        print(path);
+      }
+    } on PlatformException catch (error) {
+      // Permission denied by user most likely
+      Logger().e(error);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,53 +77,15 @@ class _UserProfileState extends State<UserProfile> {
             children: [
               GestureDetector(
                 onTap: () async {
-                  try {
-                    Logger().i(
-                      Provider.of<AuthProvider>(context, listen: false)
-                          .currentUser
-                          ?.photoURL,
-                    );
-                    final results = await FilePicker.platform.pickFiles(
-                      allowMultiple: false,
-                      type: FileType.image,
-                    );
-                    if (results == null) {
-                      // no file selected by user
-                      ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text("Why no file??")));
-                    } else {
-                      final path = results.files.single.path;
-                      final filename = results.files.single.name;
-                      const folder = "test_images";
-                      await StorageService()
-                          .uploadFile(folder, path!, filename);
-
-                      // delete old profile image from Storage
-                      var oldStorageURL =
-                          context.read<AuthProvider>().currentUser?.photoURL;
-                      if (oldStorageURL != null) {
-                        await StorageService().deleteFile(oldStorageURL);
-                        Logger().i("Deleted Old Profile Image");
-                      }
-
-                      // set new Storage URL in Auth User
-                      final newStorageURL = "$folder/$filename";
-                      await Provider.of<AuthProvider>(context, listen: false)
-                          .updatePhotoURL(newStorageURL);
-
-                      print(path);
-                    }
-                  } on PlatformException catch (error) {
-                    // Permission denied by user most likely
-                    Logger().e(error);
-                  }
+                  _selectProfileImage(context: context);
                 },
                 child: SizedBox(
                   width: MediaQuery.of(context).size.width,
                   height: MediaQuery.of(context).size.width,
                   child: Hero(
                     tag: "profile_image",
-                    child:  profileImage(context.read<AuthProvider>().storageUrl, context.read<AuthProvider>().profileImageDownloadURL),
+                    child: profileImage(context.read<AuthProvider>().storageUrl,
+                        context.read<AuthProvider>().profileImageDownloadURL),
                   ),
                 ),
               ),
@@ -90,6 +93,8 @@ class _UserProfileState extends State<UserProfile> {
                 margin: const EdgeInsets.all(Margins.stdMargin),
                 child: Text(
                   Provider.of<AuthProvider>(context).username,
+                  overflow: TextOverflow.fade,
+                  softWrap: false,
                   style: context.textTheme.titleLarge,
                 ),
               ),
