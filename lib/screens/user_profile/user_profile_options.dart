@@ -73,6 +73,7 @@ class _UserProfileOptionsState extends State<UserProfileOptions> {
                     }
                   }
                   // Back to UserProfile
+                  FocusScope.of(context).requestFocus(FocusNode()); // hide on-screen keyboard
                   Navigator.pop(context);
                 })
           ],

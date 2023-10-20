@@ -1,3 +1,5 @@
+import 'package:drone_2_0/screens/homepage/app_info.dart';
+import 'package:drone_2_0/screens/homepage/previous_flights.dart';
 import 'package:drone_2_0/screens/pre_login/welcome_screen.dart';
 import 'package:drone_2_0/screens/settings/settings.dart';
 import 'package:drone_2_0/screens/user_profile/user_profile.dart';
@@ -7,6 +9,8 @@ import 'package:drone_2_0/widgets/utils/helper_widgets.dart';
 import 'package:drone_2_0/widgets/utils/radial_expansion.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 import '../data/providers/auth_provider.dart';
 import 'package:drone_2_0/extensions/extensions.dart';
@@ -20,6 +24,14 @@ class NavDrawer extends StatelessWidget {
   @override
   Drawer build(BuildContext context) {
     void logout() async {
+      // Google Sign Out
+      try {
+        await GoogleSignIn().disconnect();
+      } catch (e) {
+        Logger().d('failed to disconnect on signout');
+      }
+
+      // Auth Sign Out
       await FirebaseAuth.instance.signOut();
       // ignore: use_build_context_synchronously
       Navigator.pushReplacementNamed(context, WelcomeScreen.id);
@@ -89,6 +101,19 @@ class NavDrawer extends StatelessWidget {
             },
           ),
           ListTile(
+            leading: const Icon(Icons.insights),
+            titleAlignment: ListTileTitleAlignment.center,
+            title: Text(
+              'Previous Flights',
+              style: context.textTheme.displayMedium,
+            ),
+            onTap: () => {
+              Navigator.of(context).push(
+                pageRouteAnimation(const PreviousFlights()),
+              ),
+            },
+          ),
+          ListTile(
             leading: const Icon(Icons.settings),
             titleAlignment: ListTileTitleAlignment.center,
             title: Text(
@@ -98,6 +123,17 @@ class NavDrawer extends StatelessWidget {
             onTap: () => {
               Navigator.of(context)
                   .push(pageRouteAnimation(const SettingsScreen())),
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.info),
+            titleAlignment: ListTileTitleAlignment.center,
+            title: Text(
+              'App Info',
+              style: context.textTheme.displayMedium,
+            ),
+            onTap: () => {
+              Navigator.of(context).push(pageRouteAnimation(const AppInfo())),
             },
           ),
           ListTile(

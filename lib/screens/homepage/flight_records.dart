@@ -81,7 +81,7 @@ class FlightRecords extends StatelessWidget {
                   }
 
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return  const Expanded(
+                    return const Expanded(
                       child: CircularLoadingIcon(),
                     );
                   }
@@ -107,7 +107,6 @@ class FlightRecords extends StatelessWidget {
                         textStyle: context.textTheme.bodyMedium),
 
                     // Style
-                    //enableAxisAnimation: true,
                     primaryXAxis: NumericAxis(
                       name: "Time",
                       title: AxisTitle(text: "Seconds since start"),
@@ -118,14 +117,16 @@ class FlightRecords extends StatelessWidget {
                     ),
 
                     // Data
-                    series: <LineSeries<ChartData, int>>[
+                    series: <CartesianSeries>[
                       LineSeries<ChartData, int>(
-                          dataSource: chartData,
-                          xValueMapper: (ChartData time, _) => time.x,
-                          yValueMapper: (ChartData velocity, _) => velocity.y,
-                          // Enable data label
-                          dataLabelSettings:
-                              const DataLabelSettings(isVisible: true))
+                        dataSource: chartData,
+                        xValueMapper: (ChartData time, _) => time.x,
+                        yValueMapper: (ChartData velocity, _) => velocity.y,
+                        markerSettings: const MarkerSettings(
+                          isVisible: true,
+                          shape: DataMarkerType.circle,
+                        ),
+                      ),
                     ],
                   );
                 },

@@ -1,5 +1,8 @@
 import 'package:drone_2_0/extensions/extensions.dart';
+import 'package:drone_2_0/service/realtime_db_service.dart';
+import 'package:drone_2_0/widgets/loading_icons.dart';
 import 'package:drone_2_0/widgets/side_menu.dart';
+import 'package:drone_2_0/widgets/utils/helper_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:drone_2_0/screens/homepage/flight_records.dart';
 import 'package:drone_2_0/screens/homepage/live_view.dart';
@@ -40,8 +43,8 @@ class _HomePageState extends State<HomePage> {
       ),
       bottomNavigationBar: GNav(
         // Style
-        backgroundColor: context.appBarTheme.backgroundColor ??
-            context.primaryColor,
+        backgroundColor:
+            context.appBarTheme.backgroundColor ?? context.primaryColor,
         activeColor: context.primaryColor,
         color: context.disabledColor,
         style: GnavStyle.google,
@@ -74,10 +77,41 @@ class _HomePageState extends State<HomePage> {
           });
         },
       ),
-      body: IndexedStack(
-        index: currentPageIdx,
-        children: _pages,
-      ),
+      body: StreamBuilder<dynamic>(
+          stream: RealtimeDatabaseService().listenToValue("is_connected"),
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              // check if drone is connected -> flag in RTDB
+              if (snapshot.data.snapshot.value == true) {
+                return IndexedStack(
+                  index: currentPageIdx,
+                  children: _pages,
+                );
+              }
+            } else {
+              return const CircularLoadingIcon();
+            }
+            return AlertDialog(
+              icon: const Icon(Icons.error_outline, size: 56,),
+              title: const Text('Drone is not connected :(', textAlign: TextAlign.center,),
+              content: Text(
+                'Check if the Drone and the corresponding Box is turned on and properly initialized.\nIf the Problem consists check the Help section in the Side menu for further information',
+                style: context.textTheme.bodySmall,
+              ),
+              actions: const <Widget>[
+                Padding(
+                  padding: EdgeInsets.symmetric(vertical: 10),
+                  child: Column(
+                    children: [
+                      Text("Waiting for Connection..."),
+                      VerticalSpace(height: 10),
+                      CircularLoadingIcon(length: 20,),
+                    ],
+                  ),
+                )
+              ],
+            );
+          }),
     );
   }
 }

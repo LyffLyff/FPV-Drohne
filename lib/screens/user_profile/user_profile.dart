@@ -2,7 +2,6 @@ import 'package:drone_2_0/data/providers/auth_provider.dart';
 import 'package:drone_2_0/extensions/extensions.dart';
 import 'package:drone_2_0/screens/user_profile/user_profile_options.dart';
 import 'package:drone_2_0/service/storage_service.dart';
-import 'package:drone_2_0/service/user_profile_service.dart';
 import 'package:drone_2_0/widgets/profile_image.dart';
 import 'package:drone_2_0/widgets/utils/helper_widgets.dart';
 import 'package:flutter/material.dart';
@@ -22,7 +21,6 @@ class UserProfile extends StatefulWidget {
 }
 
 class _UserProfileState extends State<UserProfile> {
-
   Future<void> _selectProfileImage({required BuildContext context}) async {
     try {
       Logger().i(
@@ -65,6 +63,7 @@ class _UserProfileState extends State<UserProfile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: const Text("User Profile"),
       ),
@@ -79,15 +78,28 @@ class _UserProfileState extends State<UserProfile> {
                 onTap: () async {
                   _selectProfileImage(context: context);
                 },
-                child: SizedBox(
-                  width: MediaQuery.of(context).size.width,
-                  height: MediaQuery.of(context).size.width,
-                  child: Hero(
-                    tag: "profile_image",
-                    child: profileImage(context.read<AuthProvider>().storageUrl,
-                        context.read<AuthProvider>().profileImageDownloadURL),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(16),
+                  child: SizedBox(
+                    width: MediaQuery.of(context).size.width,
+                    height: MediaQuery.of(context).size.width,
+                    child: Hero(
+                      tag: "profile_image",
+                      child: profileImage(context.read<AuthProvider>().storageUrl,
+                          context.read<AuthProvider>().profileImageDownloadURL),
+                    ),
                   ),
                 ),
+              ),
+              Container(
+                //color: context.canvasColor,
+                height: 130,
+                decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                  begin: Alignment.bottomCenter,
+                  end: Alignment.topCenter,
+                  colors: [context.backgroundColor, Colors.transparent],
+                )),
               ),
               Container(
                 margin: const EdgeInsets.all(Margins.stdMargin),
@@ -102,19 +114,26 @@ class _UserProfileState extends State<UserProfile> {
           ),
           const Divider(),
           Text(
-            "Email: ${Provider.of<AuthProvider>(context).email}",
-            //style: context.textTheme.displaySmall,
+            Provider.of<AuthProvider>(context).fullName,
+            overflow: TextOverflow.fade,
+            softWrap: false,
+            style: context.textTheme.bodyMedium,
           ),
           Text(
-            "Username: ${Provider.of<AuthProvider>(context).username}",
-            //style: context.textTheme.displaySmall,
+            Provider.of<AuthProvider>(context).email,
+            style: context.textTheme.bodyMedium,
           ),
           const VerticalSpace(),
           ElevatedButton(
-            child: const Text("Edit Userdata"),
+            child: const Text(
+              "Edit Userdata",
+            ),
             onPressed: () {
-              Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => const UserProfileOptions()));
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => const UserProfileOptions(),
+                ),
+              );
             },
           )
         ]),

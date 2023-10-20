@@ -55,6 +55,7 @@ class MyApp extends StatelessWidget {
   void cachingImages(BuildContext context) {
     // preventing pop-in of assets
     precacheImage(const AssetImage("assets/images/logo2.png"), context);
+    precacheImage(const AssetImage("assets/images/dronetech/noname.png"), context);
   }
 
   @override

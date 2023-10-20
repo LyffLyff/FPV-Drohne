@@ -13,4 +13,5 @@ extension BuildContextExtensions on BuildContext {
   Color get canvasColor => theme.canvasColor;
   Color get disabledColor => theme.disabledColor;
   Color get hoverColor => theme.hoverColor;
+  Color get backgroundColor => theme.scaffoldBackgroundColor;
 }
