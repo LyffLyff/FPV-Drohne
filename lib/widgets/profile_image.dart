@@ -8,7 +8,7 @@ Widget profileImage(String storagePath, String downloadUrl) {
           placeholder: (context, url) => Padding(
             padding: const EdgeInsets.all(20.0),
             child: CircularLoadingIcon(
-              length: 0.2 * MediaQuery.of(context).size.width,
+              length: 0.2 * MediaQuery.sizeOf(context).width,
             ),
           ),
           imageUrl: downloadUrl,

@@ -42,7 +42,7 @@ class _RegistrationState extends State<Registration> {
               height: 128,
             ),
             StdInputField(
-              width: MediaQuery.of(context).size.width,
+              width: MediaQuery.sizeOf(context).width,
               controller: _emailController,
               hintText: "Email",
               hideText: false,
@@ -50,7 +50,7 @@ class _RegistrationState extends State<Registration> {
             ),
             const VerticalSpace(),
             StdInputField(
-              width: MediaQuery.of(context).size.width,
+              width: MediaQuery.sizeOf(context).width,
               controller: _passwordController,
               hintText: "Password",
               hideText: true,
@@ -58,7 +58,7 @@ class _RegistrationState extends State<Registration> {
             ),
             const VerticalSpace(),
             StdInputField(
-              width: MediaQuery.of(context).size.width,
+              width: MediaQuery.sizeOf(context).width,
               controller: _userNameController,
               hintText: "Username",
               hideText: false,
@@ -66,7 +66,7 @@ class _RegistrationState extends State<Registration> {
             ),
             const VerticalSpace(),
             StdInputField(
-              width: MediaQuery.of(context).size.width,
+              width: MediaQuery.sizeOf(context).width,
               controller: _nameController,
               hintText: "Name",
               hideText: false,
@@ -74,7 +74,7 @@ class _RegistrationState extends State<Registration> {
             ),
             const VerticalSpace(),
             StdInputField(
-              width: MediaQuery.of(context).size.width,
+              width: MediaQuery.sizeOf(context).width,
               controller: _sirNameController,
               hintText: "Sirname",
               hideText: false,

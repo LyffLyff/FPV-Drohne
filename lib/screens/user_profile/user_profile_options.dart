@@ -35,21 +35,21 @@ class _UserProfileOptionsState extends State<UserProfileOptions> {
           children: [
             StdInputField(
                 icon: Icons.person_rounded,
-                width: MediaQuery.of(context).size.width,
+                width: MediaQuery.sizeOf(context).width,
                 controller: _emailController,
                 hintText: "Email",
                 hideText: false),
             const VerticalSpace(),
             StdInputField(
                 icon: Icons.person,
-                width: MediaQuery.of(context).size.width,
+                width: MediaQuery.sizeOf(context).width,
                 controller: _userNameController,
                 hintText: "Username",
                 hideText: false),
             const VerticalSpace(),
             StdInputField(
                 icon: Icons.person_rounded,
-                width: MediaQuery.of(context).size.width,
+                width: MediaQuery.sizeOf(context).width,
                 controller: _nameController,
                 hintText: "Name",
                 hideText: false),

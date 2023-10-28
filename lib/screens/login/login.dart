@@ -10,6 +10,8 @@ import 'package:drone_2_0/widgets/utils/helper_widgets.dart';
 import 'package:drone_2_0/extensions/extensions.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 import '../../widgets/input.dart';
 
@@ -46,7 +48,7 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
             const VerticalSpace(height: 128),
             StdInputField(
-              width: MediaQuery.of(context).size.width,
+              width: MediaQuery.sizeOf(context).width,
               hideText: false,
               controller: _emailController,
               hintText: "Email",
@@ -54,7 +56,7 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
             const VerticalSpace(height: 8),
             StdInputField(
-              width: MediaQuery.of(context).size.width,
+              width: MediaQuery.sizeOf(context).width,
               hideText: true,
               controller: _passwordController,
               hintText: "Password",
@@ -178,26 +180,29 @@ void _googleLogin(BuildContext context) async {
   final GlobalKey<State> _LoaderDialog = GlobalKey<State>();
   LoaderDialog.showLoadingDialog(context, _LoaderDialog);
 
-  final UserCredential credentials = await AuthService().signInWithGoogle();
+  try {
+    final UserCredential? credentials = await AuthService().signInWithGoogle();
 
-  if (context.mounted) {
-    if (credentials != null) {
-      // initializing document for user
-      User? user = credentials.user;
-      context.read<AuthProvider>().createAltLoginDocument(user!);
-      
-      _navigate(context: context);
-    } else {
-      Navigator.pop(context);
-      ScaffoldMessenger.of(context).showSnackBar(
-        showErrorSnackBar("ERROR ON GOOGLE SIGN IN"),
-      );
+    if (context.mounted) {
+      if (credentials != null) {
+        // initializing document for user
+        User? user = credentials.user;
+        context.read<AuthProvider>().createAltLoginDocument(user!);
+
+        _navigate(context: context);
+      } else {
+        Navigator.pop(context);
+        ScaffoldMessenger.of(context).showSnackBar(
+          showErrorSnackBar("ERROR ON GOOGLE SIGN IN"),
+        );
+      }
     }
+  } on PlatformException catch (e) {
+    Logger().e(e);
   }
 }
 
 void _navigate({required BuildContext context}) async {
-
   await context.read<AuthProvider>().initUser();
   // Use Navigator to navigate to the HomePage
   Navigator.of(context).pushReplacement(MaterialPageRoute(

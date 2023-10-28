@@ -21,7 +21,7 @@ class AppTheme {
     bottomAppBarTheme: BottomAppBarTheme(color: Colors.grey.shade900),
 
     // Scaffold
-    scaffoldBackgroundColor: LightColors.secondaryColor,
+    scaffoldBackgroundColor: LightColors.backgroundColor,
 
      // Elevated Button
     elevatedButtonTheme: LightThemeWidgets.elevatedButtonThemeData,

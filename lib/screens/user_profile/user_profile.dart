@@ -42,7 +42,7 @@ class _UserProfileState extends State<UserProfile> {
 
         // delete old profile image from Storage
         var oldStorageURL = context.read<AuthProvider>().storageUrl;
-        if (oldStorageURL != null) {
+        if (oldStorageURL != "") {
           await StorageService().deleteFile(oldStorageURL);
           Logger().i("Deleted Old Profile Image");
         }
@@ -79,13 +79,17 @@ class _UserProfileState extends State<UserProfile> {
                   _selectProfileImage(context: context);
                 },
                 child: ClipRRect(
-                  borderRadius: BorderRadius.circular(16),
+                  borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(16),
+                    topRight: Radius.circular(16),
+                  ),
                   child: SizedBox(
-                    width: MediaQuery.of(context).size.width,
-                    height: MediaQuery.of(context).size.width,
+                    width: MediaQuery.sizeOf(context).width,
+                    height: MediaQuery.sizeOf(context).width,
                     child: Hero(
                       tag: "profile_image",
-                      child: profileImage(context.read<AuthProvider>().storageUrl,
+                      child: profileImage(
+                          context.read<AuthProvider>().storageUrl,
                           context.read<AuthProvider>().profileImageDownloadURL),
                     ),
                   ),
@@ -112,7 +116,9 @@ class _UserProfileState extends State<UserProfile> {
               ),
             ],
           ),
-          const Divider(),
+          const Divider(
+            height: 32,
+          ),
           Text(
             Provider.of<AuthProvider>(context).fullName,
             overflow: TextOverflow.fade,
