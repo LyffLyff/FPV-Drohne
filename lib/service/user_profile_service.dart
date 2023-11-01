@@ -34,7 +34,7 @@ class UserProfileService {
       } on FirebaseException catch (e) {
         return e.toString();
       }
-  }
+    }
     return "No Document Provided";
   }
 
@@ -48,6 +48,28 @@ class UserProfileService {
     } on FirebaseException catch (e) {
       return e.toString();
     }
+  }
+
+  Future<void> addFlightData(String collection, String userId, int timestamp,
+      Map<String, dynamic> newFlightData) async {
+    // this function adds a new entry of flight data to the subcollection within the user document
+    await FirebaseFirestore.instance
+        .collection(collection)
+        .doc(userId)
+        .collection("flight_data")
+        .doc(timestamp.toString())
+        .set(newFlightData);
+  }
+
+  Future<List<Map>> getFlightDataSets(String userId) async {
+    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+        .collection("users")
+        .doc(userId)
+        .collection("flight_data")
+        .get();
+
+    // returning list of documents within flight_data subcollection
+    return querySnapshot.docs.map((doc) => doc.data() as Map).toList();
   }
 
   Future<String> setMultipleDocumentFields(

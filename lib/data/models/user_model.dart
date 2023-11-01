@@ -26,6 +26,7 @@ class UserDataModel {
         "username": username,
         "storagePath": storagePath,
         "settings" : defaultSettings,
+        "flightData" : {},
       };
 
   static UserDataModel? fromSnap(DocumentSnapshot snap) {

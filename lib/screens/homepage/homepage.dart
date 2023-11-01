@@ -6,7 +6,7 @@ import 'package:drone_2_0/widgets/loading_icons.dart';
 import 'package:drone_2_0/widgets/side_menu.dart';
 import 'package:drone_2_0/widgets/utils/helper_widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:drone_2_0/screens/homepage/flight_records.dart';
+import 'package:drone_2_0/screens/homepage/flight_recording/flight_records.dart';
 import 'package:drone_2_0/screens/homepage/live_view.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:provider/provider.dart';
