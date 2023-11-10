@@ -10,9 +10,14 @@ import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 
 class PreviousFlights extends StatelessWidget {
-  const PreviousFlights({super.key});
+  List? data;
 
-  Future<List<Map>?> getRecords(BuildContext context) async {
+  PreviousFlights({
+    super.key,
+    this.data,
+  });
+
+  Future<List?> getRecords(BuildContext context) async {
     // fetching data:
     // if empty records -> read from db
     // if local timestamp (flightRecordsAge) is older (<) than the one in the database
@@ -21,15 +26,16 @@ class PreviousFlights extends StatelessWidget {
     final bool emptyFlightRecords =
         Provider.of<DataCache>(context).previousFlights.isEmpty;
 
+    Logger().i(dataCache.previousFlightsAge);
+
     // checking if data needs to be reloaded
-    if (dataCache.previousFlightsAge >=
-        (await UserProfileService().fetchDataAge(
-                userId: userId, timstampKey: "flightRecordsAge") ??
-            -1)) {
-      if (emptyFlightRecords) {
-        Logger().i("NODATA");
-        return UserProfileService().getFlightDataSets(userId);
-      }
+    if (dataCache.previousFlightsAge <
+            (await UserProfileService().fetchDataAge(
+                    userId: userId, timestampKey: "flight_data_age") ??
+                -1) ||
+        emptyFlightRecords) {
+      // data either older than on db or non-existent
+      return UserProfileService().getFlightDataSets(userId);
     }
 
     // up to date flight records -> no reload from db
@@ -48,8 +54,7 @@ class PreviousFlights extends StatelessWidget {
       body: FutureBuilder(
         // loading data either from Database or from Server
         future: getRecords(context),
-        builder: (context, AsyncSnapshot<List<Map>?> snapshot) {
-          var data;
+        builder: (context, AsyncSnapshot<List?> snapshot) {
           if (snapshot.connectionState == ConnectionState.done &&
               snapshot.hasData == false) {
             Logger().i("Fetching local data");
@@ -59,7 +64,7 @@ class PreviousFlights extends StatelessWidget {
             // snapshot received data from future
             data = snapshot.data;
             Provider.of<DataCache>(context)
-                .setPreviousFlights(data); // set data in cache
+                .setPreviousFlights(data!); // set data in cache
           }
           if (data != null) {
             return ListView.separated(
@@ -79,9 +84,10 @@ class PreviousFlights extends StatelessWidget {
                       style: context.textTheme.bodyMedium,
                     ),
                     onTap: () {
+                      Logger().i(data?[0]);
                       Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => const PreviousFlight(
-                          flightData: {},
+                        builder: (context) => PreviousFlight(
+                          flightData: data?[index] ?? {},
                         ),
                       ));
                     },

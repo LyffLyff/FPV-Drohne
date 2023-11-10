@@ -65,12 +65,12 @@ class UserProfileService {
     await FirebaseFirestore.instance
         .collection(collection)
         .doc(userId)
-        .collection("flight_data")
-        .doc("general")
-        .set({"lastUpdated": DateTime.now().millisecondsSinceEpoch});
+        .collection("data_timestamps")
+        .doc("flight_data_age")
+        .set({"flight_data_age": DateTime.now().millisecondsSinceEpoch});
   }
 
-  Future<List<Map>> getFlightDataSets(String userId) async {
+  Future<List> getFlightDataSets(String userId) async {
     // loading flight data
     QuerySnapshot querySnapshot = await FirebaseFirestore.instance
         .collection("users")
@@ -83,19 +83,19 @@ class UserProfileService {
   }
 
   Future<dynamic> fetchDataAge(
-      {required String userId, required String timstampKey}) async {
+      {required String userId, required String timestampKey}) async {
     if (userId.isEmpty) {
       return "";
     }
     var docSnapshot = await _firestore
         .collection("users")
         .doc(userId)
-        .collection("flight_data")
-        .doc("general")
+        .collection("data_timestamps")
+        .doc("flight_data_age")
         .get();
     if (docSnapshot.exists) {
       Map<String, dynamic>? data = docSnapshot.data();
-      return data?[timstampKey];
+      return data?[timestampKey];
     }
     return null;
   }

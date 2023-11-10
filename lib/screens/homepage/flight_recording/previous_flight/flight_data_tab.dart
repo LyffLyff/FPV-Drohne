@@ -25,14 +25,7 @@ class FlightDataTab extends StatelessWidget {
             series: <ChartSeries>[
               // Initialize line series
               LineSeries<ChartData, String>(
-                  dataSource: [
-                    // Bind data source
-                    ChartData('Jan', 35),
-                    ChartData('Feb', 28),
-                    ChartData('Mar', 34),
-                    ChartData('Apr', 32),
-                    ChartData('May', 40)
-                  ],
+                  dataSource: flightDataValues,
                   xValueMapper: (ChartData data, _) => data.x,
                   yValueMapper: (ChartData data, _) => data.y)
             ]),
@@ -48,5 +41,5 @@ class FlightDataTab extends StatelessWidget {
 class ChartData {
         ChartData(this.x, this.y);
         final String x;
-        final double? y;
+        final num? y;
     }
