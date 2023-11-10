@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 
+//ignore: must_be_immutable
 class PreviousFlights extends StatelessWidget {
   List? data;
 
@@ -78,9 +79,9 @@ class PreviousFlights extends StatelessWidget {
               itemBuilder: (context, index) {
                 return Card(
                   child: ListTile(
-                    title: Text(data?[index].keys.elementAt(0) ?? ""),
+                    title: Text(data?[index]["title"] ?? ""),
                     subtitle: Text(
-                      "Duration: ${data?[index]["Duration"]}",
+                      "Duration: ${(((data?[index]["endTimestamp"] - data?[index]["startTimestamp"]) / 1000) as double).round()} seconds",
                       style: context.textTheme.bodyMedium,
                     ),
                     onTap: () {

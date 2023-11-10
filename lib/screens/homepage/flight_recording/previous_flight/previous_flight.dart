@@ -1,5 +1,4 @@
-import 'dart:ffi';
-
+import 'package:drone_2_0/extensions/extensions.dart';
 import 'package:drone_2_0/screens/homepage/flight_recording/previous_flight/flight_data_tab.dart';
 import 'package:drone_2_0/screens/homepage/flight_recording/previous_flight/general.dart';
 import 'package:flutter/material.dart';
@@ -72,7 +71,8 @@ class _PreviousFlightState extends State<PreviousFlight> {
       appBar: AppBar(
         title: const Text('12/23/23'),
       ),
-      body: Center(
+      body: Padding(
+        padding: const EdgeInsets.all(10),
         child: _widgetOptions.elementAt(_selectedIndex),
       ),
       bottomNavigationBar: BottomNavigationBar(
@@ -95,7 +95,7 @@ class _PreviousFlightState extends State<PreviousFlight> {
           ),
         ],
         currentIndex: _selectedIndex,
-        selectedItemColor: Colors.amber[800],
+        selectedItemColor: context.primaryColor,
         onTap: _onItemTapped,
       ),
     );

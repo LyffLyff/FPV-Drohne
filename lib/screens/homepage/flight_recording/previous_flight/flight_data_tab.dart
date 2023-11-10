@@ -18,6 +18,7 @@ class FlightDataTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         SfCartesianChart(
             // Initialize category axis
@@ -29,9 +30,9 @@ class FlightDataTab extends StatelessWidget {
                   xValueMapper: (ChartData data, _) => data.x,
                   yValueMapper: (ChartData data, _) => data.y)
             ]),
-        const Text("Peak: "),
-        const Text("Min: "),
-        const Text("Avg.: "),
+        const Text("Peak: -"),
+        const Text("Min: -"),
+        const Text("Avg.: -"),
       ],
     );
   }

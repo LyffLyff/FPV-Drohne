@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:drone_2_0/service/local_storage_service.dart';
 
 class UserProfileService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -68,6 +67,16 @@ class UserProfileService {
         .collection("data_timestamps")
         .doc("flight_data_age")
         .set({"flight_data_age": DateTime.now().millisecondsSinceEpoch});
+  }
+
+  Future<void> updateFlightDataProperty(
+      String userId, int timestamp, String key, dynamic value) async {
+    await FirebaseFirestore.instance
+        .collection("users")
+        .doc(userId)
+        .collection("flight_data")
+        .doc(timestamp.toString())
+        .update({key: value});
   }
 
   Future<List> getFlightDataSets(String userId) async {
