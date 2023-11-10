@@ -47,7 +47,6 @@ class AuthProvider with ChangeNotifier {
     if (_storagePath != "") {
       _profileImageDownloadURL =
           await StorageService().downloadURL(_storagePath);
-      print("New Download Image URL: $_profileImageDownloadURL");
     }
     notifyListeners();
   }

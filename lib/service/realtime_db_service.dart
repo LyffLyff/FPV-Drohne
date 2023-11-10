@@ -11,6 +11,7 @@ class RealtimeDatabaseService {
 
   Future<void> updateData(String path, Map<String, dynamic> data) async {
     // update values in DB
+    // if data on root -> path = ""
     await ref.child(path).update(data);
   }
 

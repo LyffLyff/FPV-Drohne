@@ -1,7 +1,6 @@
 import 'package:drone_2_0/data/models/user_model.dart';
 import 'package:drone_2_0/data/providers/auth_provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class AuthService {
@@ -92,8 +91,8 @@ class AuthService {
 
     // Create a new credential  
     final credential = GoogleAuthProvider.credential(
-      accessToken: googleAuth?.accessToken,
-      idToken: googleAuth?.idToken,
+      accessToken: googleAuth.accessToken,
+      idToken: googleAuth.idToken,
     );
 
     // Once signed in, return the UserCredential

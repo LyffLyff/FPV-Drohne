@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:drone_2_0/service/local_storage_service.dart';
 
 class UserProfileService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -59,9 +60,18 @@ class UserProfileService {
         .collection("flight_data")
         .doc(timestamp.toString())
         .set(newFlightData);
+
+    // sets timestamp when last updated
+    await FirebaseFirestore.instance
+        .collection(collection)
+        .doc(userId)
+        .collection("flight_data")
+        .doc("general")
+        .set({"lastUpdated": DateTime.now().millisecondsSinceEpoch});
   }
 
   Future<List<Map>> getFlightDataSets(String userId) async {
+    // loading flight data
     QuerySnapshot querySnapshot = await FirebaseFirestore.instance
         .collection("users")
         .doc(userId)
@@ -70,6 +80,24 @@ class UserProfileService {
 
     // returning list of documents within flight_data subcollection
     return querySnapshot.docs.map((doc) => doc.data() as Map).toList();
+  }
+
+  Future<dynamic> fetchDataAge(
+      {required String userId, required String timstampKey}) async {
+    if (userId.isEmpty) {
+      return "";
+    }
+    var docSnapshot = await _firestore
+        .collection("users")
+        .doc(userId)
+        .collection("flight_data")
+        .doc("general")
+        .get();
+    if (docSnapshot.exists) {
+      Map<String, dynamic>? data = docSnapshot.data();
+      return data?[timstampKey];
+    }
+    return null;
   }
 
   Future<String> setMultipleDocumentFields(

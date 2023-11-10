@@ -1,4 +1,5 @@
 import 'package:drone_2_0/extensions/extensions.dart';
+import 'package:drone_2_0/screens/homepage/flight_recording/flight_data.dart';
 import 'package:drone_2_0/service/realtime_db_service.dart';
 import 'package:drone_2_0/widgets/loading_icons.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -58,7 +59,9 @@ int timeAxisValue = 0;
 num lastMeasurement = 1;
 
 class FlightRecords extends StatelessWidget {
-  const FlightRecords({super.key});
+  final FlightData flightData;
+
+  const FlightRecords({super.key, required this.flightData});
 
   @override
   Widget build(BuildContext context) {
@@ -93,10 +96,14 @@ class FlightRecords extends StatelessWidget {
 
                   timeAxisValue++;
 
+                  int timestamp = DateTime.now().millisecondsSinceEpoch;
+
                   if (periodicValue != null) {
                     chartData.add(ChartData(timeAxisValue, lastMeasurement));
+                    flightData.addDatapoint(timestamp, lastMeasurement.toInt(), -1, -1);
                   } else if (firebaseData != null) {
                     chartData.add(ChartData(timeAxisValue, firebaseData));
+                    flightData.addDatapoint(timestamp, firebaseData, -1, -1);
                     lastMeasurement = firebaseData;
                   }
 

@@ -1,8 +1,8 @@
+import 'package:drone_2_0/data/providers/data_cache.dart';
 import 'package:drone_2_0/screens/homepage/homepage.dart';
 import 'package:drone_2_0/screens/login/login.dart';
 import 'package:drone_2_0/screens/pre_login/welcome_screen.dart';
 import 'package:drone_2_0/screens/settings/app_settings.dart';
-import 'package:drone_2_0/service/user_profile_service.dart';
 import 'package:drone_2_0/themes/main_themes.dart';
 import 'package:drone_2_0/themes/theme_manager.dart';
 import 'package:drone_2_0/widgets/loading_icons.dart';
@@ -24,14 +24,15 @@ void main() async {
   User? user = authProvider.currentUser;
   await authProvider.initUser();
 
-  //await UserProfileService().addFlightData("users", user!.uid, DateTime.now().millisecondsSinceEpoch, {"Help" : 1});
-  //var x = await UserProfileService().getFlightDataSets(user!.uid);
-
   final ThemeManager themeManager = ThemeManager();
   await themeManager.initThemeSettings(user?.uid ?? "");
 
   // reinitialize colors after theme loaded
   colorSettings(themeManager.isDark);
+
+  // init cached data
+  final DataCache dataCache = DataCache();
+  await dataCache.initData();
 
   runApp(MultiProvider(
     providers: [
@@ -40,7 +41,10 @@ void main() async {
       ),
       ChangeNotifierProvider(
         create: (_) => themeManager,
-      )
+      ),
+      ChangeNotifierProvider(
+        create: (_) => dataCache,
+      ),
     ],
     child: MyApp(
       user: user,
@@ -59,9 +63,12 @@ class MyApp extends StatelessWidget {
   void cachingImages(BuildContext context) {
     // preventing pop-in of assets
     precacheImage(const AssetImage("assets/images/logo2.png"), context);
-    precacheImage(const AssetImage("assets/images/dronetech/logo.png"), context);
-    precacheImage(const AssetImage("assets/images/dronetech/icon.png"), context);
-    precacheImage(const AssetImage("assets/images/dronetech/noname.png"), context);
+    precacheImage(
+        const AssetImage("assets/images/dronetech/logo.png"), context);
+    precacheImage(
+        const AssetImage("assets/images/dronetech/icon.png"), context);
+    precacheImage(
+        const AssetImage("assets/images/dronetech/noname.png"), context);
   }
 
   @override

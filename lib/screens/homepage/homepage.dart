@@ -1,10 +1,13 @@
+import 'package:drone_2_0/data/providers/auth_provider.dart';
 import 'package:drone_2_0/extensions/extensions.dart';
+import 'package:drone_2_0/screens/homepage/flight_recording/flight_data.dart';
 import 'package:drone_2_0/screens/settings/app_settings.dart';
 import 'package:drone_2_0/service/realtime_db_service.dart';
 import 'package:drone_2_0/themes/theme_manager.dart';
 import 'package:drone_2_0/widgets/loading_icons.dart';
 import 'package:drone_2_0/widgets/side_menu.dart';
 import 'package:drone_2_0/widgets/utils/helper_widgets.dart';
+import 'package:drone_2_0/widgets/utils/text_input_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:drone_2_0/screens/homepage/flight_recording/flight_records.dart';
 import 'package:drone_2_0/screens/homepage/live_view.dart';
@@ -22,6 +25,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int currentPageIdx = 0;
+  FlightData flightData = FlightData();
 
   @override
   void initState() {
@@ -29,8 +33,8 @@ class _HomePageState extends State<HomePage> {
     colorSettings(context.read<ThemeManager>().isDark);
   }
 
-  final _pages = <Widget>[
-    const FlightRecords(),
+  late final _pages = <Widget>[
+    FlightRecords(flightData: flightData),
     const LiveView(),
   ];
 
@@ -44,6 +48,18 @@ class _HomePageState extends State<HomePage> {
           "FPV-Drone",
         ),
         centerTitle: true,
+        actions: [
+          IconButton(
+              onPressed: () async {
+                int endTimestamp = DateTime.now().millisecondsSinceEpoch;
+                if (flightData.finishFlight(
+                    endTimestamp, FlightRecordingFinishType.manual, context)) {
+                  displayTextInputDialog(context);  // add title to flight recording
+                }
+                flightData = FlightData();
+              },
+              icon: const Icon(Icons.stop_rounded)),
+        ],
       ),
       bottomNavigationBar: GNav(
         // Style
@@ -87,6 +103,11 @@ class _HomePageState extends State<HomePage> {
             if (snapshot.hasData) {
               // check if drone is connected -> flag in RTDB
               if (snapshot.data.snapshot.value == true) {
+                // Start collection data
+                flightData.startFlight(context.read<AuthProvider>().userId,
+                    DateTime.now().millisecondsSinceEpoch);
+
+                // Display Data
                 return IndexedStack(
                   index: currentPageIdx,
                   children: _pages,
@@ -96,8 +117,14 @@ class _HomePageState extends State<HomePage> {
               return const CircularLoadingIcon();
             }
             return AlertDialog(
-              icon: const Icon(Icons.error_outline, size: 56,),
-              title: const Text('Drone is not connected :(', textAlign: TextAlign.center,),
+              icon: const Icon(
+                Icons.error_outline,
+                size: 56,
+              ),
+              title: const Text(
+                'Drone is not connected :(',
+                textAlign: TextAlign.center,
+              ),
               content: Text(
                 'Check if the Drone and the corresponding Box is turned on and properly initialized.\nIf the Problem consists check the Help section in the Side menu for further information',
                 style: context.textTheme.bodySmall,
@@ -109,7 +136,9 @@ class _HomePageState extends State<HomePage> {
                     children: [
                       Text("Waiting for Connection..."),
                       VerticalSpace(height: 10),
-                      CircularLoadingIcon(length: 20,),
+                      CircularLoadingIcon(
+                        length: 20,
+                      ),
                     ],
                   ),
                 )
