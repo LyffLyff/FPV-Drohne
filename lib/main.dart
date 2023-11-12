@@ -64,7 +64,9 @@ class MyApp extends StatelessWidget {
     // preventing pop-in of assets
     precacheImage(const AssetImage("assets/images/logo2.png"), context);
     precacheImage(
-        const AssetImage("assets/images/dronetech/logo.png"), context);
+        const AssetImage("assets/images/dronetech/logo_light.png"), context);
+    precacheImage(
+        const AssetImage("assets/images/dronetech/logo_dark.png"), context);
     precacheImage(
         const AssetImage("assets/images/dronetech/icon.png"), context);
     precacheImage(

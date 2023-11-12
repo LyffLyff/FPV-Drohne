@@ -1,7 +1,9 @@
 import 'package:drone_2_0/extensions/extensions.dart';
+import 'package:drone_2_0/themes/theme_manager.dart';
 import 'package:drone_2_0/widgets/utils/app_info_text.dart';
 import 'package:drone_2_0/widgets/utils/helper_widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class AppInfo extends StatelessWidget {
   const AppInfo({super.key});
@@ -27,8 +29,8 @@ class AppInfo extends StatelessWidget {
                 textAlign: TextAlign.center,
                 style: context.textTheme.bodyLarge,
               ),
-              const Image(
-                image: AssetImage("assets/images/dronetech/logo.png"),
+              Image(
+                image: Provider.of<ThemeManager>(context).isDark ? const AssetImage("assets/images/dronetech/logo_light.png") : const AssetImage("assets/images/dronetech/logo_dark.png"),
                 fit: BoxFit.fitWidth,
               ),
               Table(

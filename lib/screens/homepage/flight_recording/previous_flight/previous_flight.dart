@@ -30,13 +30,22 @@ class _PreviousFlightState extends State<PreviousFlight> {
     return datalist;
   }
 
+  int getStartTimestamp() {
+    // converting milliSeconds since epoch to seconds
+    return widget.flightData["startTimestamp"] ~/ 1000;
+  }
+
+  int getDurationInSeconds() {
+    return (widget.flightData["endTimestamp"] - widget.flightData["startTimestamp"]) ~/ 1000;
+  }
+
   @override
   void initState() {
     super.initState();
     _widgetOptions = <Widget>[
-      const GeneralFlightData(
-        durationInSeconds: 0,
-        timestamp: 0,
+      GeneralFlightData(
+        durationInSeconds: getDurationInSeconds(),
+        timestamp: getStartTimestamp(),
       ),
       FlightDataTab(
         chartTitle: 'Velocity',
@@ -78,24 +87,25 @@ class _PreviousFlightState extends State<PreviousFlight> {
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.home),
+            icon: Icon(Icons.analytics),
             label: 'General',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.business),
+            icon: Icon(Icons.speed),
             label: 'Velocity',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.school),
+            icon: Icon(Icons.show_chart),
             label: 'Height',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.school),
+            icon: Icon(Icons.thermostat),
             label: 'Temperature',
           ),
         ],
         currentIndex: _selectedIndex,
         selectedItemColor: context.primaryColor,
+        unselectedItemColor: context.disabledColor,
         onTap: _onItemTapped,
       ),
     );

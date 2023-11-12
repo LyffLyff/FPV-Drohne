@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:drone_2_0/data/providers/auth_provider.dart';
 import 'package:drone_2_0/extensions/extensions.dart';
 import 'package:drone_2_0/screens/homepage/flight_recording/flight_data.dart';
@@ -54,7 +56,8 @@ class _HomePageState extends State<HomePage> {
                 int endTimestamp = DateTime.now().millisecondsSinceEpoch;
                 if (flightData.finishFlight(
                     endTimestamp, FlightRecordingFinishType.manual, context)) {
-                  displayTextInputDialog(context, endTimestamp);  // add title to flight recording
+                  displayTextInputDialog(
+                      context, endTimestamp); // add title to flight recording
                 }
                 flightData = FlightData();
               },
