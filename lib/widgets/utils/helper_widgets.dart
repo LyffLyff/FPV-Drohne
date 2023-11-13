@@ -19,7 +19,7 @@ class VerticalSpace extends StatelessWidget {
 class HorizontalSpace extends StatelessWidget {
   const HorizontalSpace({
     super.key,
-    this.width = 20,
+    this.width = 16,
   });
 
   final int width;

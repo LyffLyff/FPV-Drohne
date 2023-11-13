@@ -4,11 +4,12 @@ import 'package:logger/logger.dart';
 
 class DataCache with ChangeNotifier {
   List _previousFlights = [];
-  int _previousFlightsAge =
-      -1; // timestamp telling when the previous flights were last updated
+  Map _dataAges = {
+    "previousFlights": -1,
+  };
 
   List get previousFlights => _previousFlights;
-  int get previousFlightsAge => _previousFlightsAge;
+  Map get dataAges => _dataAges;
 
   Future<void> initData() async {
     final LocalStorageService localStorage = LocalStorageService();
@@ -20,14 +21,16 @@ class DataCache with ChangeNotifier {
     // reading age of data
     Map? dataAges = await localStorage.readFile("data_ages.dat");
 
-    _previousFlightsAge = dataAges?["previousFlights"] ?? -1;
+    if (dataAges != null) {
+      _dataAges = dataAges;
+    }
   }
 
   void setPreviousFlights(List data) {
     _previousFlights = data;
 
     // update last set date
-    _previousFlightsAge = DateTime.now().millisecondsSinceEpoch;
+    _dataAges["previousFlights"] = DateTime.now().millisecondsSinceEpoch;
 
     // save data to file
     writeFlightRecords(data);
@@ -35,11 +38,12 @@ class DataCache with ChangeNotifier {
 
   void addSingleFlight(Map<String, dynamic> newFlight, int timestamp) {
     _previousFlights.add(newFlight);
-    _previousFlightsAge = timestamp;
+    _dataAges["previousFlights"] = timestamp;
   }
 
   void writeFlightRecords(List data) {
     LocalStorageService().writeFile(data, "flight_records.dat");
+    LocalStorageService().writeFile(_dataAges, "data_ages.dat");
   }
 
   void updateFlightProperty(int timestamp, String propertyKey, dynamic value) {

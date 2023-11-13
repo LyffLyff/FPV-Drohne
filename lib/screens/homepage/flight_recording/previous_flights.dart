@@ -27,10 +27,11 @@ class PreviousFlights extends StatelessWidget {
     final bool emptyFlightRecords =
         Provider.of<DataCache>(context).previousFlights.isEmpty;
 
-    Logger().i(dataCache.previousFlightsAge);
+
+    print(DateTime.fromMillisecondsSinceEpoch(dataCache.dataAges["previousFlights"]));
 
     // checking if data needs to be reloaded
-    if (dataCache.previousFlightsAge <
+    if (dataCache.dataAges["previousFlights"] <
             (await UserProfileService().fetchDataAge(
                     userId: userId, timestampKey: "flight_data_age") ??
                 -1) ||
