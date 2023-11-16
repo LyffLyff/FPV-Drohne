@@ -9,16 +9,30 @@ import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 
-//ignore: must_be_immutable
-class PreviousFlights extends StatelessWidget {
-  List? data;
+enum SortingTypes {
+  none,
+  title,
+  duration,
+  date,
+}
 
-  PreviousFlights({
+// ignore: must_be_immutable
+class PreviousFlights extends StatefulWidget {
+  const PreviousFlights({
     super.key,
-    this.data,
   });
 
-  Future<List?> getRecords(BuildContext context) async {
+  @override
+  State<PreviousFlights> createState() => _PreviousFlightsState();
+}
+
+class _PreviousFlightsState extends State<PreviousFlights> {
+  List? originalData;
+  List? data;
+  SortingTypes sortType = SortingTypes.none;
+  bool dataLoaded = false;
+
+  Future<List?> _getRecords(BuildContext context) async {
     // fetching data:
     // if empty records -> read from db
     // if local timestamp (flightRecordsAge) is older (<) than the one in the database
@@ -26,9 +40,6 @@ class PreviousFlights extends StatelessWidget {
     final userId = context.read<AuthProvider>().userId;
     final bool emptyFlightRecords =
         Provider.of<DataCache>(context).previousFlights.isEmpty;
-
-
-    print(DateTime.fromMillisecondsSinceEpoch(dataCache.dataAges["previousFlights"]));
 
     // checking if data needs to be reloaded
     if (dataCache.dataAges["previousFlights"] <
@@ -41,8 +52,61 @@ class PreviousFlights extends StatelessWidget {
     }
 
     // up to date flight records -> no reload from db
-    Logger().i("VALID DATA");
     return null;
+  }
+
+  int _getDurationInSeconds(int index) {
+    return (data?[index]["endTimestamp"] - data?[index]["startTimestamp"]) ~/
+        1000;
+  }
+
+  Expanded _getHeaderButton(String text, SortingTypes type) {
+    return Expanded(
+      child: TextButton(
+        child: Text(text),
+        onPressed: () {
+          setState(() {
+            sortType = type;
+          });
+        },
+      ),
+    );
+  }
+
+  Widget _getListHeader() {
+    return SizedBox(
+      height: 64,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          _getHeaderButton("None", SortingTypes.none),
+          _getHeaderButton("Title", SortingTypes.title),
+          _getHeaderButton("Duration", SortingTypes.duration),
+          _getHeaderButton("Date", SortingTypes.date),
+        ],
+      ),
+    );
+  }
+
+  void _sortData() {
+    switch (sortType) {
+      case SortingTypes.none:
+        data = originalData;
+        break;
+      case SortingTypes.title:
+        data?.sort((a, b) => b["title"].compareTo(a["title"]));
+        break;
+      case SortingTypes.duration:
+        data?.sort((a, b) => (b["endTimestamp"] - b["startTimestamp"])
+            .compareTo((a["endTimestamp"] - a["startTimestamp"])));
+        break;
+      case SortingTypes.date:
+        data?.sort((a, b) => b["endTimestamp"].compareTo(a["endTimestamp"]));
+        break;
+      default:
+        Logger().e("Error, Invalid Sorting Type");
+        break;
+    }
   }
 
   @override
@@ -55,20 +119,28 @@ class PreviousFlights extends StatelessWidget {
       ),
       body: FutureBuilder(
         // loading data either from Database or from Server
-        future: getRecords(context),
+        future: dataLoaded ? null : _getRecords(context),
         builder: (context, AsyncSnapshot<List?> snapshot) {
           if (snapshot.connectionState == ConnectionState.done &&
-              snapshot.hasData == false) {
+              snapshot.hasData == false &&
+              !dataLoaded) {
             Logger().i("Fetching local data");
             // no connection -> data cached
-            data = Provider.of<DataCache>(context).previousFlights;
-          } else if (snapshot.hasData) {
+            originalData =
+                data = Provider.of<DataCache>(context).previousFlights;
+            dataLoaded = true;
+          } else if (snapshot.hasData && !dataLoaded) {
             // snapshot received data from future
-            data = snapshot.data;
+            originalData = data = snapshot.data;
+            dataLoaded = true;
             Provider.of<DataCache>(context)
                 .setPreviousFlights(data!); // set data in cache
           }
           if (data != null) {
+            // sorting data
+            _sortData();
+
+            // displaying data
             return ListView.separated(
               physics: const BouncingScrollPhysics(),
               itemCount: data?.length ?? 0,
@@ -78,22 +150,35 @@ class PreviousFlights extends StatelessWidget {
                 );
               },
               itemBuilder: (context, index) {
-                return Card(
-                  child: ListTile(
-                    title: Text(data?[index]["title"] ?? ""),
-                    subtitle: Text(
-                      "Duration: ${(((data?[index]["endTimestamp"] - data?[index]["startTimestamp"]) / 1000) as double).round()} seconds",
-                      style: context.textTheme.bodyMedium,
+                if (index == 0) {
+                  // building header
+                  return _getListHeader();
+                }
+
+                index = index - 1; // setting index back to normal value
+                return Column(
+                  children: [
+                    Divider(
+                        height: 8,
+                        thickness: 1,
+                        color: Colors.grey.shade900,
+                        endIndent: 8,
+                        indent: 8),
+                    ListTile(
+                      title: Text(data?[index]["title"] ?? ""),
+                      subtitle: Text(
+                        "Duration: ${_getDurationInSeconds(index)} seconds",
+                        style: context.textTheme.bodyMedium,
+                      ),
+                      onTap: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => PreviousFlight(
+                            flightData: data?[index] ?? {},
+                          ),
+                        ));
+                      },
                     ),
-                    onTap: () {
-                      Logger().i(data?[0]);
-                      Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => PreviousFlight(
-                          flightData: data?[index] ?? {},
-                        ),
-                      ));
-                    },
-                  ),
+                  ],
                 );
               },
             );

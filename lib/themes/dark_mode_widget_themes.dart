@@ -14,6 +14,10 @@ class DarkThemeWidgets {
     backgroundColor: Colors.black,
   );
 
+  static BottomNavigationBarThemeData bottomNavigationBarTheme = BottomNavigationBarThemeData(
+    backgroundColor: DarkColors.accentColor
+  );
+
   static ElevatedButtonThemeData elevatedButtonThemeData =
       ElevatedButtonThemeData(
     style: ElevatedButton.styleFrom(

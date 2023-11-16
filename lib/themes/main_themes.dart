@@ -19,6 +19,7 @@ class AppTheme {
 
     //Navigation Bar
     bottomAppBarTheme: BottomAppBarTheme(color: Colors.grey.shade900),
+    bottomNavigationBarTheme: DarkThemeWidgets.bottomNavigationBarTheme,
 
     // Scaffold
     scaffoldBackgroundColor: LightColors.backgroundColor,
@@ -37,8 +38,9 @@ class AppTheme {
     // Text
     textTheme: TextThemes.darkTextTheme,
 
-    // NavigationBar
+    // NavigationBars
     navigationBarTheme: DarkThemeWidgets.navigationBarTheme,
+    bottomNavigationBarTheme: DarkThemeWidgets.bottomNavigationBarTheme,
 
     // Scaffold
     scaffoldBackgroundColor: DarkColors.secondaryColor,

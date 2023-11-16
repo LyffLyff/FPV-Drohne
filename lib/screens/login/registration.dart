@@ -1,3 +1,4 @@
+import 'package:async/async.dart';
 import 'package:drone_2_0/data/providers/auth_provider.dart';
 import 'package:drone_2_0/service/auth/auth_service.dart';
 import 'package:drone_2_0/themes/theme_constants.dart';
@@ -7,6 +8,7 @@ import 'package:drone_2_0/widgets/utils/helper_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:drone_2_0/extensions/extensions.dart';
+import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 
 class Registration extends StatefulWidget {
   const Registration({Key? key}) : super(key: key);
@@ -21,6 +23,17 @@ class _RegistrationState extends State<Registration> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _sirNameController = TextEditingController();
   final TextEditingController _userNameController = TextEditingController();
+  bool keyboardVisible = false;
+
+  @override
+  void initState() {
+    super.initState();
+    KeyboardVisibilityController().onChange.listen((bool visible) {
+      setState(() {
+        keyboardVisible = visible;
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,13 +46,19 @@ class _RegistrationState extends State<Registration> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            const Spacer(),
-            Text(
-              "SIGN UP",
-              style: context.textTheme.headlineLarge,
+            Visibility(visible: !keyboardVisible, child: const Spacer()),
+            Visibility(
+              visible: !keyboardVisible,
+              child: Text(
+                "SIGN UP",
+                style: context.textTheme.headlineLarge,
+              ),
             ),
-            const VerticalSpace(
-              height: 128,
+            Visibility(
+              visible: !keyboardVisible,
+              child: const VerticalSpace(
+                height: 128,
+              ),
             ),
             StdInputField(
               width: MediaQuery.sizeOf(context).width,
@@ -92,10 +111,10 @@ class _RegistrationState extends State<Registration> {
                     name: _nameController.text + _sirNameController.text,
                     authProvider: context.read<AuthProvider>(),
                   );
-            
+
                   // ignore: use_build_context_synchronously
                   if (!context.mounted) return;
-            
+
                   if (message!.contains('Success')) {
                     Navigator.of(context).pushReplacementNamed("LoginScreen");
                   } else {

@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:drone_2_0/data/providers/auth_provider.dart';
 import 'package:drone_2_0/extensions/extensions.dart';
 import 'package:drone_2_0/screens/homepage/flight_recording/flight_data.dart';
+import 'package:drone_2_0/screens/homepage/floating_center_menu.dart';
 import 'package:drone_2_0/screens/settings/app_settings.dart';
 import 'package:drone_2_0/service/realtime_db_service.dart';
 import 'package:drone_2_0/themes/theme_manager.dart';
@@ -40,6 +41,18 @@ class _HomePageState extends State<HomePage> {
     const LiveView(),
   ];
 
+  void _stopRecording() async {
+    int endTimestamp = DateTime.now().millisecondsSinceEpoch;
+    if (flightData.finishFlight(
+        endTimestamp, FlightRecordingFinishType.manual, context)) {
+      displayTextInputDialog(
+          context, endTimestamp); // add title to flight recording
+    }
+    flightData = FlightData();
+  }
+
+  void _startRecording() async {}
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -50,19 +63,6 @@ class _HomePageState extends State<HomePage> {
           "FPV-Drone",
         ),
         centerTitle: true,
-        actions: [
-          IconButton(
-              onPressed: () async {
-                int endTimestamp = DateTime.now().millisecondsSinceEpoch;
-                if (flightData.finishFlight(
-                    endTimestamp, FlightRecordingFinishType.manual, context)) {
-                  displayTextInputDialog(
-                      context, endTimestamp); // add title to flight recording
-                }
-                flightData = FlightData();
-              },
-              icon: const Icon(Icons.stop_rounded)),
-        ],
       ),
       bottomNavigationBar: GNav(
         // Style
@@ -100,54 +100,60 @@ class _HomePageState extends State<HomePage> {
           });
         },
       ),
-      body: StreamBuilder<dynamic>(
-          stream: RealtimeDatabaseService().listenToValue("is_connected"),
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              // check if drone is connected -> flag in RTDB
-              if (snapshot.data.snapshot.value == true) {
-                // Start collection data
-                flightData.startFlight(context.read<AuthProvider>().userId,
-                    DateTime.now().millisecondsSinceEpoch);
+      body: Stack(children: [
+        FloatingCenterMenu(
+          startRecording: _startRecording,
+          stopRecording: _stopRecording,
+        ),
+        StreamBuilder<dynamic>(
+            stream: RealtimeDatabaseService().listenToValue("is_connected"),
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                // check if drone is connected -> flag in RTDB
+                if (snapshot.data.snapshot.value == true) {
+                  // Start collection data
+                  flightData.startFlight(context.read<AuthProvider>().userId,
+                      DateTime.now().millisecondsSinceEpoch);
 
-                // Display Data
-                return IndexedStack(
-                  index: currentPageIdx,
-                  children: _pages,
-                );
+                  // display Data
+                  return IndexedStack(
+                    index: currentPageIdx,
+                    children: _pages,
+                  );
+                }
+              } else {
+                return const CircularLoadingIcon();
               }
-            } else {
-              return const CircularLoadingIcon();
-            }
-            return AlertDialog(
-              icon: const Icon(
-                Icons.error_outline,
-                size: 56,
-              ),
-              title: const Text(
-                'Drone is not connected :(',
-                textAlign: TextAlign.center,
-              ),
-              content: Text(
-                'Check if the Drone and the corresponding Box is turned on and properly initialized.\nIf the Problem consists check the Help section in the Side menu for further information',
-                style: context.textTheme.bodySmall,
-              ),
-              actions: const <Widget>[
-                Padding(
-                  padding: EdgeInsets.symmetric(vertical: 10),
-                  child: Column(
-                    children: [
-                      Text("Waiting for Connection..."),
-                      VerticalSpace(height: 10),
-                      CircularLoadingIcon(
-                        length: 20,
-                      ),
-                    ],
-                  ),
-                )
-              ],
-            );
-          }),
+              return AlertDialog(
+                icon: const Icon(
+                  Icons.error_outline,
+                  size: 56,
+                ),
+                title: const Text(
+                  'Drone is not connected :(',
+                  textAlign: TextAlign.center,
+                ),
+                content: Text(
+                  'Check if the Drone and the corresponding Box is turned on and properly initialized.\nIf the Problem consists check the Help section in the Side menu for further information',
+                  style: context.textTheme.bodySmall,
+                ),
+                actions: const <Widget>[
+                  Padding(
+                    padding: EdgeInsets.symmetric(vertical: 10),
+                    child: Column(
+                      children: [
+                        Text("Waiting for Connection..."),
+                        VerticalSpace(height: 10),
+                        CircularLoadingIcon(
+                          length: 20,
+                        ),
+                      ],
+                    ),
+                  )
+                ],
+              );
+            }),
+      ]),
     );
   }
 }
