@@ -36,7 +36,9 @@ class _PreviousFlightState extends State<PreviousFlight> {
   }
 
   int getDurationInSeconds() {
-    return (widget.flightData["endTimestamp"] - widget.flightData["startTimestamp"]) ~/ 1000;
+    return (widget.flightData["endTimestamp"] -
+            widget.flightData["startTimestamp"]) ~/
+        1000;
   }
 
   @override
@@ -78,7 +80,7 @@ class _PreviousFlightState extends State<PreviousFlight> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('12/23/23'),
+        title: Text(widget.flightData["title"]),
       ),
       body: Padding(
         padding: const EdgeInsets.all(10),

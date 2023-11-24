@@ -54,6 +54,7 @@ dependencies:
   google_sign_in: ^6.1.5
   path_provider: ^2.1.1
   flutter_keyboard_visibility: ^5.4.1
+  flutter_animate: ^4.3.0
 
 dev_dependencies:
   flutter_test:
@@ -86,6 +87,8 @@ flutter:
     - assets/images/
     - assets/images/company_logos/
     - assets/images/dronetech/
+    - assets/images/weather_icons/dark/
+    - assets/images/weather_icons/light/
     - assets/loading/
     - assets/fonts/
   fonts:

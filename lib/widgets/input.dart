@@ -20,14 +20,15 @@ class StdInputField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool hasIcon = icon != null;
     return SizedBox(
         width: width,
         child: TextField(
             controller: controller,
             decoration: InputDecoration(
-              contentPadding: const EdgeInsets.symmetric(vertical: 8.0),
+              contentPadding: EdgeInsets.symmetric(vertical: 16.0, horizontal: hasIcon ? 0 : 8),
               hintText: hintText,
-              prefixIcon: Icon(icon),
+              prefixIcon: hasIcon ? Icon(icon) : null,
               isCollapsed: true,  // fixing hintText not being centered correctly when prefixIcon exists
               border: const OutlineInputBorder(
                 borderRadius: BorderRadius.all(

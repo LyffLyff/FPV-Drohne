@@ -1,16 +1,15 @@
-import 'dart:ui';
-
 import 'package:drone_2_0/data/providers/auth_provider.dart';
 import 'package:drone_2_0/extensions/extensions.dart';
+import 'package:drone_2_0/screens/homepage/flight_recording/finished_flight.dart';
 import 'package:drone_2_0/screens/homepage/flight_recording/flight_data.dart';
 import 'package:drone_2_0/screens/homepage/floating_center_menu.dart';
 import 'package:drone_2_0/screens/settings/app_settings.dart';
 import 'package:drone_2_0/service/realtime_db_service.dart';
 import 'package:drone_2_0/themes/theme_manager.dart';
+import 'package:drone_2_0/widgets/animations/animation_routes.dart';
 import 'package:drone_2_0/widgets/loading_icons.dart';
 import 'package:drone_2_0/widgets/side_menu.dart';
 import 'package:drone_2_0/widgets/utils/helper_widgets.dart';
-import 'package:drone_2_0/widgets/utils/text_input_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:drone_2_0/screens/homepage/flight_recording/flight_records.dart';
 import 'package:drone_2_0/screens/homepage/live_view.dart';
@@ -45,8 +44,13 @@ class _HomePageState extends State<HomePage> {
     int endTimestamp = DateTime.now().millisecondsSinceEpoch;
     if (flightData.finishFlight(
         endTimestamp, FlightRecordingFinishType.manual, context)) {
-      displayTextInputDialog(
-          context, endTimestamp); // add title to flight recording
+      Navigator.of(context).push(
+        pageRouteAnimation(
+          FinishedFlight(
+            endTimestamp: endTimestamp,
+          ),
+        ),
+      );
     }
     flightData = FlightData();
   }

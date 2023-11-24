@@ -2,6 +2,7 @@ import 'package:drone_2_0/data/providers/auth_provider.dart';
 import 'package:drone_2_0/data/providers/data_cache.dart';
 import 'package:drone_2_0/extensions/extensions.dart';
 import 'package:drone_2_0/screens/homepage/flight_recording/previous_flight/previous_flight.dart';
+import 'package:drone_2_0/screens/homepage/flight_recording/previous_flight/weather_selection.dart';
 import 'package:drone_2_0/service/user_profile_service.dart';
 import 'package:drone_2_0/widgets/loading_icons.dart';
 import 'package:drone_2_0/widgets/utils/helper_widgets.dart';
@@ -143,7 +144,7 @@ class _PreviousFlightsState extends State<PreviousFlights> {
             // displaying data
             return ListView.separated(
               physics: const BouncingScrollPhysics(),
-              itemCount: data?.length ?? 0,
+              itemCount: data!.length + 1,
               separatorBuilder: (context, index) {
                 return const VerticalSpace(
                   height: 0,

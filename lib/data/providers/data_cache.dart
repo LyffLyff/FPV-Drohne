@@ -52,7 +52,7 @@ class DataCache with ChangeNotifier {
       if (_previousFlights[i]["endTimestamp"] == timestamp) {
         _previousFlights[i]["title"] = value;
         writeFlightRecords(_previousFlights);
-        break;
+        return;
       }
     }
     Logger().e("Could not find corresponding Flight to update property");

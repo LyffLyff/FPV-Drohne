@@ -1,4 +1,5 @@
 import 'package:drone_2_0/data/providers/data_cache.dart';
+import 'package:drone_2_0/screens/homepage/flight_recording/finished_flight.dart';
 import 'package:drone_2_0/screens/homepage/homepage.dart';
 import 'package:drone_2_0/screens/login/login.dart';
 import 'package:drone_2_0/screens/pre_login/welcome_screen.dart';
