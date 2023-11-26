@@ -1,13 +1,16 @@
 import 'package:drone_2_0/extensions/extensions.dart';
+import 'package:drone_2_0/themes/theme_manager.dart';
 import 'package:drone_2_0/widgets/utils/helper_widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class GeneralFlightData extends StatelessWidget {
   final int timestamp;
   final int durationInSeconds;
+  final String weatherIcon;
 
   const GeneralFlightData(
-      {super.key, required this.timestamp, required this.durationInSeconds});
+      {super.key, required this.timestamp, required this.durationInSeconds, required this.weatherIcon});
 
   BoxDecoration _getRectangleDecoration(BuildContext context) {
     return BoxDecoration(
@@ -47,10 +50,12 @@ class GeneralFlightData extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.all(32),
             child: Center(
-              child: Icon(
-                Icons.cloud,
-                size: MediaQuery.sizeOf(context).width * 0.45,
-                color: context.primaryColor,
+              child: Image.asset(
+                "${context.read<ThemeManager>().getWeatherIconPath()}$weatherIcon.png",
+                scale: 0.5,
+                filterQuality: FilterQuality.low,
+                height: MediaQuery.sizeOf(context).width * 0.5,
+                width: MediaQuery.sizeOf(context).width * 0.5,
               ),
             ),
           ),

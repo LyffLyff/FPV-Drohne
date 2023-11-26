@@ -11,7 +11,8 @@ class ThemeManager extends ChangeNotifier {
   Future<void> initThemeSettings(String userId) async {
     // Load data from the database here, e.g., using async/await
     // Replace this with your database query code
-    final value = await SettingsService().fetchSingleSetting(userId: userId, settingKey: "isDark");
+    final value = await SettingsService()
+        .fetchSingleSetting(userId: userId, settingKey: "isDark");
     if (value == "invalid key" || value == null) {
       return;
     }
@@ -20,14 +21,20 @@ class ThemeManager extends ChangeNotifier {
   }
 
   setTheme(bool toggle) {
-     _themeMode = toggle ? ThemeMode.dark : ThemeMode.light;
+    _themeMode = toggle ? ThemeMode.dark : ThemeMode.light;
     _isDark = toggle;
-     notifyListeners();
+    notifyListeners();
   }
 
   toggleTheme() {
     _isDark = !_isDark;
     setTheme(_isDark);
     print("Theme is Dark: $_isDark");
+  }
+
+  String getWeatherIconPath() {
+    return _isDark
+        ? "assets/images/weather_icons/light/"
+        : "assets/images/weather_icons/dark/";
   }
 }

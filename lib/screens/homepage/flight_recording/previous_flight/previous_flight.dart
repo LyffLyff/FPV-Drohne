@@ -48,24 +48,28 @@ class _PreviousFlightState extends State<PreviousFlight> {
       GeneralFlightData(
         durationInSeconds: getDurationInSeconds(),
         timestamp: getStartTimestamp(),
+        weatherIcon: widget.flightData["weather"] ?? "wi-day-sunny",
       ),
       FlightDataTab(
         chartTitle: 'Velocity',
         xAxisTitle: 'Timestamps',
         yAxisTitle: 'Velocity',
         flightDataValues: createDatalist(widget.flightData, "velocityData"),
+        measurementUnit: 'm/s\u00B2',
       ),
       FlightDataTab(
         chartTitle: '',
         xAxisTitle: '',
         yAxisTitle: '',
         flightDataValues: createDatalist(widget.flightData, "heightData"),
+        measurementUnit: 'm',
       ),
       FlightDataTab(
         chartTitle: '',
         xAxisTitle: '',
         yAxisTitle: '',
         flightDataValues: createDatalist(widget.flightData, "temperatureData"),
+        measurementUnit: '°C',
       ),
     ];
   }

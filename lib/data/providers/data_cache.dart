@@ -50,7 +50,7 @@ class DataCache with ChangeNotifier {
     for (int i = _previousFlights.length - 1; i >= 0; i--) {
       Logger().i(_previousFlights[i]["endTimestamp"] == timestamp);
       if (_previousFlights[i]["endTimestamp"] == timestamp) {
-        _previousFlights[i]["title"] = value;
+        _previousFlights[i][propertyKey] = value;
         writeFlightRecords(_previousFlights);
         return;
       }

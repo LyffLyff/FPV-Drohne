@@ -109,7 +109,7 @@ class NavDrawer extends StatelessWidget {
             ),
             onTap: () => {
               Navigator.of(context).push(
-                pageRouteAnimation(PreviousFlights()),
+                pageRouteAnimation(const PreviousFlights()),
               ),
             },
           ),

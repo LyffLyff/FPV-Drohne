@@ -13,6 +13,7 @@ enum FlightRecordingFinishType {
 class FlightData {
   // General
   String title = "";
+  String weather = "wi-cloud";
   int startTimestamp = 0;
   int endTimestamp = -1;
   String userId = "";
@@ -66,6 +67,7 @@ class FlightData {
 
   Map<String, dynamic> toMap() {
     return {
+      "weather": weather,
       "title": title,
       "startTimestamp": startTimestamp,
       "endTimestamp": endTimestamp,

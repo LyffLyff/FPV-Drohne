@@ -15,6 +15,7 @@ class FinishedFlight extends StatelessWidget {
   FinishedFlight({super.key, required this.endTimestamp});
 
   final TextEditingController textFieldController = TextEditingController();
+  String _weatherIcon = "wi-cloud";
 
   void _saveFlightProperties(BuildContext context) {
     String newTitle = textFieldController.text;
@@ -27,15 +28,31 @@ class FinishedFlight extends StatelessWidget {
     Provider.of<DataCache>(context, listen: false)
         .updateFlightProperty(endTimestamp, "title", newTitle);
 
+    // update weather icon on db
+    UserProfileService().updateFlightDataProperty(
+        context.read<AuthProvider>().userId,
+        endTimestamp,
+        "weather",
+        _weatherIcon);
+
+    // update weather in local storage
+    Provider.of<DataCache>(context, listen: false)
+        .updateFlightProperty(endTimestamp, "weather", _weatherIcon);
+
     // hide dialogue
     Navigator.pop(context);
+  }
+
+  void _setWeatherSelection(String weatherIcon) {
+    print(weatherIcon);
+    _weatherIcon = weatherIcon;
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Recording Stopped"),
+        title: const Text("Flight Finished"),
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -43,7 +60,10 @@ class FinishedFlight extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             const Spacer(),
-             Text("Flight's finished!", style: context.textTheme.headlineLarge,),
+            Text(
+              "Flight's finished!",
+              style: context.textTheme.headlineLarge,
+            ),
             const Spacer(),
             StdInputField(
               controller: textFieldController,
@@ -52,24 +72,19 @@ class FinishedFlight extends StatelessWidget {
               hintText: 'Title',
             ),
             const VerticalSpace(),
-            const WeatherSelection(),
-            const VerticalSpace(),
-            SizedBox(
-              width: double.infinity,
-              child: Row(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  TextButton(
-                    child:  Text('Save Flight', style: context.textTheme.displaySmall),
-                    onPressed: () {
-                      _saveFlightProperties(context);
-                    },
-                  ),
-                ],
-              ),
+            WeatherSelection(
+              selectionCallback: _setWeatherSelection,
             ),
-            const Spacer(flex: 3,),
+            const VerticalSpace(),
+            ElevatedButton(
+              child: Text('Save Flight', style: context.textTheme.displaySmall),
+              onPressed: () {
+                _saveFlightProperties(context);
+              },
+            ),
+            const Spacer(
+              flex: 3,
+            ),
           ],
         ),
       ),

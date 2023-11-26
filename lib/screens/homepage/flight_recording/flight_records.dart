@@ -1,6 +1,5 @@
 import 'package:drone_2_0/extensions/extensions.dart';
 import 'package:drone_2_0/screens/homepage/flight_recording/flight_data.dart';
-import 'package:drone_2_0/screens/homepage/flight_recording/previous_flight/weather_selection.dart';
 import 'package:drone_2_0/service/realtime_db_service.dart';
 import 'package:drone_2_0/widgets/loading_icons.dart';
 import 'package:firebase_core/firebase_core.dart';

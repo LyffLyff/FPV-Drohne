@@ -2,8 +2,8 @@ import 'package:drone_2_0/data/providers/auth_provider.dart';
 import 'package:drone_2_0/data/providers/data_cache.dart';
 import 'package:drone_2_0/extensions/extensions.dart';
 import 'package:drone_2_0/screens/homepage/flight_recording/previous_flight/previous_flight.dart';
-import 'package:drone_2_0/screens/homepage/flight_recording/previous_flight/weather_selection.dart';
 import 'package:drone_2_0/service/user_profile_service.dart';
+import 'package:drone_2_0/themes/theme_manager.dart';
 import 'package:drone_2_0/widgets/loading_icons.dart';
 import 'package:drone_2_0/widgets/utils/helper_widgets.dart';
 import 'package:flutter/material.dart';
@@ -157,6 +157,7 @@ class _PreviousFlightsState extends State<PreviousFlights> {
                 }
 
                 index = index - 1; // setting index back to normal value
+                String weatherIcon = data?[index]["weather"] ?? "wi-day-sunny";
                 return Column(
                   children: [
                     Divider(
@@ -166,6 +167,9 @@ class _PreviousFlightsState extends State<PreviousFlights> {
                         endIndent: 8,
                         indent: 8),
                     ListTile(
+                      leading: Image.asset(
+                        "${context.read<ThemeManager>().getWeatherIconPath()}$weatherIcon.png",
+                      ),
                       title: Text(data?[index]["title"] ?? ""),
                       subtitle: Text(
                         "Duration: ${_getDurationInSeconds(index)} seconds",
