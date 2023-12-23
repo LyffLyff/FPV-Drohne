@@ -1,5 +1,8 @@
+import 'dart:math';
+
 import 'package:drone_2_0/extensions/extensions.dart';
 import 'package:drone_2_0/screens/homepage/flight_recording/flight_data.dart';
+import 'package:drone_2_0/service/mqtt_manager.dart';
 import 'package:drone_2_0/service/realtime_db_service.dart';
 import 'package:drone_2_0/widgets/loading_icons.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -15,25 +18,29 @@ class ChartData {
   final num y;
 }
 
+final mqtt = MQTTManager("192.168.8.107", "test/temp");
+
 Stream<dynamic> combinedStreams() {
   try {
-    final Stream<DatabaseEvent> velocityStream =
-        RealtimeDatabaseService().listenToValue("velocity");
+    //final Stream<DatabaseEvent> velocityStream =
+    //    RealtimeDatabaseService().listenToValue("velocity");
+    final mqttStream = mqtt.messageStream;
     final periodicStream = Stream<int>.periodic(
       const Duration(seconds: 1),
       (count) => count, // Emit the current count
     );
-    final combinedStream = StreamGroup.merge([periodicStream, velocityStream]);
+    final combinedStream = StreamGroup.merge([periodicStream, mqttStream]);
 
     return combinedStream.map((event) {
       if (event is int) {
         // If it's a periodic value, emit it as 'periodicValue'
         return {'periodicValue': event, 'firebaseData': null};
-      } else if (event is DatabaseEvent) {
+      } else if (event is String) {
         // If it's a Firebase Realtime Database event, extract the data and emit it as 'firebaseData'
-        final dataSnapshot = event.snapshot;
-        final firebaseData = dataSnapshot.value;
-        return {'periodicValue': null, 'firebaseData': firebaseData};
+        print(event);
+        print(int.parse(event));
+        //final firebaseData = dataSnapshot.value;
+        return {'periodicValue': null, 'firebaseData': int.parse(event)};
       } else {
         // Handle other cases here or return null if not needed
         return null;
@@ -48,6 +55,8 @@ Stream<dynamic> combinedStreams() {
 Future<Map> _initChartData() async {
   // Reading the initial value from the Database before listening to changes
   final ref = RealtimeDatabaseService();
+  await mqtt.connect();
+  mqtt.subscribeToTopic("test/temp");
   final dynamic vel = await ref.readValueOnce("velocity");
   return {
     "velocity": vel,
@@ -100,7 +109,8 @@ class FlightRecords extends StatelessWidget {
 
                   if (periodicValue != null) {
                     chartData.add(ChartData(timeAxisValue, lastMeasurement));
-                    flightData.addDatapoint(timestamp, lastMeasurement.toInt(), -1, -1);
+                    flightData.addDatapoint(
+                        timestamp, lastMeasurement.toInt(), -1, -1);
                   } else if (firebaseData != null) {
                     chartData.add(ChartData(timeAxisValue, firebaseData));
                     flightData.addDatapoint(timestamp, firebaseData, -1, -1);

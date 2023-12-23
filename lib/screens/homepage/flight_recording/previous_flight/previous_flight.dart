@@ -65,7 +65,7 @@ class _PreviousFlightState extends State<PreviousFlight> {
         measurementUnit: 'm',
       ),
       FlightDataTab(
-        chartTitle: '',
+        chartTitle: 'Temperature in °C',
         xAxisTitle: '',
         yAxisTitle: '',
         flightDataValues: createDatalist(widget.flightData, "temperatureData"),
@@ -86,9 +86,20 @@ class _PreviousFlightState extends State<PreviousFlight> {
       appBar: AppBar(
         title: Text(widget.flightData["title"]),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(10),
-        child: _widgetOptions.elementAt(_selectedIndex),
+      body: DecoratedBox(
+        decoration: BoxDecoration(
+            gradient: LinearGradient(
+          begin: Alignment.topRight,
+          end: Alignment.bottomLeft,
+          colors: [
+            Colors.blueGrey.shade500,
+            Colors.indigo.shade900,
+          ],
+        )),
+        child: Padding(
+          padding: const EdgeInsets.all(10),
+          child: _widgetOptions.elementAt(_selectedIndex),
+        ),
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[

@@ -43,17 +43,23 @@ class _FlightDataTabState extends State<FlightDataTab> {
 
   void _calculateDataProperties() {
     // Calculate max, min and average values
-    maxValue = widget.flightDataValues
-            .map((datapoint) => datapoint.y)
-            .reduce((a, b) => a! > b! ? a : b) ??
-        0;
-    minValue = widget.flightDataValues
-            .map((datapoint) => datapoint.y)
-            .reduce((a, b) => a! < b! ? a : b) ??
-        0;
-    avg = widget.flightDataValues
-            .map((datapoint) => datapoint.y)
-            .reduce((a, b) => a! + b!)! ~/ widget.flightDataValues.length;
+    try {
+      maxValue = widget.flightDataValues
+              .map((datapoint) => datapoint.y)
+              .reduce((a, b) => a! > b! ? a : b) ??
+          0;
+      minValue = widget.flightDataValues
+              .map((datapoint) => datapoint.y)
+              .reduce((a, b) => a! < b! ? a : b) ??
+          0;
+      avg = num.parse((widget.flightDataValues
+                  .map((datapoint) => datapoint.y)
+                  .reduce((a, b) => a! + b!)! /
+              widget.flightDataValues.length)
+          .toStringAsFixed(3));
+    } catch (e) {
+      maxValue = minValue = avg = 0;
+    }
   }
 
   @override
@@ -62,15 +68,41 @@ class _FlightDataTabState extends State<FlightDataTab> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         SfCartesianChart(
-            // Initialize category axis
-            primaryXAxis: CategoryAxis(),
-            series: <ChartSeries>[
-              // Initialize line series
-              LineSeries<ChartData, String>(
-                  dataSource: widget.flightDataValues,
-                  xValueMapper: (ChartData data, _) => data.x,
-                  yValueMapper: (ChartData data, _) => data.y)
-            ]),
+          // Initialize category axis
+          primaryXAxis: CategoryAxis(),
+          indicators: <TechnicalIndicators>[
+            MomentumIndicator(
+              isVisible: true,
+              period: 1,
+              seriesName: 'help',
+            )
+          ],
+          series: <ChartSeries>[
+            // Initialize line series
+            LineSeries<ChartData, num>(
+              name: "help",
+              dataSource: widget.flightDataValues,
+              xValueMapper: (ChartData data, _) => num.parse(data.x),
+              yValueMapper: (ChartData data, _) => data.y,
+            ),
+            LineSeries<ChartData2, num>(
+              dataSource: <ChartData2>[
+                ChartData2(0, avg), // Start point at x = 0, y = 40
+                ChartData2(30, avg.toDouble()), // End point at x = 30, y = 40
+              ],
+              xValueMapper: (ChartData2 data, _) => data.x,
+              yValueMapper: (ChartData2 data, _) => data.y,
+              // Customize line appearance as needed
+              color: const Color.fromARGB(
+                  255, 243, 33, 170), // Set your desired line color
+              /*trendlines: [
+                Trendline(type: TrendlineType.logarithmic),
+              ],*/
+
+              width: 1, // Adjust line width if necessary
+            ),
+          ],
+        ),
         Text("Peak: $maxValue ${widget.measurementUnit}"),
         Text("Min: $minValue ${widget.measurementUnit}"),
         Text("Avg.: $avg ${widget.measurementUnit}"),
@@ -83,4 +115,11 @@ class ChartData {
   ChartData(this.x, this.y);
   final String x;
   final num? y;
+}
+
+class ChartData2 {
+  ChartData2(this.x, this.y);
+
+  final num x;
+  final num y;
 }

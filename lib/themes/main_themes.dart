@@ -18,7 +18,7 @@ class AppTheme {
     appBarTheme: LightThemeWidgets.appBarTheme,
 
     //Navigation Bar
-    bottomAppBarTheme: BottomAppBarTheme(color: Colors.grey.shade900),
+    bottomAppBarTheme: BottomAppBarTheme(color: Colors.grey.shade900.withOpacity(0.5)),
     bottomNavigationBarTheme: DarkThemeWidgets.bottomNavigationBarTheme,
 
     // Scaffold
