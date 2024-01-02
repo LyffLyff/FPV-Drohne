@@ -1,12 +1,9 @@
-import 'dart:math';
-
 import 'package:drone_2_0/extensions/extensions.dart';
 import 'package:drone_2_0/screens/homepage/flight_recording/flight_data.dart';
 import 'package:drone_2_0/service/mqtt_manager.dart';
 import 'package:drone_2_0/service/realtime_db_service.dart';
 import 'package:drone_2_0/widgets/loading_icons.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
@@ -22,8 +19,6 @@ final mqtt = MQTTManager("192.168.8.107", "test/temp");
 
 Stream<dynamic> combinedStreams() {
   try {
-    //final Stream<DatabaseEvent> velocityStream =
-    //    RealtimeDatabaseService().listenToValue("velocity");
     final mqttStream = mqtt.messageStream;
     final periodicStream = Stream<int>.periodic(
       const Duration(seconds: 1),
@@ -34,13 +29,10 @@ Stream<dynamic> combinedStreams() {
     return combinedStream.map((event) {
       if (event is int) {
         // If it's a periodic value, emit it as 'periodicValue'
-        return {'periodicValue': event, 'firebaseData': null};
+        return {'periodicValue': event, 'mqttData': null};
       } else if (event is String) {
-        // If it's a Firebase Realtime Database event, extract the data and emit it as 'firebaseData'
-        print(event);
-        print(int.parse(event));
-        //final firebaseData = dataSnapshot.value;
-        return {'periodicValue': null, 'firebaseData': int.parse(event)};
+        // If it's a MQTT Event, extract the data and emit it as 'mqttData'
+        return {'periodicValue': null, 'mqttData': int.parse(event)};
       } else {
         // Handle other cases here or return null if not needed
         return null;
@@ -101,7 +93,7 @@ class FlightRecords extends StatelessWidget {
                   // Extract data from the snapshot
                   final data = snapshot.data;
                   final periodicValue = data['periodicValue'];
-                  final firebaseData = data['firebaseData'];
+                  final mqttData = data['mqttData'];
 
                   timeAxisValue++;
 
@@ -111,10 +103,10 @@ class FlightRecords extends StatelessWidget {
                     chartData.add(ChartData(timeAxisValue, lastMeasurement));
                     flightData.addDatapoint(
                         timestamp, lastMeasurement.toInt(), -1, -1);
-                  } else if (firebaseData != null) {
-                    chartData.add(ChartData(timeAxisValue, firebaseData));
-                    flightData.addDatapoint(timestamp, firebaseData, -1, -1);
-                    lastMeasurement = firebaseData;
+                  } else if (mqttData != null) {
+                    chartData.add(ChartData(timeAxisValue, mqttData));
+                    flightData.addDatapoint(timestamp, mqttData, -1, -1);
+                    lastMeasurement = mqttData;
                   }
 
                   return SfCartesianChart(
