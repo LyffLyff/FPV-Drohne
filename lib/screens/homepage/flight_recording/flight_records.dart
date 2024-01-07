@@ -1,8 +1,8 @@
 import 'package:drone_2_0/extensions/extensions.dart';
+import 'package:drone_2_0/screens/homepage/flight_recording/awaiting_connection_dialogue.dart';
 import 'package:drone_2_0/screens/homepage/flight_recording/flight_data.dart';
 import 'package:drone_2_0/service/mqtt_manager.dart';
-import 'package:drone_2_0/service/realtime_db_service.dart';
-import 'package:drone_2_0/widgets/loading_icons.dart';
+import 'package:drone_2_0/widgets/utils/helper_widgets.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
@@ -44,20 +44,19 @@ Stream<dynamic> combinedStreams() {
   }
 }
 
-Future<Map> _initChartData() async {
-  // Reading the initial value from the Database before listening to changes
-  final ref = RealtimeDatabaseService();
-  await mqtt.connect();
-  mqtt.subscribeToTopic("test/temp");
-  final dynamic vel = await ref.readValueOnce("velocity");
-  return {
-    "velocity": vel,
-  };
-}
-
-final List<ChartData> chartData = [];
+List<ChartData> chartData = [];
 int timeAxisValue = 0;
 num lastMeasurement = 1;
+
+Future<Map> _initChartData() async {
+  // Reading the initial value from the Database before listening to changes
+  chartData = []; // reset data in init
+  await mqtt.connect();
+  mqtt.subscribeToTopic("test/temp");
+  return {
+    "velocity": 0,
+  };
+}
 
 class FlightRecords extends StatelessWidget {
   final FlightData flightData;
@@ -84,10 +83,11 @@ class FlightRecords extends StatelessWidget {
                     );
                   }
 
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Expanded(
-                      child: CircularLoadingIcon(),
-                    );
+                  /*if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const AwaitingConnection();
+                  }*/
+                  if (!snapshot.hasData) {
+                    return const AwaitingConnection();
                   }
 
                   // Extract data from the snapshot
@@ -109,41 +109,71 @@ class FlightRecords extends StatelessWidget {
                     lastMeasurement = mqttData;
                   }
 
-                  return SfCartesianChart(
-                    // Chart title
-                    title: ChartTitle(
-                        text: 'Drone Speed',
-                        textStyle: context.textTheme.bodyMedium),
+                  return Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      children: [
+                        SfCartesianChart(
+                          // Chart title
+                          title: ChartTitle(
+                              text: 'Speed in meters per second',
+                              textStyle: context.textTheme.bodyMedium),
 
-                    // Style
-                    primaryXAxis: NumericAxis(
-                      name: "Time",
-                      title: AxisTitle(text: "Seconds since start"),
-                    ),
-                    primaryYAxis: NumericAxis(
-                      name: "Velocity",
-                      title: AxisTitle(text: "Velocity in m/s"),
-                    ),
+                          // Style
+                          primaryXAxis: NumericAxis(
+                            name: "Time",
+                            title: AxisTitle(text: "Seconds since start"),
+                          ),
+                          primaryYAxis: NumericAxis(
+                            name: "Velocity",
+                            title: AxisTitle(text: "Velocity in m/s"),
+                          ),
 
-                    // Data
-                    series: <CartesianSeries>[
-                      LineSeries<ChartData, int>(
-                        dataSource: chartData,
-                        xValueMapper: (ChartData time, _) => time.x,
-                        yValueMapper: (ChartData velocity, _) => velocity.y,
-                        markerSettings: const MarkerSettings(
-                          isVisible: true,
-                          shape: DataMarkerType.circle,
+                          // Data
+                          series: <CartesianSeries>[
+                            LineSeries<ChartData, int>(
+                              dataSource: chartData,
+                              xValueMapper: (ChartData time, _) => time.x,
+                              yValueMapper: (ChartData velocity, _) =>
+                                  velocity.y,
+                              markerSettings: const MarkerSettings(
+                                isVisible: true,
+                                shape: DataMarkerType.circle,
+                              ),
+                            ),
+                          ],
                         ),
-                      ),
-                    ],
+                        const VerticalSpace(),
+                        Container(
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                              color: Colors.grey.shade900,
+                              shape: BoxShape.rectangle,
+                              borderRadius: BorderRadius.circular(16)),
+                          child: Center(
+                            child: RichText(
+                              text: TextSpan(
+                                style: context.textTheme.headlineLarge,
+                                children: <TextSpan>[
+                                  TextSpan(text: lastMeasurement.toString()),
+                                  TextSpan(
+                                    text: ' m/s',
+                                    style: context.textTheme.headlineMedium,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   );
                 },
               ),
             ],
           );
         } else {
-          return const CircularLoadingIcon();
+          return const AwaitingConnection();
         }
       },
     );

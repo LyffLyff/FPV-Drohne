@@ -55,7 +55,10 @@ class _HomePageState extends State<HomePage> {
     flightData = FlightData();
   }
 
-  void _startRecording() async {}
+  void _startRecording() async {
+    // set flag on database
+    RealtimeDatabaseService().updateData("", {"is_connected": true});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -114,7 +117,8 @@ class _HomePageState extends State<HomePage> {
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 // check if drone is connected -> flag in RTDB
-                if (snapshot.data.snapshot.value == true) {
+                var val = snapshot.data.snapshot.value;
+                if (val == true) {
                   // Start collection data
                   flightData.startFlight(context.read<AuthProvider>().userId,
                       DateTime.now().millisecondsSinceEpoch);
@@ -124,38 +128,38 @@ class _HomePageState extends State<HomePage> {
                     index: currentPageIdx,
                     children: _pages,
                   );
-                }
-              } else {
-                return const CircularLoadingIcon();
-              }
-              return AlertDialog(
-                icon: const Icon(
-                  Icons.error_outline,
-                  size: 56,
-                ),
-                title: const Text(
-                  'Drone is not connected :(',
-                  textAlign: TextAlign.center,
-                ),
-                content: Text(
-                  'Check if the Drone and the corresponding Box is turned on and properly initialized.\nIf the Problem consists check the Help section in the Side menu for further information',
-                  style: context.textTheme.bodySmall,
-                ),
-                actions: const <Widget>[
-                  Padding(
-                    padding: EdgeInsets.symmetric(vertical: 10),
-                    child: Column(
-                      children: [
-                        Text("Waiting for Connection..."),
-                        VerticalSpace(height: 10),
-                        CircularLoadingIcon(
-                          length: 20,
-                        ),
-                      ],
+                } else if (val == false) {
+                  return AlertDialog(
+                    icon: const Icon(
+                      Icons.error_outline,
+                      size: 56,
                     ),
-                  )
-                ],
-              );
+                    title: const Text(
+                      'Drone is not connected :(',
+                      textAlign: TextAlign.center,
+                    ),
+                    content: Text(
+                      'Check if the Drone and the corresponding Box is turned on and properly initialized.\nIf the Problem consists check the Help section in the Side menu for further information',
+                      style: context.textTheme.bodySmall,
+                    ),
+                    actions: const <Widget>[
+                      Padding(
+                        padding: EdgeInsets.symmetric(vertical: 10),
+                        child: Column(
+                          children: [
+                            Text("Waiting for Connection..."),
+                            VerticalSpace(height: 10),
+                            CircularLoadingIcon(
+                              length: 20,
+                            ),
+                          ],
+                        ),
+                      )
+                    ],
+                  );
+                }
+              }
+              return const CircularLoadingIcon();
             }),
       ]),
     );

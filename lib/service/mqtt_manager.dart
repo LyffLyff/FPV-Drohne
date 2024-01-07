@@ -33,7 +33,7 @@ class MQTTManager {
       _client.updates?.listen((List<MqttReceivedMessage<MqttMessage>> c) {
         final MqttPublishMessage recMess = c[0].payload as MqttPublishMessage;
         final String message =
-            MqttPublishPayload.bytesToStringAsString(recMess.payload.message!);
+            MqttPublishPayload.bytesToStringAsString(recMess.payload.message);
         _messageStreamController.add(message);
       });
     } catch (e) {

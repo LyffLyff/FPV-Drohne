@@ -7,6 +7,7 @@ import 'package:drone_2_0/themes/theme_manager.dart';
 import 'package:drone_2_0/widgets/loading_icons.dart';
 import 'package:drone_2_0/widgets/utils/helper_widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 
@@ -159,32 +160,31 @@ class _PreviousFlightsState extends State<PreviousFlights> {
                 index = index - 1; // setting index back to normal value
                 String weatherIcon = data?[index]["weather"] ?? "wi-day-sunny";
                 return Column(
-                  children: [
-                    Divider(
-                        height: 8,
-                        thickness: 1,
-                        color: Colors.grey.shade900,
-                        endIndent: 8,
-                        indent: 8),
-                    ListTile(
-                      leading: Image.asset(
-                        "${context.read<ThemeManager>().getWeatherIconPath()}$weatherIcon.png",
-                      ),
-                      title: Text(data?[index]["title"] ?? ""),
-                      subtitle: Text(
-                        "Duration: ${_getDurationInSeconds(index)} seconds",
-                        style: context.textTheme.bodyMedium,
-                      ),
-                      onTap: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => PreviousFlight(
-                            flightData: data?[index] ?? {},
-                          ),
-                        ));
-                      },
+                    children: [
+                  Divider(
+                      height: 8,
+                      thickness: 1,
+                      color: Colors.grey.shade900,
+                      endIndent: 8,
+                      indent: 8),
+                  ListTile(
+                    leading: Image.asset(
+                      "${context.read<ThemeManager>().getWeatherIconPath()}$weatherIcon.png",
                     ),
-                  ],
-                );
+                    title: Text(data?[index]["title"] ?? ""),
+                    subtitle: Text(
+                      "Duration: ${_getDurationInSeconds(index)} seconds",
+                      style: context.textTheme.bodyMedium,
+                    ),
+                    onTap: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => PreviousFlight(
+                          flightData: data?[index] ?? {},
+                        ),
+                      ));
+                    },
+                  ),
+                ].animate(interval: 200.ms).fade(duration: 100.ms));
               },
             );
           }
