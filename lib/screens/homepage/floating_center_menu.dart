@@ -5,9 +5,13 @@ import 'package:flutter/material.dart';
 class FloatingCenterMenu extends StatefulWidget {
   final VoidCallback stopRecording;
   final VoidCallback startRecording;
+  final bool droneOnline;
 
   const FloatingCenterMenu(
-      {super.key, required this.stopRecording, required this.startRecording});
+      {super.key,
+      required this.stopRecording,
+      required this.startRecording,
+      required this.droneOnline});
 
   @override
   State<FloatingCenterMenu> createState() => _FloatingCenterMenuState();
@@ -32,6 +36,7 @@ class _FloatingCenterMenuState extends State<FloatingCenterMenu> {
   }
 
   void toggleRecording() {
+    // toggling flight recording via floating menu button
     if (isRecordingFlight) {
       widget.stopRecording();
     } else {
@@ -72,6 +77,18 @@ class _FloatingCenterMenuState extends State<FloatingCenterMenu> {
                   IconButton.filled(
                     iconSize: 24,
                     onPressed: () {
+                      if (!widget.droneOnline) {
+                        // drone not online unable to start flight
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: const Text(
+                                'Cannot Record Flight without connection!'),
+                            backgroundColor: Colors.red
+                                .shade800, // Customize the background color if needed
+                          ),
+                        );
+                        return;
+                      }
                       toggleRecording();
                     },
                     icon: isRecordingFlight

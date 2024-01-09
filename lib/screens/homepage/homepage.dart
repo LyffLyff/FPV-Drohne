@@ -27,6 +27,8 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int currentPageIdx = 0;
+  bool droneFlight = false;
+  bool droneOnline = false;
   FlightData flightData = FlightData();
 
   @override
@@ -53,11 +55,13 @@ class _HomePageState extends State<HomePage> {
       );
     }
     flightData = FlightData();
+    droneFlight = false;
   }
 
   void _startRecording() async {
     // set flag on database
     RealtimeDatabaseService().updateData("", {"is_connected": true});
+    droneFlight = true;
   }
 
   @override
@@ -111,55 +115,78 @@ class _HomePageState extends State<HomePage> {
         FloatingCenterMenu(
           startRecording: _startRecording,
           stopRecording: _stopRecording,
+          droneOnline: droneOnline,
         ),
-        StreamBuilder<dynamic>(
-            stream: RealtimeDatabaseService().listenToValue("is_connected"),
+        StreamBuilder(
+            stream: RealtimeDatabaseService().listenToValue("is_online"),
             builder: (context, snapshot) {
               if (snapshot.hasData) {
-                // check if drone is connected -> flag in RTDB
-                var val = snapshot.data.snapshot.value;
-                if (val == true) {
-                  // Start collection data
-                  flightData.startFlight(context.read<AuthProvider>().userId,
-                      DateTime.now().millisecondsSinceEpoch);
+                Object? isOnline = snapshot.data!.snapshot.value;
+                droneOnline = isOnline as bool;
+                if (isOnline == true) {
+                  // drone flag "is_online" -> checked -> ready to connect
+                  return StreamBuilder<dynamic>(
+                      stream: RealtimeDatabaseService()
+                          .listenToValue("is_connected"),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          // check if drone is connected -> flag in RTDB
+                          var val = snapshot.data.snapshot.value;
+                          if (val == true) {
+                            // Start collection data
+                            flightData.startFlight(
+                                context.read<AuthProvider>().userId,
+                                DateTime.now().millisecondsSinceEpoch);
 
-                  // display Data
-                  return IndexedStack(
-                    index: currentPageIdx,
-                    children: _pages,
-                  );
-                } else if (val == false) {
-                  return AlertDialog(
-                    icon: const Icon(
-                      Icons.error_outline,
-                      size: 56,
-                    ),
-                    title: const Text(
-                      'Drone is not connected :(',
-                      textAlign: TextAlign.center,
-                    ),
-                    content: Text(
-                      'Check if the Drone and the corresponding Box is turned on and properly initialized.\nIf the Problem consists check the Help section in the Side menu for further information',
-                      style: context.textTheme.bodySmall,
-                    ),
-                    actions: const <Widget>[
-                      Padding(
-                        padding: EdgeInsets.symmetric(vertical: 10),
-                        child: Column(
-                          children: [
-                            Text("Waiting for Connection..."),
-                            VerticalSpace(height: 10),
-                            CircularLoadingIcon(
-                              length: 20,
-                            ),
-                          ],
-                        ),
-                      )
-                    ],
-                  );
+                            // display Data
+                            return IndexedStack(
+                              index: currentPageIdx,
+                              children: _pages,
+                            );
+                          } else if (val == false) {
+                            return AlertDialog(
+                              icon: const Icon(
+                                Icons.error_outline,
+                                size: 56,
+                              ),
+                              title: const Text(
+                                'Drone is not connected :(',
+                                textAlign: TextAlign.center,
+                              ),
+                              content: Text(
+                                'Check if the Drone and the corresponding Box is turned on and properly initialized.\nIf the Problem consists check the Help section in the Side menu for further information',
+                                style: context.textTheme.bodySmall,
+                              ),
+                              actions: const <Widget>[
+                                Padding(
+                                  padding: EdgeInsets.symmetric(vertical: 10),
+                                  child: Column(
+                                    children: [
+                                      Text("Waiting for Connection..."),
+                                      VerticalSpace(height: 10),
+                                      CircularLoadingIcon(
+                                        length: 20,
+                                      ),
+                                    ],
+                                  ),
+                                )
+                              ],
+                            );
+                          }
+                        }
+                        return const CircularLoadingIcon();
+                      });
+                } else {
+                  if (droneFlight) {
+                    // stopping the recording of the flight if the drone suddenly looses connection
+                    // -> "is_online" is set to false by drone not the user
+                    _stopRecording();
+                  }
+                  return const Center(child: Text("Drone not online"));
                 }
               }
-              return const CircularLoadingIcon();
+              return const Center(
+                  child: Text("Connection Problems to Database"));
             }),
       ]),
     );
