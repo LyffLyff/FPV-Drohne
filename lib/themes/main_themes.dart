@@ -18,14 +18,20 @@ class AppTheme {
     appBarTheme: LightThemeWidgets.appBarTheme,
 
     //Navigation Bar
-    bottomAppBarTheme: BottomAppBarTheme(color: Colors.grey.shade900.withOpacity(0.5)),
+    bottomAppBarTheme:
+        BottomAppBarTheme(color: Colors.grey.shade900.withOpacity(0.5)),
     bottomNavigationBarTheme: DarkThemeWidgets.bottomNavigationBarTheme,
 
     // Scaffold
     scaffoldBackgroundColor: LightColors.backgroundColor,
 
-     // Elevated Button
+    // Elevated Button
     elevatedButtonTheme: LightThemeWidgets.elevatedButtonThemeData,
+
+    // Tabs
+    iconTheme: LightThemeWidgets.iconThemeData,
+
+    tabBarTheme: const TabBarTheme(indicatorColor: Colors.black),
   );
 
   static ThemeData darkTheme = ThemeData(
@@ -50,5 +56,11 @@ class AppTheme {
 
     // Elevated Button
     elevatedButtonTheme: DarkThemeWidgets.elevatedButtonThemeData,
+
+    // Tabs
+    iconTheme: DarkThemeWidgets.iconThemeData,
+    tabBarTheme: const TabBarTheme(
+      labelColor: Colors.white, // Icon Color
+    ),
   );
 }

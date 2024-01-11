@@ -12,7 +12,6 @@ import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 
 enum SortingTypes {
-  none,
   title,
   duration,
   date,
@@ -31,7 +30,7 @@ class PreviousFlights extends StatefulWidget {
 class _PreviousFlightsState extends State<PreviousFlights> {
   List? originalData;
   List? data;
-  SortingTypes sortType = SortingTypes.none;
+  SortingTypes sortType = SortingTypes.title;
   bool dataLoaded = false;
 
   Future<List?> _getRecords(BuildContext context) async {
@@ -58,8 +57,7 @@ class _PreviousFlightsState extends State<PreviousFlights> {
   }
 
   int _getDurationInSeconds(int index) {
-    return (data?[index]["endTimestamp"] - data?[index]["startTimestamp"]) ~/
-        1000;
+    return (data?[index]["endTimestamp"] - data?[index]["startTimestamp"]);
   }
 
   Expanded _getHeaderButton(String text, SortingTypes type) {
@@ -81,7 +79,6 @@ class _PreviousFlightsState extends State<PreviousFlights> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          _getHeaderButton("None", SortingTypes.none),
           _getHeaderButton("Title", SortingTypes.title),
           _getHeaderButton("Duration", SortingTypes.duration),
           _getHeaderButton("Date", SortingTypes.date),
@@ -92,9 +89,6 @@ class _PreviousFlightsState extends State<PreviousFlights> {
 
   void _sortData() {
     switch (sortType) {
-      case SortingTypes.none:
-        data = originalData;
-        break;
       case SortingTypes.title:
         data?.sort((a, b) => b["title"].compareTo(a["title"]));
         break;

@@ -15,6 +15,14 @@ class LightThemeWidgets {
     backgroundColor: Colors.black,
   );
 
+  static IconThemeData iconThemeData = const IconThemeData(
+    color: Colors.black,
+  );
+
+  static TabBarTheme tabBarTheme = const TabBarTheme(
+    labelColor: Colors.black, // Icon Color
+  );
+
   static ElevatedButtonThemeData elevatedButtonThemeData =
       ElevatedButtonThemeData(
     style: ElevatedButton.styleFrom(

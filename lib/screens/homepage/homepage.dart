@@ -39,7 +39,7 @@ class _HomePageState extends State<HomePage> {
 
   late final _pages = <Widget>[
     FlightRecords(flightData: flightData),
-    const LiveView(),
+    LiveView(),
   ];
 
   void _stopRecording() async {

@@ -77,6 +77,7 @@ class _FloatingCenterMenuState extends State<FloatingCenterMenu> {
                   IconButton.filled(
                     iconSize: 24,
                     onPressed: () {
+                      print("Toggle Recording");
                       if (!widget.droneOnline) {
                         // drone not online unable to start flight
                         ScaffoldMessenger.of(context).showSnackBar(

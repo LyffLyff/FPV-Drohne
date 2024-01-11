@@ -1,3 +1,4 @@
+import 'package:drone_2_0/data/providers/data_cache.dart';
 import 'package:drone_2_0/screens/homepage/app_info.dart';
 import 'package:drone_2_0/screens/homepage/flight_recording/previous_flights.dart';
 import 'package:drone_2_0/screens/pre_login/welcome_screen.dart';
@@ -30,6 +31,9 @@ class NavDrawer extends StatelessWidget {
       } catch (e) {
         Logger().d('failed to disconnect on signout');
       }
+
+      // Clear Datacache -> preventing seeing false previousFlights
+      Provider.of<DataCache>(context, listen: false).previousFlights.clear();
 
       // Auth Sign Out
       await FirebaseAuth.instance.signOut();

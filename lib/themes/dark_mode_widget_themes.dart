@@ -14,8 +14,15 @@ class DarkThemeWidgets {
     backgroundColor: Colors.black,
   );
 
-  static BottomNavigationBarThemeData bottomNavigationBarTheme = BottomNavigationBarThemeData(
-    backgroundColor: DarkColors.accentColor
+  static BottomNavigationBarThemeData bottomNavigationBarTheme =
+      BottomNavigationBarThemeData(backgroundColor: DarkColors.accentColor);
+
+  static IconThemeData iconThemeData = const IconThemeData(
+    color: Colors.white,
+  );
+
+  static TabBarTheme tabBarTheme = const TabBarTheme(
+    labelColor: Colors.white, // Icon Color
   );
 
   static ElevatedButtonThemeData elevatedButtonThemeData =
