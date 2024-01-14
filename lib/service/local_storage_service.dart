@@ -11,13 +11,13 @@ class LocalStorageService {
     return directory.path;
   }
 
-  Future<File> _getLocalFile(String fileName) async {
+  Future<File> getLocalFile(String fileName) async {
     final path = await _localPath;
     return File('$path/$fileName');
   }
 
   Future<File> writeFile(dynamic data, String filename) async {
-    final file = await _getLocalFile(filename);
+    final file = await getLocalFile(filename);
 
     // Write the file
     return file.writeAsString(jsonEncode(data));
@@ -25,14 +25,15 @@ class LocalStorageService {
 
   Future<dynamic> readFile(String fileName) async {
     try {
-      final file = await _getLocalFile(fileName);
+      final file = await getLocalFile(fileName);
 
       Logger().i(file.path);
 
       // Read the file
       final contents = await file.readAsString();
 
-      return jsonDecode(contents);  // returning content as String -> parsing after that
+      return jsonDecode(
+          contents); // returning content as String -> parsing after that
     } catch (e) {
       // If encountering an error, return empty String
       return null;

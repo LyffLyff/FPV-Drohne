@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'package:async/async.dart';
 
-final _mqtt = MQTTManager("192.168.8.107", "client_identifier");
+final _mqtt = MQTTManager("192.168.8.111", "data/velocity");
 
 Stream<dynamic> _combinedStreams() {
   try {
@@ -27,7 +27,9 @@ Stream<dynamic> _combinedStreams() {
       } else if (event is String) {
         // one of the data streams from MQTT -> velocity, height, temperature
         // first character defines type of data received: V, T, H,....
-        int value = int.parse(event.substring(1));
+        print("MQTT EVENT $event");
+        print("VALUE ${event.substring(1)}");
+        num value = num.parse(event.substring(1));
         switch (event[0]) {
           case "T":
             return {"temperature": value};
@@ -60,8 +62,8 @@ Future<Map> _initChartData() async {
   chartData = Map.from(emptyChartData); // reset data in init
   await _mqtt.connect();
   _mqtt.subscribeToTopic("data/velocity");
-  _mqtt.subscribeToTopic("data/height");
-  _mqtt.subscribeToTopic("data/temperature");
+  //_mqtt.subscribeToTopic("data/height");
+  //_mqtt.subscribeToTopic("data/temperature");
   return Map.from(emptyChartData);
 }
 

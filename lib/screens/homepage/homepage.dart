@@ -28,18 +28,20 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   int currentPageIdx = 0;
   bool droneFlight = false;
-  bool droneOnline = false;
   FlightData flightData = FlightData();
 
   @override
   void initState() {
     super.initState();
     colorSettings(context.read<ThemeManager>().isDark);
+
+    // init drone status
+    _initConnectivity();
   }
 
   late final _pages = <Widget>[
     FlightRecords(flightData: flightData),
-    LiveView(),
+    const LiveView(),
   ];
 
   void _stopRecording() async {
@@ -62,6 +64,9 @@ class _HomePageState extends State<HomePage> {
     // set flag on database
     RealtimeDatabaseService().updateData("", {"is_connected": true});
     droneFlight = true;
+  }
+
+  void _initConnectivity() async {
   }
 
   @override
@@ -112,17 +117,12 @@ class _HomePageState extends State<HomePage> {
         },
       ),
       body: Stack(children: [
-        FloatingCenterMenu(
-          startRecording: _startRecording,
-          stopRecording: _stopRecording,
-          droneOnline: droneOnline,
-        ),
         StreamBuilder(
             stream: RealtimeDatabaseService().listenToValue("is_online"),
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 Object? isOnline = snapshot.data!.snapshot.value;
-                droneOnline = isOnline as bool;
+                print("Data: $isOnline");
                 if (isOnline == true) {
                   // drone flag "is_online" -> checked -> ready to connect
                   return StreamBuilder<dynamic>(
@@ -188,6 +188,10 @@ class _HomePageState extends State<HomePage> {
               return const Center(
                   child: Text("Connection Problems to Database"));
             }),
+            FloatingCenterMenu(
+          startRecording: _startRecording,
+          stopRecording: _stopRecording,
+        ),
       ]),
     );
   }
