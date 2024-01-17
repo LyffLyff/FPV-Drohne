@@ -15,7 +15,7 @@ class StorageService {
     try {
       await storage.ref("$storageFolder/$filename").putFile(file);
     } on firebase_core.FirebaseException catch (error) {
-      print(error);
+      Logger().e(error);
     }
   }
 

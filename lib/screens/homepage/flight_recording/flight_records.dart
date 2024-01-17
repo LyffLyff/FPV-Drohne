@@ -3,74 +3,83 @@ import 'package:drone_2_0/screens/homepage/flight_recording/chart_data.dart';
 import 'package:drone_2_0/screens/homepage/flight_recording/flight_data.dart';
 import 'package:drone_2_0/screens/homepage/flight_recording/stream_displayer.dart';
 import 'package:drone_2_0/service/mqtt_manager.dart';
-import 'package:drone_2_0/widgets/loading_icons.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'package:async/async.dart';
 
-final _mqtt = MQTTManager("192.168.0.103", "data/velocity");
-
-Stream<dynamic> _combinedStreams() {
-  try {
-    final mqttStream = _mqtt.messageStream;
-    final periodicStream = Stream<int>.periodic(
-      const Duration(seconds: 1),
-      (count) => count, // Emit the current count
-    );
-    final combinedStream = StreamGroup.merge([periodicStream, mqttStream]);
-
-    return combinedStream.map((event) {
-      if (event is int) {
-        // If it's a periodic value, emit it as 'periodicValue'
-        return {'periodicValue': event};
-      } else if (event is String) {
-        // one of the data streams from MQTT -> velocity, height, temperature
-        // first character defines type of data received: V, T, H,....
-        print("MQTT EVENT $event");
-        print("VALUE ${event.substring(1)}");
-        num value = num.parse(event.substring(1));
-        switch (event[0]) {
-          case "T":
-            return {"temperature": value};
-          case "V":
-            return {"velocity": value};
-          case "H":
-            return {"height": value};
-        }
-      }
-      return null;
-    }).where((data) => data != null); // Filter out null values
-  } on FirebaseException catch (e) {
-    Logger().e(e);
-    return const Stream.empty();
-  }
-}
-
-Map<String, List<ChartData>> emptyChartData = {
+Map<String, List<ChartData>> _emptyChartData = {
   "velocity": [],
   "height": [],
   "temperature": [],
 };
-Map<String, List<ChartData>> chartData =
-    Map.from(emptyChartData); // copy of empty chart data
-int timeAxisValue = 0;
-num lastMeasurement = 1;
-//beidlfurz
-Future<Map> _initChartData() async {
-  // Reading the initial value from the Database before listening to changes
-  chartData = Map.from(emptyChartData); // reset data in init
-  await _mqtt.connect();
-  _mqtt.subscribeToTopic("data/velocity");
-  //_mqtt.subscribeToTopic("data/height");
-  //_mqtt.subscribeToTopic("data/temperature");
-  return Map.from(emptyChartData);
-}
 
-class FlightRecords extends StatelessWidget {
+class FlightRecords extends StatefulWidget {
   final FlightData flightData;
 
-  const FlightRecords({super.key, required this.flightData});
+  const FlightRecords({
+    super.key,
+    required this.flightData,
+  });
+
+  @override
+  State<FlightRecords> createState() => _FlightRecordsState();
+}
+
+class _FlightRecordsState extends State<FlightRecords> {
+  final Logger logger = Logger();
+  late final MQTTManager mqttManager;
+  Map<String, List<ChartData>> chartData =
+      Map.from(_emptyChartData); // copy of empty chart data
+  int timeAxisValue = 0;
+  num lastMeasurement = 1;
+  int flightStartTimestamp = -1;
+  List<dynamic> snapData = [];
+
+  Stream<dynamic> _combinedStreams() {
+    try {
+      final mqttStream = mqttManager.messageStream;
+      final combinedStream = StreamGroup.merge([mqttStream]);
+
+      return combinedStream.map((event) {
+        List<String> data = event.values.first.split(" ");
+        List<dynamic> convertedData = [data[0]];
+        convertedData.add(double.parse(data[1]));
+        convertedData.add(int.parse(data[2]));
+        return convertedData;
+      }).where((data) => data != null); // Filter out null values
+    } on FirebaseException catch (e) {
+      Logger().e(e);
+      return const Stream.empty();
+    }
+  }
+
+  Future<void> initDataConnection() async {
+    // Reading the initial value from the Database before listening to changes
+    chartData = Map.from(_emptyChartData); // reset data in init
+    await mqttManager.connect();
+
+    // Subscribe to topics
+    mqttManager.subscribeToTopic("data/velocity");
+    mqttManager.subscribeToTopic("data/height");
+    mqttManager.subscribeToTopic("data/temperature");
+    logger.i("SUBSCRIBED TO TOPICS");
+  }
+
+  void limitDataPoints(String key) {
+    chartData[key] = (chartData[key]!.length > 500
+        ? chartData[key]!.sublist(chartData[key]!.length - 500)
+        : chartData[key])!;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    // initialize mqtt manager class
+    mqttManager = MQTTManager("192.168.8.111", 1883,
+        "FPV-Drone-Applictation-${DateTime.now().toString()}");
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -87,11 +96,11 @@ class FlightRecords extends StatelessWidget {
           ),
           Expanded(
             child: FutureBuilder(
-              future: _initChartData(),
-              builder: (context, AsyncSnapshot<Map> snapshot) {
-                if (snapshot.hasData) {
-                  //chartData.add(
-                  //    ChartData(timeAxisValue, snapshot.data?["velocity"]));
+                future: initDataConnection(),
+                builder: (context, AsyncSnapshot<void> snapshot) {
+                  if (snapshot.connectionState != ConnectionState.done) {
+                    return const AwaitingConnection();
+                  }
 
                   // Widget return
                   return Column(
@@ -106,37 +115,33 @@ class FlightRecords extends StatelessWidget {
                           }
 
                           if (!snapshot.hasData) {
-                            return const Expanded(child: CircularLoadingIcon());
+                            return const Expanded(child: AwaitingConnection());
                           }
 
                           // Extract data from the snapshot
-                          final Map data = snapshot.data;
-                          final periodicValue = data['periodicValue'];
+                          snapData = snapshot.data;
 
-                          timeAxisValue++;
+                          if (flightStartTimestamp == -1) {
+                            flightStartTimestamp = snapData[2];
+                          }
+                          timeAxisValue = (snapData[2] - flightStartTimestamp);
 
-                          int timestamp = DateTime.now().millisecondsSinceEpoch;
-
-                          if (periodicValue != null) {
-                            chartData["velocity"]?.add(
-                                ChartData(timeAxisValue, lastMeasurement));
-                            flightData.addDatapoint(
-                                timestamp, lastMeasurement.toInt(), -1, -1);
-                          } else {
-                            switch (data.keys.first) {
-                              case "velocity":
-                                chartData["velocity"]?.add(
-                                    ChartData(timeAxisValue, data["velocity"]));
-                                flightData.addDatapoint(
-                                    timestamp, data["velocity"], -1, -1);
-                                lastMeasurement = data["velocity"];
-                              case "height":
-                                chartData["velocity"]?.add(
-                                    ChartData(timeAxisValue, data["velocity"]));
-                              case "temperature":
-                                chartData["velocity"]?.add(
-                                    ChartData(timeAxisValue, data["velocity"]));
-                            }
+                          switch (snapData[0]) {
+                            case "V":
+                              chartData["velocity"]
+                                  ?.add(ChartData(timeAxisValue, snapData[1]));
+                              widget.flightData.addDatapoint(
+                                  snapData[2], snapData[1], -1, -1);
+                              lastMeasurement = snapData[1];
+                              limitDataPoints("velocity");
+                            case "H":
+                              chartData["height"]
+                                  ?.add(ChartData(timeAxisValue, snapData[1]));
+                              limitDataPoints("height");
+                            case "T":
+                              chartData["temperature"]
+                                  ?.add(ChartData(timeAxisValue, snapData[1]));
+                              limitDataPoints("temperature");
                           }
 
                           return Expanded(
@@ -170,11 +175,7 @@ class FlightRecords extends StatelessWidget {
                       ),
                     ],
                   );
-                } else {
-                  return const AwaitingConnection();
-                }
-              },
-            ),
+                }),
           ),
         ],
       ),

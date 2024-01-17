@@ -44,12 +44,16 @@ class FinishedFlight extends StatelessWidget {
   }
 
   void _setWeatherSelection(String weatherIcon) {
-    print(weatherIcon);
     _weatherIcon = weatherIcon;
   }
 
   @override
   Widget build(BuildContext context) {
+    // Init Title Controller
+    DateTime dateTime = DateTime.fromMillisecondsSinceEpoch(endTimestamp);
+    textFieldController.text =
+        "${dateTime.year}-${dateTime.month.toString().padLeft(2, '0')}-${dateTime.day.toString().padLeft(2, '0')} ${dateTime.hour.toString().padLeft(2, '0')}:${dateTime.minute.toString().padLeft(2, '0')}:${dateTime.second.toString().padLeft(2, '0')}";
+
     return Scaffold(
       appBar: AppBar(
         title: const Text("Flight Finished"),

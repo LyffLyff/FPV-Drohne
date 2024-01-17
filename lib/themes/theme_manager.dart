@@ -29,7 +29,6 @@ class ThemeManager extends ChangeNotifier {
   toggleTheme() {
     _isDark = !_isDark;
     setTheme(_isDark);
-    print("Theme is Dark: $_isDark");
   }
 
   String getWeatherIconPath() {

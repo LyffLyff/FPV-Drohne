@@ -7,6 +7,7 @@ class AwaitingConnection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool toggle = false;
     return AlertDialog(
       icon: const Icon(
         Icons.wifi_channel_outlined,
@@ -16,11 +17,18 @@ class AwaitingConnection extends StatelessWidget {
         'Awaiting Connection.....',
         style: context.textTheme.bodyMedium,
         textAlign: TextAlign.center,
-      ).animate(
-        onComplete: (controller) {
-          controller.repeat();
-        },
-      ).fadeOut(curve: Curves.easeInOut, duration: const Duration(seconds: 1)),
+      )
+          .animate(
+            target: 0.5,
+            onComplete: (controller) {
+              toggle = !toggle;
+              controller.repeat(reverse: toggle);
+            },
+          )
+          .fadeOut(
+            curve: Curves.easeInOutSine,
+            duration: const Duration(seconds: 1),
+          ),
     );
   }
 }

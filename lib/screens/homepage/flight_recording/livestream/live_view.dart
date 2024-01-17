@@ -91,8 +91,10 @@ class _LiveViewState extends State<LiveView> {
   @override
   void dispose() async {
     super.dispose();
-    await _videoPlayerController.stopRendererScanning();
-    await _videoPlayerController.dispose();
+    if (_videoPlayerController.value.isInitialized) {
+      await _videoPlayerController.stopRendererScanning();
+      await _videoPlayerController.dispose();
+    }
   }
 
   Future<void> _togglePlaying() async {
