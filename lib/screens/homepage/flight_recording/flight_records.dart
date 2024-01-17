@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'package:async/async.dart';
 
-final _mqtt = MQTTManager("192.168.8.111", "data/velocity");
+final _mqtt = MQTTManager("192.168.0.103", "data/velocity");
 
 Stream<dynamic> _combinedStreams() {
   try {
@@ -56,7 +56,7 @@ Map<String, List<ChartData>> chartData =
     Map.from(emptyChartData); // copy of empty chart data
 int timeAxisValue = 0;
 num lastMeasurement = 1;
-
+//beidlfurz
 Future<Map> _initChartData() async {
   // Reading the initial value from the Database before listening to changes
   chartData = Map.from(emptyChartData); // reset data in init

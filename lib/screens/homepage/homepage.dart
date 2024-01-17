@@ -12,7 +12,7 @@ import 'package:drone_2_0/widgets/side_menu.dart';
 import 'package:drone_2_0/widgets/utils/helper_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:drone_2_0/screens/homepage/flight_recording/flight_records.dart';
-import 'package:drone_2_0/screens/homepage/live_view.dart';
+import 'package:drone_2_0/screens/homepage/flight_recording/livestream/live_view.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:provider/provider.dart';
 
@@ -41,7 +41,11 @@ class _HomePageState extends State<HomePage> {
 
   late final _pages = <Widget>[
     FlightRecords(flightData: flightData),
-    const LiveView(),
+    const LiveView(
+        ipAdress: "192.168.8.105",
+        port: 554,
+        streamName: "live/stream",
+        aspectRatio: 4 / 3),
   ];
 
   void _stopRecording() async {
@@ -66,8 +70,7 @@ class _HomePageState extends State<HomePage> {
     droneFlight = true;
   }
 
-  void _initConnectivity() async {
-  }
+  void _initConnectivity() async {}
 
   @override
   Widget build(BuildContext context) {
@@ -188,7 +191,7 @@ class _HomePageState extends State<HomePage> {
               return const Center(
                   child: Text("Connection Problems to Database"));
             }),
-            FloatingCenterMenu(
+        FloatingCenterMenu(
           startRecording: _startRecording,
           stopRecording: _stopRecording,
         ),
