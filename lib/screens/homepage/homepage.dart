@@ -14,7 +14,6 @@ import 'package:drone_2_0/widgets/utils/helper_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:drone_2_0/screens/homepage/flight_recording/flight_records.dart';
 import 'package:drone_2_0/screens/homepage/flight_recording/livestream/live_view.dart';
-import 'package:go_router/go_router.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:provider/provider.dart';
 

@@ -8,6 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'package:async/async.dart';
 
+enum MQTTData { identifier, value, timestamp }
+
 Map<String, List<ChartData>> _emptyChartData = {
   "velocity": [],
   "height": [],
@@ -47,6 +49,7 @@ class _FlightRecordsState extends State<FlightRecords> {
         convertedData.add(double.parse(data[1]));
         convertedData.add(int.parse(data[2]));
         return convertedData;
+        // ignore: unnecessary_null_comparison
       }).where((data) => data != null); // Filter out null values
     } on FirebaseException catch (e) {
       Logger().e(e);
@@ -70,6 +73,13 @@ class _FlightRecordsState extends State<FlightRecords> {
     chartData[key] = (chartData[key]!.length > 500
         ? chartData[key]!.sublist(chartData[key]!.length - 500)
         : chartData[key])!;
+  }
+
+  setData(String key, int xValue) {
+    chartData[key]?.add(ChartData(xValue, snapData[MQTTData.value.index]));
+    widget.flightData.addDatapoint(key, snapData[MQTTData.value.index], xValue);
+    lastMeasurement = snapData[1];
+    limitDataPoints(key);
   }
 
   @override
@@ -126,23 +136,17 @@ class _FlightRecordsState extends State<FlightRecords> {
                           }
                           timeAxisValue = (snapData[2] - flightStartTimestamp);
 
-                          switch (snapData[0]) {
+                          switch (snapData[MQTTData.identifier.index]) {
                             case "V":
-                              chartData["velocity"]
-                                  ?.add(ChartData(timeAxisValue, snapData[1]));
-                              widget.flightData.addDatapoint(
-                                  snapData[2], snapData[1], -1, -1);
-                              lastMeasurement = snapData[1];
-                              limitDataPoints("velocity");
+                              chartData["velocity"] =
+                                  setData("velocity", timeAxisValue);
                             case "H":
-                              chartData["height"]
-                                  ?.add(ChartData(timeAxisValue, snapData[1]));
-                              limitDataPoints("height");
+                              setData("height", timeAxisValue);
                             case "T":
-                              chartData["temperature"]
-                                  ?.add(ChartData(timeAxisValue, snapData[1]));
-                              limitDataPoints("temperature");
+                              setData("temperature", timeAxisValue);
                           }
+
+                          Logger().i(chartData["height"]?.length);
 
                           return Expanded(
                             child: Padding(

@@ -21,18 +21,29 @@ class FlightData {
   bool flightStarted = false;
 
   // Data
-  List<int> heightData = [];
-  List<int> velocityData = [];
-  List<double> temperatureData = [];
-  List<int> timestampData =
-      []; // a list with the timestamps for each "datapoint"
+  Map<String, Map<String, List<num>>> data = {
+    "velocity": {
+      // {"timestamps" : [], "values" : []}
+      "timestamps": [],
+      "values": [],
+    },
+    "height": {
+      "timestamps": [],
+      "values": [],
+    },
+    "batterVoltage": {
+      "timestamps": [],
+      "values": [],
+    },
+    "temperature": {
+      "timestamps": [],
+      "values": [],
+    },
+  };
 
-  void addDatapoint(int timestamp, int velocityReading,
-      double temperatureReading, int heightReading) {
-    timestampData.add(timestamp);
-    velocityData.add(velocityReading);
-    temperatureData.add(temperatureReading);
-    heightData.add(heightReading);
+  void addDatapoint(String dataKey, dynamic newValue, int timestamp) {
+    data[dataKey]?["timestamps"]?.add(timestamp);
+    data[dataKey]?["values"]?.add(newValue);
   }
 
   void startFlight(String userId, int timestamp) {
@@ -71,10 +82,7 @@ class FlightData {
       "title": title,
       "startTimestamp": startTimestamp,
       "endTimestamp": endTimestamp,
-      "heightData": heightData,
-      "velocityData": velocityData,
-      "temperatureData": temperatureData,
-      "timestampData": timestampData,
+      "data": data,
     };
   }
 }

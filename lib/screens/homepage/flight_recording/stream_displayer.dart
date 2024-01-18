@@ -2,7 +2,6 @@ import 'package:drone_2_0/extensions/extensions.dart';
 import 'package:drone_2_0/widgets/utils/helper_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
-
 import 'chart_data.dart';
 
 class StreamDisplay extends StatelessWidget {
@@ -42,13 +41,12 @@ class StreamDisplay extends StatelessWidget {
 
           // Data
           series: <CartesianSeries>[
-            LineSeries<ChartData, int>(
+            LineSeries<ChartData, num>(
               dataSource: dataArray,
               xValueMapper: (ChartData time, _) => time.x,
               yValueMapper: (ChartData yValue, _) => yValue.y,
               markerSettings: const MarkerSettings(
-                isVisible: true,
-                shape: DataMarkerType.circle,
+                isVisible: false,
               ),
             ),
           ],
@@ -65,7 +63,10 @@ class StreamDisplay extends StatelessWidget {
               text: TextSpan(
                 style: context.textTheme.headlineLarge,
                 children: <TextSpan>[
-                  TextSpan(text: lastMeasurement.toString()),
+                  TextSpan(
+                      text: dataArray.isNotEmpty
+                          ? dataArray[dataArray.length - 1].y.toString()
+                          : "-"),
                   TextSpan(
                     text: ' m/s',
                     style: context.textTheme.headlineMedium,

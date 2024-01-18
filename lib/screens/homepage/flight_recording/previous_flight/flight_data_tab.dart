@@ -82,7 +82,7 @@ class _FlightDataTabState extends State<FlightDataTab> {
             LineSeries<ChartData, num>(
               name: "help",
               dataSource: widget.flightDataValues,
-              xValueMapper: (ChartData data, _) => num.parse(data.x),
+              xValueMapper: (ChartData data, _) => data.x,
               yValueMapper: (ChartData data, _) => data.y,
             ),
             LineSeries<ChartData2, num>(
@@ -113,7 +113,7 @@ class _FlightDataTabState extends State<FlightDataTab> {
 
 class ChartData {
   ChartData(this.x, this.y);
-  final String x;
+  final num x;
   final num? y;
 }
 

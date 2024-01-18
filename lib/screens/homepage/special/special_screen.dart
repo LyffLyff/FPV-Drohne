@@ -1,6 +1,5 @@
 import 'package:drone_2_0/extensions/extensions.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 
 class SpecialScreen extends StatelessWidget {
   const SpecialScreen({super.key});
