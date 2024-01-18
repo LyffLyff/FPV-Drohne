@@ -93,6 +93,7 @@ flutter:
     - assets/images/weather_icons/light/
     - assets/loading/
     - assets/fonts/
+    - assets/videos/
   fonts:
   # Differentiation of Weights based on naming convention 
     - family: Raleway
