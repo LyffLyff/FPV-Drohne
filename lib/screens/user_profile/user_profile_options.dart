@@ -21,9 +21,9 @@ class _UserProfileOptionsState extends State<UserProfileOptions> {
 
   @override
   Widget build(BuildContext context) {
-    _emailController.text = context.read<AuthProvider>().email;
-    _userNameController.text = context.read<AuthProvider>().username;
-    _nameController.text = context.read<AuthProvider>().fullName;
+    _emailController.text = context.read<AuthenticationProvider>().email;
+    _userNameController.text = context.read<AuthenticationProvider>().username;
+    _nameController.text = context.read<AuthenticationProvider>().fullName;
     return Scaffold(
       appBar: AppBar(
         title: const Text("User Options"),
@@ -57,8 +57,9 @@ class _UserProfileOptionsState extends State<UserProfileOptions> {
             ElevatedButton(
                 child: const Text("Save Userdata"),
                 onPressed: () async {
-                  final userProvider =
-                      Provider.of<AuthProvider>(context, listen: false);
+                  final userProvider = Provider.of<AuthenticationProvider>(
+                      context,
+                      listen: false);
                   if (context.mounted) {
                     var message = await _saveUserdata(
                         userProvider,
@@ -73,7 +74,8 @@ class _UserProfileOptionsState extends State<UserProfileOptions> {
                     }
                   }
                   // Back to UserProfile
-                  FocusScope.of(context).requestFocus(FocusNode()); // hide on-screen keyboard
+                  FocusScope.of(context)
+                      .requestFocus(FocusNode()); // hide on-screen keyboard
                   Navigator.pop(context);
                 })
           ],
@@ -91,8 +93,8 @@ class _UserProfileOptionsState extends State<UserProfileOptions> {
   }
 }
 
-Future<String> _saveUserdata(AuthProvider userProvider, String newEmail,
-    String newUsername, String newName) async {
+Future<String> _saveUserdata(AuthenticationProvider userProvider,
+    String newEmail, String newUsername, String newName) async {
   // Updating Email
   await userProvider.updateEmail(newEmail);
   //-- This operation is sensitive and requires recent authentication. Log in again before retrying this request.

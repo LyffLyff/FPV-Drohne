@@ -1,6 +1,6 @@
 import 'package:drone_2_0/data/providers/data_cache.dart';
 import 'package:drone_2_0/screens/homepage/app_info.dart';
-import 'package:drone_2_0/screens/homepage/flight_recording/previous_flights.dart';
+import 'package:drone_2_0/screens/homepage/flight_recording/previous_flight/previous_flights.dart';
 import 'package:drone_2_0/screens/pre_login/welcome_screen.dart';
 import 'package:drone_2_0/screens/settings/settings.dart';
 import 'package:drone_2_0/screens/user_profile/user_profile.dart';
@@ -72,9 +72,9 @@ class NavDrawer extends StatelessWidget {
                       child: RadialExpansion(
                         maxRadius: kMaxRadius,
                         child: profileImage(
-                            context.read<AuthProvider>().storageUrl,
+                            context.read<AuthenticationProvider>().storageUrl,
                             context
-                                .read<AuthProvider>()
+                                .read<AuthenticationProvider>()
                                 .profileImageDownloadURL),
                       ),
                     ),
@@ -82,7 +82,7 @@ class NavDrawer extends StatelessWidget {
                 ),
                 const VerticalSpace(height: 10),
                 Text(
-                  Provider.of<AuthProvider>(context).username,
+                  Provider.of<AuthenticationProvider>(context).username,
                   textAlign: TextAlign.start,
                   overflow: TextOverflow.fade,
                   softWrap: false,

@@ -57,6 +57,7 @@ dependencies:
   flutter_animate: ^4.3.0
   mqtt_client: ^10.0.1
   flutter_vlc_player: ^7.2.0
+  flutter_cube: ^0.1.1
 
 dev_dependencies:
   flutter_test:
@@ -65,9 +66,9 @@ dev_dependencies:
   flutter_launcher_icons: ^0.13.1
 
 flutter_native_splash:
-  image: "assets/images/logo2.png"
+  image: "assets/images/logo_dark.png"
   color: "#e3e9ed"
-  image_dark: "assets/images/logo2.png"
+  image_dark: "assets/images/logo_light.png"
   color_dark: "#12181c"
   fullscreen: true
 
@@ -94,6 +95,7 @@ flutter:
     - assets/loading/
     - assets/fonts/
     - assets/videos/
+    - assets/models/
   fonts:
   # Differentiation of Weights based on naming convention 
     - family: Raleway

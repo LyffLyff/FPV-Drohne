@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:logger/logger.dart';
 
-class AuthProvider with ChangeNotifier {
+class AuthenticationProvider with ChangeNotifier {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final UserProfileService _userDocument = UserProfileService();
 
@@ -90,15 +90,16 @@ class AuthProvider with ChangeNotifier {
   Future<void> createAltLoginDocument(User altLoginUser) async {
     // creating document for users logged in with alternative Login method -> Google, Apple, Github,...
     // trying to fetch userdata if already logged in once -> always called on any new login
-    Map<String, dynamic>? userData = await _userDocument.fetchUserData(userId: altLoginUser.uid);
-    
+    Map<String, dynamic>? userData =
+        await _userDocument.fetchUserData(userId: altLoginUser.uid);
+
     UserDataModel altLoginUserData = UserDataModel(
         userId: altLoginUser.uid,
         email: altLoginUser.email ?? "",
         fullName: userData?["fullName"] ?? "",
         username: userData?["userName"] ?? altLoginUser.displayName,
-        storagePath:  userData?["storagePath"] ?? "");
-      
+        storagePath: userData?["storagePath"] ?? "");
+
     await _userDocument.setMultipleUserValues(
         userId: altLoginUser.uid, newUserdata: altLoginUserData.toMap());
   }
@@ -112,5 +113,17 @@ class AuthProvider with ChangeNotifier {
     _storagePath = data?["storagePath"] ?? "";
 
     await initStoragePath();
+  }
+
+  Future<String> resetPassword({required String email}) async {
+    String message = "Sent Email";
+    await _auth.sendPasswordResetEmail(email: email).then((value) {
+      return true;
+    }).catchError((e) {
+      Logger().e("Reset Password Exception: $e");
+      message = e.toString();
+      return false;
+    });
+    return message;
   }
 }

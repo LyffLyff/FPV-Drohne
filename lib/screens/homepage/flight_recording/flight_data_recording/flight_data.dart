@@ -10,6 +10,11 @@ enum FlightRecordingFinishType {
   error, // some kind of error occured
 }
 
+final Map<String, List<num>> _emptySingleSensorMap = {
+  "timestamps": [],
+  "values": [],
+};
+
 class FlightData {
   // General
   String title = "";
@@ -22,23 +27,10 @@ class FlightData {
 
   // Data
   Map<String, Map<String, List<num>>> data = {
-    "velocity": {
-      // {"timestamps" : [], "values" : []}
-      "timestamps": [],
-      "values": [],
-    },
-    "height": {
-      "timestamps": [],
-      "values": [],
-    },
-    "batterVoltage": {
-      "timestamps": [],
-      "values": [],
-    },
-    "temperature": {
-      "timestamps": [],
-      "values": [],
-    },
+    "velocity": Map.from(_emptySingleSensorMap),
+    "height": Map.from(_emptySingleSensorMap),
+    "batterVoltage": Map.from(_emptySingleSensorMap),
+    "temperature": Map.from(_emptySingleSensorMap)
   };
 
   void addDatapoint(String dataKey, dynamic newValue, int timestamp) {

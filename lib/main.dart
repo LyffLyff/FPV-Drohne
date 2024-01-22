@@ -20,7 +20,7 @@ void main() async {
 
   // Initialize App
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  AuthProvider authProvider = AuthProvider();
+  AuthenticationProvider authProvider = AuthenticationProvider();
   User? user = authProvider.currentUser;
   await authProvider.initUser();
 
@@ -62,7 +62,6 @@ class MyApp extends StatelessWidget {
 
   void cachingImages(BuildContext context) {
     // preventing pop-in of assets
-    precacheImage(const AssetImage("assets/images/logo2.png"), context);
     precacheImage(
         const AssetImage("assets/images/dronetech/logo_light.png"), context);
     precacheImage(

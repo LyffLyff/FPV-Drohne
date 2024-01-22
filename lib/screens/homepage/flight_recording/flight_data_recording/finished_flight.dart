@@ -22,7 +22,10 @@ class FinishedFlight extends StatelessWidget {
 
     // update title on db
     UserProfileService().updateFlightDataProperty(
-        context.read<AuthProvider>().userId, endTimestamp, "title", newTitle);
+        context.read<AuthenticationProvider>().userId,
+        endTimestamp,
+        "title",
+        newTitle);
 
     // update title in local storage
     Provider.of<DataCache>(context, listen: false)
@@ -30,7 +33,7 @@ class FinishedFlight extends StatelessWidget {
 
     // update weather icon on db
     UserProfileService().updateFlightDataProperty(
-        context.read<AuthProvider>().userId,
+        context.read<AuthenticationProvider>().userId,
         endTimestamp,
         "weather",
         _weatherIcon);

@@ -24,7 +24,9 @@ class _UserProfileState extends State<UserProfile> {
   Future<void> _selectProfileImage({required BuildContext context}) async {
     try {
       Logger().i(
-        Provider.of<AuthProvider>(context, listen: false).currentUser?.photoURL,
+        Provider.of<AuthenticationProvider>(context, listen: false)
+            .currentUser
+            ?.photoURL,
       );
       final results = await FilePicker.platform.pickFiles(
         allowMultiple: false,
@@ -41,7 +43,7 @@ class _UserProfileState extends State<UserProfile> {
         await StorageService().uploadFile(folder, path!, filename);
 
         // delete old profile image from Storage
-        var oldStorageURL = context.read<AuthProvider>().storageUrl;
+        var oldStorageURL = context.read<AuthenticationProvider>().storageUrl;
         if (oldStorageURL != "") {
           await StorageService().deleteFile(oldStorageURL);
           Logger().i("Deleted Old Profile Image");
@@ -49,7 +51,7 @@ class _UserProfileState extends State<UserProfile> {
 
         // set new Storage URL in Auth User
         final newStorageURL = "$folder/$filename";
-        await Provider.of<AuthProvider>(context, listen: false)
+        await Provider.of<AuthenticationProvider>(context, listen: false)
             .updatePhotoURL(newStorageURL);
 
         print(path);
@@ -89,8 +91,10 @@ class _UserProfileState extends State<UserProfile> {
                     child: Hero(
                       tag: "profile_image",
                       child: profileImage(
-                          context.read<AuthProvider>().storageUrl,
-                          context.read<AuthProvider>().profileImageDownloadURL),
+                          context.read<AuthenticationProvider>().storageUrl,
+                          context
+                              .read<AuthenticationProvider>()
+                              .profileImageDownloadURL),
                     ),
                   ),
                 ),
@@ -108,7 +112,7 @@ class _UserProfileState extends State<UserProfile> {
               Container(
                 margin: const EdgeInsets.all(Margins.stdMargin),
                 child: Text(
-                  Provider.of<AuthProvider>(context).username,
+                  Provider.of<AuthenticationProvider>(context).username,
                   overflow: TextOverflow.fade,
                   softWrap: false,
                   style: context.textTheme.titleLarge,
@@ -120,13 +124,13 @@ class _UserProfileState extends State<UserProfile> {
             height: 32,
           ),
           Text(
-            Provider.of<AuthProvider>(context).fullName,
+            Provider.of<AuthenticationProvider>(context).fullName,
             overflow: TextOverflow.fade,
             softWrap: false,
             style: context.textTheme.bodyMedium,
           ),
           Text(
-            Provider.of<AuthProvider>(context).email,
+            Provider.of<AuthenticationProvider>(context).email,
             style: context.textTheme.bodyMedium,
           ),
           const VerticalSpace(),

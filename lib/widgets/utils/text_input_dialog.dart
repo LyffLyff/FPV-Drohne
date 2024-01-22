@@ -39,7 +39,7 @@ Future<void> displayTextInputDialog(
 
                       // update title on db
                       UserProfileService().updateFlightDataProperty(
-                          context.read<AuthProvider>().userId,
+                          context.read<AuthenticationProvider>().userId,
                           endTimestamp,
                           "title",
                           newTitle);

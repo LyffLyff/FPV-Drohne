@@ -1,8 +1,10 @@
 import 'package:drone_2_0/screens/login/registration.dart';
 import 'package:drone_2_0/screens/login/login.dart';
 import 'package:drone_2_0/themes/theme_constants.dart';
+import 'package:drone_2_0/themes/theme_manager.dart';
 import 'package:drone_2_0/widgets/utils/helper_widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../../widgets/animations/animation_routes.dart';
 import 'package:drone_2_0/extensions/extensions.dart';
 
@@ -13,8 +15,8 @@ class WelcomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const String logoPath = "assets/images/logo2.png";
-    precacheImage(const AssetImage(logoPath), context);
+    final logoPath = context.read<ThemeManager>().getLogoPath();
+    precacheImage(AssetImage(logoPath), context);
     return Scaffold(
       body: SafeArea(
         child: Container(
@@ -23,14 +25,14 @@ class WelcomeScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               const VerticalSpace(height: 40),
-              const FadeInImage(
-                // TODO: workaround for image pop-in
-                image: AssetImage(logoPath),
+              FadeInImage(
+                image: AssetImage(context.read<ThemeManager>().getLogoPath()),
                 fit: BoxFit.fill,
-                placeholder: AssetImage(logoPath),
+                placeholder:
+                    AssetImage(context.read<ThemeManager>().getLogoPath()),
               ),
-              const Divider(),
-              const VerticalSpace(height: 10),
+              Divider(),
+              VerticalSpace(height: 10),
               Align(
                   alignment: Alignment.center,
                   child: Text(
@@ -38,22 +40,22 @@ class WelcomeScreen extends StatelessWidget {
                     textAlign: TextAlign.center,
                     style: context.textTheme.bodyMedium,
                   )),
-              const VerticalSpace(height: 10),
+              VerticalSpace(height: 10),
               ElevatedButton(
-                child: const Text("Already have an account? Sign In"),
+                child: Text("Already have an account? Sign In"),
                 onPressed: () {
                   Navigator.of(context)
                       .push(pageRouteAnimation(const LoginScreen()));
                 },
               ),
               ElevatedButton(
-                child: const Text("Register as new User"),
+                child: Text("Register as new User"),
                 onPressed: () {
                   Navigator.of(context)
                       .push(pageRouteAnimation(const Registration()));
                 },
               ),
-              const Spacer(),
+              Spacer(),
             ],
           ),
         ),

@@ -19,8 +19,8 @@ class AppInfo extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 32),
           child: Column(
             children: [
-              const Image(
-                image: AssetImage("assets/images/logo2.png"),
+              Image.asset(
+                context.read<ThemeManager>().getLogoPath(),
                 fit: BoxFit.fitWidth,
               ),
               const VerticalSpace(),
@@ -30,7 +30,9 @@ class AppInfo extends StatelessWidget {
                 style: context.textTheme.bodyLarge,
               ),
               Image(
-                image: Provider.of<ThemeManager>(context).isDark ? const AssetImage("assets/images/dronetech/logo_light.png") : const AssetImage("assets/images/dronetech/logo_dark.png"),
+                image: Provider.of<ThemeManager>(context).isDark
+                    ? const AssetImage("assets/images/dronetech/logo_light.png")
+                    : const AssetImage("assets/images/dronetech/logo_dark.png"),
                 fit: BoxFit.fitWidth,
               ),
               Table(
@@ -59,8 +61,7 @@ class AppInfo extends StatelessWidget {
                   ]),
                   TableRow(children: [
                     TableCell(
-                      child:
-                          AppInfoText(text: "Video & Data Transfer:"),
+                      child: AppInfoText(text: "Video & Data Transfer:"),
                     ),
                     TableCell(
                       child: AppInfoText(text: "Ben Heinicke"),
@@ -68,8 +69,7 @@ class AppInfo extends StatelessWidget {
                   ]),
                   TableRow(children: [
                     TableCell(
-                      child:
-                          AppInfoText(text: "App\nProgramming:"),
+                      child: AppInfoText(text: "App\nProgramming:"),
                     ),
                     TableCell(
                       child: AppInfoText(text: "Sebastian Hinterberger"),

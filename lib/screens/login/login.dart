@@ -1,5 +1,6 @@
 import 'package:drone_2_0/data/providers/auth_provider.dart';
 import 'package:drone_2_0/screens/login/registration.dart';
+import 'package:drone_2_0/screens/login/reset_password.dart';
 import 'package:drone_2_0/service/auth/auth_service.dart';
 import 'package:drone_2_0/screens/homepage/homepage.dart';
 import 'package:drone_2_0/themes/theme_constants.dart';
@@ -21,10 +22,10 @@ class LoginScreen extends StatefulWidget {
   static String id = 'LoginScreen';
 
   @override
-  _LoginScreenState createState() => _LoginScreenState();
+  LoginScreenState createState() => LoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class LoginScreenState extends State<LoginScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
@@ -65,7 +66,7 @@ class _LoginScreenState extends State<LoginScreen> {
             TextButton(
               onPressed: () {
                 Navigator.of(context).push(
-                  pageRouteAnimation(const Text("Reset Password")),
+                  pageRouteAnimation(const ResetPassword()),
                 );
               },
               child: const Align(
@@ -187,7 +188,7 @@ void _googleLogin(BuildContext context) async {
       if (credentials != null) {
         // initializing document for user
         User? user = credentials.user;
-        context.read<AuthProvider>().createAltLoginDocument(user!);
+        context.read<AuthenticationProvider>().createAltLoginDocument(user!);
 
         _navigate(context: context);
       } else {
@@ -203,7 +204,7 @@ void _googleLogin(BuildContext context) async {
 }
 
 void _navigate({required BuildContext context}) async {
-  await context.read<AuthProvider>().initUser();
+  await context.read<AuthenticationProvider>().initUser();
   // Use Navigator to navigate to the HomePage
   Navigator.of(context).pushReplacement(MaterialPageRoute(
     builder: (context) => const HomePage(),

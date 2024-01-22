@@ -1,7 +1,8 @@
-import 'package:drone_2_0/screens/homepage/flight_recording/awaiting_connection_dialogue.dart';
-import 'package:drone_2_0/screens/homepage/flight_recording/chart_data.dart';
-import 'package:drone_2_0/screens/homepage/flight_recording/flight_data.dart';
-import 'package:drone_2_0/screens/homepage/flight_recording/stream_displayer.dart';
+import 'package:drone_2_0/extensions/extensions.dart';
+import 'package:drone_2_0/screens/homepage/flight_recording/flight_data_recording/awaiting_connection_dialogue.dart';
+import 'package:drone_2_0/screens/homepage/flight_recording/flight_data_recording/chart_data.dart';
+import 'package:drone_2_0/screens/homepage/flight_recording/flight_data_recording/flight_data.dart';
+import 'package:drone_2_0/screens/homepage/flight_recording/flight_data_recording/stream_displayer.dart';
 import 'package:drone_2_0/service/mqtt_manager.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -18,10 +19,14 @@ Map<String, List<ChartData>> _emptyChartData = {
 
 class FlightRecords extends StatefulWidget {
   final FlightData flightData;
+  final String ipAdress;
+  final int port;
 
   const FlightRecords({
     super.key,
     required this.flightData,
+    required this.ipAdress,
+    required this.port,
   });
 
   @override
@@ -87,7 +92,7 @@ class _FlightRecordsState extends State<FlightRecords> {
     super.initState();
 
     // initialize mqtt manager class
-    mqttManager = MQTTManager("192.168.8.111", 1883,
+    mqttManager = MQTTManager(widget.ipAdress, widget.port,
         "FPV-Drone-Applictation-${DateTime.now().toString()}");
   }
 
@@ -97,11 +102,20 @@ class _FlightRecordsState extends State<FlightRecords> {
       length: 3,
       child: Column(
         children: [
-          const TabBar(
+          TabBar(
             tabs: [
-              Tab(icon: Icon(Icons.speed)),
-              Tab(icon: Icon(Icons.height_outlined)),
-              Tab(icon: Icon(Icons.thermostat_rounded)),
+              Tab(
+                  icon: Icon(
+                Icons.speed,
+                color: context.primaryColor,
+              )),
+              Tab(
+                  icon:
+                      Icon(Icons.height_outlined, color: context.primaryColor)),
+              Tab(
+                icon:
+                    Icon(Icons.thermostat_rounded, color: context.primaryColor),
+              ),
             ],
           ),
           Expanded(

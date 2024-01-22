@@ -13,7 +13,7 @@ class AuthService {
     required String password,
     required String username,
     required String name,
-    required AuthProvider authProvider,
+    required AuthenticationProvider authProvider,
   }) async {
     try {
       // Create User with Email and Password
@@ -89,7 +89,7 @@ class AuthService {
     final GoogleSignInAuthentication googleAuth =
         await googleUser.authentication;
 
-    // Create a new credential  
+    // Create a new credential
     final credential = GoogleAuthProvider.credential(
       accessToken: googleAuth.accessToken,
       idToken: googleAuth.idToken,

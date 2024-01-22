@@ -31,6 +31,12 @@ class ThemeManager extends ChangeNotifier {
     setTheme(_isDark);
   }
 
+  String getLogoPath() {
+    return _isDark
+        ? "assets/images/logo_light.png"
+        : "assets/images/logo_dark.png";
+  }
+
   String getWeatherIconPath() {
     return _isDark
         ? "assets/images/weather_icons/light/"

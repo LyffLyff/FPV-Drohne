@@ -46,7 +46,8 @@ class SettingsScreen extends StatelessWidget {
                   themeManager.setTheme(value);
                   colorSettings(value);
                   SettingsService().addNewSettings(
-                    userId: Provider.of<AuthProvider>(context, listen: false)
+                    userId: Provider.of<AuthenticationProvider>(context,
+                            listen: false)
                         .userId,
                     settings: {
                       "isDark": themeManager.isDark,

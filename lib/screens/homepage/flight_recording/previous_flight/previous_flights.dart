@@ -38,7 +38,7 @@ class _PreviousFlightsState extends State<PreviousFlights> {
     // if empty records -> read from db
     // if local timestamp (flightRecordsAge) is older (<) than the one in the database
     final dataCache = Provider.of<DataCache>(context);
-    final userId = context.read<AuthProvider>().userId;
+    final userId = context.read<AuthenticationProvider>().userId;
     final bool emptyFlightRecords =
         Provider.of<DataCache>(context).previousFlights.isEmpty;
 
@@ -57,7 +57,8 @@ class _PreviousFlightsState extends State<PreviousFlights> {
   }
 
   int _getDurationInSeconds(int index) {
-    return (data?[index]["endTimestamp"] - data?[index]["startTimestamp"]);
+    return (data?[index]["endTimestamp"] - data?[index]["startTimestamp"]) ~/
+        1000;
   }
 
   Expanded _getHeaderButton(String text, SortingTypes type) {

@@ -108,7 +108,7 @@ class _RegistrationState extends State<Registration> {
                     password: _passwordController.text,
                     username: _userNameController.text,
                     name: _nameController.text + _sirNameController.text,
-                    authProvider: context.read<AuthProvider>(),
+                    authProvider: context.read<AuthenticationProvider>(),
                   );
 
                   // ignore: use_build_context_synchronously
