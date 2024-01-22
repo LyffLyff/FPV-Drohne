@@ -10,6 +10,7 @@ class AppTheme {
     primarySwatch: createMaterialColor(LightColors.primaryColor),
     primaryColor: LightColors.primaryColor,
     hintColor: LightColors.accentColor,
+    dividerColor: Colors.white,
 
     // Text
     textTheme: TextThemes.lightTextTheme,
@@ -40,6 +41,7 @@ class AppTheme {
     primarySwatch: createMaterialColor(DarkColors.primaryColor),
     primaryColor: DarkColors.primaryColor,
     hintColor: DarkColors.accentColor,
+    dividerColor: Colors.grey.shade900,
 
     // Text
     textTheme: TextThemes.darkTextTheme,

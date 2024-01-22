@@ -81,12 +81,15 @@ class NavDrawer extends StatelessWidget {
                   ),
                 ),
                 const VerticalSpace(height: 10),
-                Text(
-                  Provider.of<AuthenticationProvider>(context).username,
-                  textAlign: TextAlign.start,
-                  overflow: TextOverflow.fade,
-                  softWrap: false,
-                  style: context.textTheme.bodyMedium,
+                SizedBox(
+                  height: 25,
+                  child: Text(
+                    Provider.of<AuthenticationProvider>(context).username,
+                    textAlign: TextAlign.start,
+                    overflow: TextOverflow.fade,
+                    softWrap: false,
+                    style: context.textTheme.bodyMedium,
+                  ),
                 ),
               ],
             ),

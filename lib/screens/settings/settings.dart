@@ -33,6 +33,8 @@ class SettingsScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               SwitchListTile.adaptive(
+                activeColor: Colors.white,
+                inactiveTrackColor: Colors.grey.shade300,
                 value: themeManager.isDark,
                 title: const Text("Theme Mode"),
                 subtitle: Text(

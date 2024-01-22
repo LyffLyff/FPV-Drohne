@@ -4,6 +4,7 @@ import 'package:drone_2_0/screens/homepage/3d_rotation/drone_model_viewer.dart';
 import 'package:drone_2_0/screens/homepage/flight_recording/flight_data_recording/finished_flight.dart';
 import 'package:drone_2_0/screens/homepage/flight_recording/flight_data_recording/flight_data.dart';
 import 'package:drone_2_0/screens/homepage/floating_center_menu.dart';
+import 'package:drone_2_0/screens/homepage/ip_dialogue.dart';
 import 'package:drone_2_0/screens/homepage/special/special_screen.dart';
 import 'package:drone_2_0/screens/settings/app_settings.dart';
 import 'package:drone_2_0/service/realtime_db_service.dart';
@@ -16,6 +17,7 @@ import 'package:flutter/material.dart';
 import 'package:drone_2_0/screens/homepage/flight_recording/flight_data_recording/flight_records.dart';
 import 'package:drone_2_0/screens/homepage/flight_recording/livestream/live_view.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
+import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
@@ -28,7 +30,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final TextEditingController _ipAdressController = TextEditingController();
   String ipAdress = "";
   bool ipAdressSelected = false;
   int currentPageIdx = 0;
@@ -47,14 +48,16 @@ class _HomePageState extends State<HomePage> {
   late final _pages = <Widget>[
     FlightRecords(
       flightData: flightData,
-      ipAdress: '',
+      ipAdress: ipAdress,
       port: 1883,
     ),
-    const DroneModelViewer(
+    DroneModelViewer(
       title: "Drone",
+      ipAdress: ipAdress,
+      port: 1883,
     ),
-    const LiveView(
-        ipAdress: "192.168.8.105",
+    LiveView(
+        ipAdress: ipAdress,
         port: 554,
         streamName: "live/stream",
         aspectRatio: 4 / 3),
@@ -83,6 +86,13 @@ class _HomePageState extends State<HomePage> {
   }
 
   void _initConnectivity() async {}
+
+  void _onInitDialogueDataEntered() {
+    Logger().i("Server Data Entered -> Show Homepage");
+    setState(() {
+      ipAdressSelected = true;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -148,21 +158,9 @@ class _HomePageState extends State<HomePage> {
           },
           child: Stack(children: [
             !ipAdressSelected
-                ? Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      TextField(
-                        controller: _ipAdressController,
-                      ),
-                      IconButton(
-                          onPressed: () {
-                            setState(() {
-                              ipAdress = _ipAdressController.text;
-                              ipAdressSelected = true;
-                            });
-                          },
-                          icon: const Icon(Icons.send))
-                    ],
+                ? IpDialogue(
+                    onDataEntered: _onInitDialogueDataEntered,
+                    ipAdressController: TextEditingController(),
                   )
                 : StreamBuilder(
                     stream:
@@ -238,9 +236,12 @@ class _HomePageState extends State<HomePage> {
                       return const Center(
                           child: Text("Connection Problems to Database"));
                     }),
-            FloatingCenterMenu(
-              startRecording: _startRecording,
-              stopRecording: _stopRecording,
+            Visibility(
+              visible: ipAdressSelected,
+              child: FloatingCenterMenu(
+                startRecording: _startRecording,
+                stopRecording: _stopRecording,
+              ),
             ),
           ]),
         ),

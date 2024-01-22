@@ -33,7 +33,7 @@ class ResetPassword extends StatelessWidget {
                     return;
                   }
                   ScaffoldMessenger.of(context)
-                      .showSnackBar(showErrorSnackBar(message));
+                      .showSnackBar(errorSnackbar(message));
                 },
                 icon: const Icon(Icons.send))
           ],

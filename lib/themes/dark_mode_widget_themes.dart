@@ -25,6 +25,12 @@ class DarkThemeWidgets {
     labelColor: Colors.white, // Icon Color
   );
 
+  static ListTileThemeData listTileThemeData = ListTileThemeData(
+    selectedColor: Colors.grey.shade900,
+    tileColor: Colors.grey.shade900,
+    selectedTileColor: Colors.grey.shade900,
+  );
+
   static ElevatedButtonThemeData elevatedButtonThemeData =
       ElevatedButtonThemeData(
     style: ElevatedButton.styleFrom(

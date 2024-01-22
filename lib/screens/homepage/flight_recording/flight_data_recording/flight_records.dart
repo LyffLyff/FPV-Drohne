@@ -62,16 +62,18 @@ class _FlightRecordsState extends State<FlightRecords> {
     }
   }
 
-  Future<void> initDataConnection() async {
+  Future<bool> initDataConnection() async {
     // Reading the initial value from the Database before listening to changes
     chartData = Map.from(_emptyChartData); // reset data in init
-    await mqttManager.connect();
+    bool error = await mqttManager.connect();
 
     // Subscribe to topics
     mqttManager.subscribeToTopic("data/velocity");
     mqttManager.subscribeToTopic("data/height");
     mqttManager.subscribeToTopic("data/temperature");
     logger.i("SUBSCRIBED TO TOPICS");
+
+    return error;
   }
 
   void limitDataPoints(String key) {
@@ -110,20 +112,27 @@ class _FlightRecordsState extends State<FlightRecords> {
                 color: context.primaryColor,
               )),
               Tab(
-                  icon:
-                      Icon(Icons.height_outlined, color: context.primaryColor)),
+                icon: Icon(
+                  Icons.height_outlined,
+                  color: context.primaryColor,
+                ),
+              ),
               Tab(
-                icon:
-                    Icon(Icons.thermostat_rounded, color: context.primaryColor),
+                icon: Icon(
+                  Icons.thermostat_rounded,
+                  color: context.primaryColor,
+                ),
               ),
             ],
           ),
           Expanded(
             child: FutureBuilder(
                 future: initDataConnection(),
-                builder: (context, AsyncSnapshot<void> snapshot) {
+                builder: (context, AsyncSnapshot<bool> snapshot) {
                   if (snapshot.connectionState != ConnectionState.done) {
                     return const AwaitingConnection();
+                  } else if (snapshot.data == false) {
+                    return ErrorWidget("No MQTT");
                   }
 
                   // Widget return

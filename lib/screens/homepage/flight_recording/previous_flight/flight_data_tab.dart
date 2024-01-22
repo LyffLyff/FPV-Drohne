@@ -69,7 +69,18 @@ class _FlightDataTabState extends State<FlightDataTab> {
       children: [
         SfCartesianChart(
           // Initialize category axis
-          primaryXAxis: CategoryAxis(),
+          primaryXAxis: CategoryAxis(zoomFactor: 0.5),
+          enableAxisAnimation: true,
+          onChartTouchInteractionMove: (tapArgs) {
+            print(tapArgs);
+          },
+          zoomPanBehavior: ZoomPanBehavior(
+
+              /// To enable the pinch zooming as true.
+              enablePinching: true,
+              zoomMode: ZoomMode.x,
+              enablePanning: true,
+              enableMouseWheelZooming: false),
           indicators: <TechnicalIndicators>[
             MomentumIndicator(
               isVisible: true,

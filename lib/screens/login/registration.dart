@@ -118,7 +118,7 @@ class _RegistrationState extends State<Registration> {
                     Navigator.of(context).pushReplacementNamed("LoginScreen");
                   } else {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      showErrorSnackBar(message),
+                      errorSnackbar(message),
                     );
                   }
                 },

@@ -6,11 +6,11 @@ class FloatingCenterMenu extends StatefulWidget {
   final VoidCallback stopRecording;
   final VoidCallback startRecording;
 
-  const FloatingCenterMenu(
-      {super.key,
-      required this.stopRecording,
-      required this.startRecording,
-      });
+  const FloatingCenterMenu({
+    super.key,
+    required this.stopRecording,
+    required this.startRecording,
+  });
 
   @override
   State<FloatingCenterMenu> createState() => _FloatingCenterMenuState();
@@ -75,6 +75,10 @@ class _FloatingCenterMenuState extends State<FloatingCenterMenu> {
               child: Row(
                 children: [
                   IconButton.filled(
+                    style: const ButtonStyle(
+                        backgroundColor:
+                            // hiding the background purple which is standard
+                            MaterialStatePropertyAll(Colors.transparent)),
                     iconSize: 24,
                     onPressed: () {
                       print("Toggle Recording");

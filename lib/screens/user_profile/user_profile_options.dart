@@ -69,7 +69,7 @@ class _UserProfileOptionsState extends State<UserProfileOptions> {
                     if (!message.contains("Success")) {
                       // ignore: use_build_context_synchronously
                       ScaffoldMessenger.of(context).showSnackBar(
-                        showErrorSnackBar(message),
+                        errorSnackbar(message),
                       );
                     }
                   }

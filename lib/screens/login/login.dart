@@ -171,7 +171,7 @@ void _loginWithEmailAndPassword(
       Navigator.pop(context);
       print("Error");
       ScaffoldMessenger.of(context).showSnackBar(
-        showErrorSnackBar(message),
+        errorSnackbar(message),
       );
     }
   }
@@ -194,7 +194,7 @@ void _googleLogin(BuildContext context) async {
       } else {
         Navigator.pop(context);
         ScaffoldMessenger.of(context).showSnackBar(
-          showErrorSnackBar("ERROR ON GOOGLE SIGN IN"),
+          errorSnackbar("ERROR ON GOOGLE SIGN IN"),
         );
       }
     }
