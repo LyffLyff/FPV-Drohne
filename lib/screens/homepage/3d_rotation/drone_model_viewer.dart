@@ -80,7 +80,7 @@ class DroneModelViewerState extends State<DroneModelViewer> {
                 onChanged: (newVal) {
                   setState(() {
                     yRotation = newVal;
-                    _cube?.rotation.y = newVal;
+                    _cube?.rotation.z = newVal;
                     _cube?.updateTransform();
                     _model.update();
                   });
