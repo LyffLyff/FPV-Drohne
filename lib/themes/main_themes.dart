@@ -11,6 +11,7 @@ class AppTheme {
     primaryColor: LightColors.primaryColor,
     hintColor: LightColors.accentColor,
     dividerColor: Colors.white,
+    colorScheme: LightColors.colorScheme,
 
     // Text
     textTheme: TextThemes.lightTextTheme,
@@ -21,7 +22,7 @@ class AppTheme {
     //Navigation Bar
     bottomAppBarTheme:
         BottomAppBarTheme(color: Colors.grey.shade900.withOpacity(0.5)),
-    bottomNavigationBarTheme: DarkThemeWidgets.bottomNavigationBarTheme,
+    //bottomNavigationBarTheme: DarkThemeWidgets.bottomNavigationBarTheme,
 
     // Scaffold
     scaffoldBackgroundColor: LightColors.backgroundColor,
@@ -37,24 +38,17 @@ class AppTheme {
 
   static ThemeData darkTheme = ThemeData(
     // General
-    brightness: Brightness.dark,
-    primarySwatch: createMaterialColor(DarkColors.primaryColor),
-    primaryColor: DarkColors.primaryColor,
-    hintColor: DarkColors.accentColor,
-    dividerColor: Colors.grey.shade900,
-    colorScheme: const ColorScheme.dark().copyWith(
-      error: const Color(0xff003300),
-    ),
+    colorScheme: DarkColors.colorScheme,
 
     // Text
     textTheme: TextThemes.darkTextTheme,
 
     // NavigationBars
     navigationBarTheme: DarkThemeWidgets.navigationBarTheme,
-    bottomNavigationBarTheme: DarkThemeWidgets.bottomNavigationBarTheme,
+    //bottomNavigationBarTheme: DarkThemeWidgets.bottomNavigationBarTheme,
 
     // Scaffold
-    scaffoldBackgroundColor: DarkColors.secondaryColor,
+    //scaffoldBackgroundColor: DarkColors.secondaryColor,
 
     //AppBar
     appBarTheme: DarkThemeWidgets.appBarTheme,

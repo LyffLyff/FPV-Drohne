@@ -16,6 +16,8 @@ class StorageService {
       await storage.ref("$storageFolder/$filename").putFile(file);
     } on firebase_core.FirebaseException catch (error) {
       Logging.error(error);
+    } catch (e) {
+      Logging.error(e.toString());
     }
   }
 
@@ -49,6 +51,8 @@ class StorageService {
       String downloadURL = await storage.ref(storageURL).getDownloadURL();
       return downloadURL;
     } on FirebaseException catch (e) {
+      Logging.error(e);
+    } catch (e) {
       Logging.error(e);
     }
     return "https://source.unsplash.com/random/?otter";

@@ -1,5 +1,4 @@
 import 'package:drone_2_0/data/providers/logging_provider.dart';
-import 'package:drone_2_0/extensions/extensions.dart';
 import 'package:drone_2_0/screens/general/error/failed_connection.dart';
 import 'package:drone_2_0/screens/homepage/flight_recording/flight_data_recording/awaiting_connection_dialogue.dart';
 import 'package:drone_2_0/screens/homepage/flight_recording/flight_data_recording/chart_data.dart';
@@ -106,23 +105,21 @@ class _FlightRecordsState extends State<FlightRecords> {
       length: 3,
       child: Column(
         children: [
-          TabBar(
+          const TabBar(
             tabs: [
               Tab(
-                  icon: Icon(
-                Icons.speed,
-                color: context.primaryColor,
-              )),
+                icon: Icon(
+                  Icons.speed,
+                ),
+              ),
               Tab(
                 icon: Icon(
                   Icons.height_outlined,
-                  color: context.primaryColor,
                 ),
               ),
               Tab(
                 icon: Icon(
                   Icons.thermostat_rounded,
-                  color: context.primaryColor,
                 ),
               ),
             ],

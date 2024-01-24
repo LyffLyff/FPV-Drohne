@@ -111,8 +111,6 @@ class _PreviousFlightState extends State<PreviousFlight> {
           ),
         ],
         currentIndex: _selectedIndex,
-        selectedItemColor: context.primaryColor,
-        unselectedItemColor: context.disabledColor,
         onTap: _onItemTapped,
       ),
     );

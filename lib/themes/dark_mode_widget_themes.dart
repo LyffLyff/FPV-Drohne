@@ -15,7 +15,9 @@ class DarkThemeWidgets {
   );
 
   static BottomNavigationBarThemeData bottomNavigationBarTheme =
-      BottomNavigationBarThemeData(backgroundColor: DarkColors.accentColor);
+      BottomNavigationBarThemeData(
+    backgroundColor: DarkColors.backgroundColor,
+  );
 
   static IconThemeData iconThemeData = const IconThemeData(
     color: Colors.white,
@@ -36,7 +38,6 @@ class DarkThemeWidgets {
     // Unfocused border -> with opacity < 1.0
     border: OutlineInputBorder(
       borderRadius: BorderRadius.circular(16),
-      borderSide: BorderSide(color: DarkColors.secondaryColor),
     ),
 
     // Displayed during error Input -> e.g. Invalid Email
@@ -48,7 +49,7 @@ class DarkThemeWidgets {
     // When in focus after press
     focusedBorder: OutlineInputBorder(
       borderRadius: BorderRadius.circular(16),
-      borderSide: BorderSide(color: DarkColors.primaryColor),
+      borderSide: BorderSide(color: DarkColors.colorScheme.primary),
     ),
   );
 
@@ -56,7 +57,7 @@ class DarkThemeWidgets {
   static ElevatedButtonThemeData elevatedButtonThemeData =
       ElevatedButtonThemeData(
     style: ElevatedButton.styleFrom(
-      backgroundColor: DarkColors.accentColor,
+      //backgroundColor: DarkColors.accentColor,
       foregroundColor: DarkColors.textColor,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16),

@@ -113,10 +113,6 @@ class _HomePageState extends State<HomePage> {
       ),
       bottomNavigationBar: GNav(
         // Style
-        backgroundColor:
-            context.appBarTheme.backgroundColor ?? context.primaryColor,
-        activeColor: context.primaryColor,
-        color: context.disabledColor,
         style: GnavStyle.google,
         iconSize: 28,
         tabBackgroundColor: context.hoverColor,

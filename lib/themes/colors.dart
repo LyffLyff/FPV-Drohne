@@ -21,13 +21,39 @@ MaterialColor createMaterialColor(Color color) {
   return MaterialColor(color.value, swatch);
 }
 
+const _textColor = Color(0xFFf5ebef);
+const _backgroundColor = Color(0xFF090306);
+const _primaryColor = Color(0xFFe384a8);
+const _primaryFgColor = Color(0xFF090306);
+const _secondaryColor = Color(0xFF8f1241);
+const _secondaryFgColor = Color(0xFFf5ebef);
+const _accentColor = Color(0xFFf73780);
+const _accentFgColor = Color(0xFF090306);
+
+const _colorScheme = ColorScheme(
+  brightness: Brightness.dark,
+  background: _backgroundColor,
+  onBackground: _textColor,
+  primary: _primaryColor,
+  onPrimary: _primaryFgColor,
+  secondary: _secondaryColor,
+  onSecondary: _secondaryFgColor,
+  tertiary: _accentColor,
+  onTertiary: _accentFgColor,
+  surface: _backgroundColor,
+  onSurface: _textColor,
+  error: Colors.red,
+  onError: Colors.white,
+);
+
 class DarkColors {
   // General
-  static Color primaryColor = const Color.fromARGB(255, 193, 206, 215);
-  static Color secondaryColor = const Color.fromARGB(255, 20, 26, 31);
-  static Color accentColor = const Color.fromARGB(255, 99, 132, 156);
-  static Color backgroundColor = const Color.fromARGB(255, 18, 24, 28);
-  static Color textColor = const Color.fromARGB(255, 230, 235, 239);
+  static Color backgroundColor = _backgroundColor;
+  static Color textColor = _textColor;
+  static ColorScheme colorScheme = _colorScheme.copyWith(
+    error: const Color(0xffF2B8B5),
+    onError: const Color(0xffFFFFFF),
+  );
 }
 
 class LightColors {
@@ -36,4 +62,10 @@ class LightColors {
   static Color accentColor = const Color.fromARGB(255, 99, 132, 156);
   static Color backgroundColor = const Color.fromARGB(255, 227, 233, 237);
   static Color textColor = const Color.fromARGB(255, 16, 21, 25);
+  static ColorScheme colorScheme = _colorScheme.copyWith(
+      onBackground: const Color.fromARGB(255, 16, 21, 25),
+      background: const Color.fromARGB(255, 227, 233, 237),
+      error: const Color(0xffB3261E),
+      onError: const Color(0xff601410),
+      brightness: Brightness.light);
 }
