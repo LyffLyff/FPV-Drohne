@@ -71,9 +71,6 @@ class _FlightDataTabState extends State<FlightDataTab> {
           // Initialize category axis
           primaryXAxis: CategoryAxis(zoomFactor: 0.5),
           enableAxisAnimation: true,
-          onChartTouchInteractionMove: (tapArgs) {
-            print(tapArgs);
-          },
           zoomPanBehavior: ZoomPanBehavior(
 
               /// To enable the pinch zooming as true.

@@ -1,5 +1,6 @@
 import 'package:drone_2_0/data/providers/auth_provider.dart';
 import 'package:drone_2_0/data/providers/data_cache.dart';
+import 'package:drone_2_0/data/providers/logging_provider.dart';
 import 'package:drone_2_0/extensions/extensions.dart';
 import 'package:drone_2_0/screens/homepage/flight_recording/previous_flight/previous_flight.dart';
 import 'package:drone_2_0/service/user_profile_service.dart';
@@ -8,7 +9,6 @@ import 'package:drone_2_0/widgets/loading_icons.dart';
 import 'package:drone_2_0/widgets/utils/helper_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 
 enum SortingTypes {
@@ -101,7 +101,7 @@ class _PreviousFlightsState extends State<PreviousFlights> {
         data?.sort((a, b) => b["endTimestamp"].compareTo(a["endTimestamp"]));
         break;
       default:
-        Logger().e("Error, Invalid Sorting Type");
+        Logging.error("Error, Invalid Sorting Type");
         break;
     }
   }
@@ -121,7 +121,7 @@ class _PreviousFlightsState extends State<PreviousFlights> {
           if (snapshot.connectionState == ConnectionState.done &&
               snapshot.hasData == false &&
               !dataLoaded) {
-            Logger().i("Fetching local data");
+            Logging.info("Fetching local data");
             // no connection -> data cached
             originalData =
                 data = Provider.of<DataCache>(context).previousFlights;

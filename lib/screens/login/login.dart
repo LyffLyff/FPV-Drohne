@@ -1,4 +1,7 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:drone_2_0/data/providers/auth_provider.dart';
+import 'package:drone_2_0/data/providers/logging_provider.dart';
 import 'package:drone_2_0/screens/login/registration.dart';
 import 'package:drone_2_0/screens/login/reset_password.dart';
 import 'package:drone_2_0/service/auth/auth_error_handler.dart';
@@ -13,7 +16,6 @@ import 'package:drone_2_0/extensions/extensions.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 import '../../widgets/input.dart';
 
@@ -155,8 +157,8 @@ class LoginScreenState extends State<LoginScreen> {
 
 void _loginWithEmailAndPassword(
     BuildContext context, String email, String password) async {
-  final GlobalKey<State> _LoaderDialog = GlobalKey<State>();
-  LoaderDialog.showLoadingDialog(context, _LoaderDialog);
+  final GlobalKey<State> loaderDialogue = GlobalKey<State>();
+  LoaderDialog.showLoadingDialog(context, loaderDialogue);
 
   // fixing issue that autocompletes adds SPACES at the end -> making email "badly formatted"
   email = email.trimRight();
@@ -199,7 +201,7 @@ void _googleLogin(BuildContext context) async {
       }
     }
   } on PlatformException catch (e) {
-    Logger().e(e);
+    Logging.error(e);
   }
 }
 

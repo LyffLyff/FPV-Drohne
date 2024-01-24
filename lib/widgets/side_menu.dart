@@ -1,4 +1,7 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:drone_2_0/data/providers/data_cache.dart';
+import 'package:drone_2_0/data/providers/logging_provider.dart';
 import 'package:drone_2_0/screens/homepage/app_info.dart';
 import 'package:drone_2_0/screens/homepage/flight_recording/previous_flight/previous_flights.dart';
 import 'package:drone_2_0/screens/pre_login/welcome_screen.dart';
@@ -11,7 +14,6 @@ import 'package:drone_2_0/widgets/utils/radial_expansion.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 import '../data/providers/auth_provider.dart';
 import 'package:drone_2_0/extensions/extensions.dart';
@@ -29,7 +31,7 @@ class NavDrawer extends StatelessWidget {
       try {
         await GoogleSignIn().disconnect();
       } catch (e) {
-        Logger().d('failed to disconnect on signout');
+        Logging.debug('Failed to disconnect on signout');
       }
 
       // Clear Datacache -> preventing seeing false previousFlights
@@ -37,8 +39,10 @@ class NavDrawer extends StatelessWidget {
 
       // Auth Sign Out
       await FirebaseAuth.instance.signOut();
-      // ignore: use_build_context_synchronously
-      Navigator.pushReplacementNamed(context, WelcomeScreen.id);
+      Navigator.pushReplacementNamed(
+        context,
+        WelcomeScreen.id,
+      );
     }
 
     return Drawer(

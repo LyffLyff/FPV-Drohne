@@ -1,4 +1,5 @@
 import 'package:drone_2_0/data/providers/auth_provider.dart';
+import 'package:drone_2_0/data/providers/logging_provider.dart';
 import 'package:drone_2_0/extensions/extensions.dart';
 import 'package:drone_2_0/screens/homepage/3d_rotation/drone_model_viewer.dart';
 import 'package:drone_2_0/screens/homepage/flight_recording/flight_data_recording/finished_flight.dart';
@@ -17,7 +18,6 @@ import 'package:flutter/material.dart';
 import 'package:drone_2_0/screens/homepage/flight_recording/flight_data_recording/flight_records.dart';
 import 'package:drone_2_0/screens/homepage/flight_recording/livestream/live_view.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
-import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
@@ -91,7 +91,7 @@ class _HomePageState extends State<HomePage> {
 
   void _onInitDialogueDataEntered(
       String ipAdress, String mqttPort, String videoPort) {
-    Logger().i("Server Data Entered -> Show Homepage");
+    Logging.info("Server Data Entered -> Show Homepage");
     setState(() {
       this.ipAdress = ipAdress;
       this.mqttPort = int.tryParse(mqttPort) ?? 1883;

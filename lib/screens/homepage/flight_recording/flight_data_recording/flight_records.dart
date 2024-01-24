@@ -1,3 +1,4 @@
+import 'package:drone_2_0/data/providers/logging_provider.dart';
 import 'package:drone_2_0/extensions/extensions.dart';
 import 'package:drone_2_0/screens/general/error/failed_connection.dart';
 import 'package:drone_2_0/screens/homepage/flight_recording/flight_data_recording/awaiting_connection_dialogue.dart';
@@ -7,7 +8,6 @@ import 'package:drone_2_0/screens/homepage/flight_recording/flight_data_recordin
 import 'package:drone_2_0/service/mqtt_manager.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:logger/logger.dart';
 import 'package:async/async.dart';
 
 enum MQTTData { identifier, value, timestamp }
@@ -35,7 +35,6 @@ class FlightRecords extends StatefulWidget {
 }
 
 class _FlightRecordsState extends State<FlightRecords> {
-  final Logger logger = Logger();
   late final MQTTManager mqttManager;
   Map<String, List<ChartData>> chartData =
       Map.from(_emptyChartData); // copy of empty chart data
@@ -58,7 +57,7 @@ class _FlightRecordsState extends State<FlightRecords> {
         // ignore: unnecessary_null_comparison
       }).where((data) => data != null); // Filter out null values
     } on FirebaseException catch (e) {
-      Logger().e(e);
+      Logging.error(e.toString());
       return const Stream.empty();
     }
   }
@@ -73,7 +72,7 @@ class _FlightRecordsState extends State<FlightRecords> {
       mqttManager.subscribeToTopic("data/velocity");
       mqttManager.subscribeToTopic("data/height");
       mqttManager.subscribeToTopic("data/temperature");
-      logger.i("SUBSCRIBED TO TOPICS");
+      Logging.info("Subscribed to Flight Records MQTT Topics");
     }
 
     return connection;
@@ -172,7 +171,7 @@ class _FlightRecordsState extends State<FlightRecords> {
                               setData("temperature", timeAxisValue);
                           }
 
-                          Logger().i(chartData["height"]?.length);
+                          Logging.info(chartData["height"]!.length.toString());
 
                           return Expanded(
                             child: Padding(

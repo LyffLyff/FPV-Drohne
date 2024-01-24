@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:drone_2_0/data/providers/auth_provider.dart';
 import 'package:drone_2_0/widgets/input.dart';
 import 'package:drone_2_0/widgets/utils/error_bar.dart';
@@ -67,15 +69,15 @@ class _UserProfileOptionsState extends State<UserProfileOptions> {
                         _userNameController.text,
                         _nameController.text);
                     if (!message.contains("Success")) {
-                      // ignore: use_build_context_synchronously
                       ScaffoldMessenger.of(context).showSnackBar(
                         defaultSnackbar(message),
                       );
                     }
                   }
                   // Back to UserProfile
-                  FocusScope.of(context)
-                      .requestFocus(FocusNode()); // hide on-screen keyboard
+                  FocusScope.of(context).requestFocus(
+                    FocusNode(),
+                  ); // hide on-screen keyboard
                   Navigator.pop(context);
                 })
           ],

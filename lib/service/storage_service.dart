@@ -3,7 +3,6 @@ import 'package:drone_2_0/data/providers/logging_provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:firebase_core/firebase_core.dart' as firebase_core;
-import 'package:logger/logger.dart';
 
 class StorageService {
   final firebase_storage.FirebaseStorage storage =
@@ -16,7 +15,7 @@ class StorageService {
     try {
       await storage.ref("$storageFolder/$filename").putFile(file);
     } on firebase_core.FirebaseException catch (error) {
-      Logger().e(error);
+      Logging.error(error);
     }
   }
 
@@ -38,7 +37,7 @@ class StorageService {
     try {
       await fileRef.delete();
     } on FirebaseException catch (e) {
-      Logger().e(e);
+      Logging.error(e);
     }
     /*if (await fileExists(fileRef))  {
     }*/
@@ -50,7 +49,7 @@ class StorageService {
       String downloadURL = await storage.ref(storageURL).getDownloadURL();
       return downloadURL;
     } on FirebaseException catch (e) {
-      Logger().e(e);
+      Logging.error(e);
     }
     return "https://source.unsplash.com/random/?otter";
   }

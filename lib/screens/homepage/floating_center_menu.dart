@@ -1,3 +1,4 @@
+import 'package:drone_2_0/data/providers/logging_provider.dart';
 import 'package:drone_2_0/extensions/extensions.dart';
 import 'package:drone_2_0/service/realtime_db_service.dart';
 import 'package:flutter/material.dart';
@@ -28,7 +29,7 @@ class _FloatingCenterMenuState extends State<FloatingCenterMenu> {
   void initDroneConnection() async {
     // initializing drone connection status variable
     await RealtimeDatabaseService().readValueOnce("is_connected").then((value) {
-      print("Connection: $value");
+      Logging.info("is connected -> $value");
       setState(() {
         isRecordingFlight = value;
       });
@@ -81,7 +82,7 @@ class _FloatingCenterMenuState extends State<FloatingCenterMenu> {
                             MaterialStatePropertyAll(Colors.transparent)),
                     iconSize: 24,
                     onPressed: () {
-                      print("Toggle Recording");
+                      Logging.info("Toggle Recording");
                       /*if (!isRecordingFlight) {
                         // drone not online unable to start flight
                         ScaffoldMessenger.of(context).showSnackBar(

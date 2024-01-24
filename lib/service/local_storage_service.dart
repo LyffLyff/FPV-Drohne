@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:logger/logger.dart';
+import 'package:drone_2_0/data/providers/logging_provider.dart';
 import 'package:path_provider/path_provider.dart';
 
 class LocalStorageService {
@@ -27,7 +27,7 @@ class LocalStorageService {
     try {
       final file = await getLocalFile(fileName);
 
-      Logger().i(file.path);
+      Logging.info(file.path);
 
       // Read the file
       final contents = await file.readAsString();

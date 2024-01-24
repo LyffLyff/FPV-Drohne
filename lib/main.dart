@@ -1,4 +1,5 @@
 import 'package:drone_2_0/data/providers/data_cache.dart';
+import 'package:drone_2_0/data/providers/logging_provider.dart';
 import 'package:drone_2_0/screens/homepage/homepage.dart';
 import 'package:drone_2_0/screens/login/login.dart';
 import 'package:drone_2_0/screens/pre_login/welcome_screen.dart';
@@ -12,7 +13,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'data/providers/auth_provider.dart';
 import 'firebase_options.dart';
 import 'package:provider/provider.dart';
-import 'package:logger/logger.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -54,11 +54,8 @@ void main() async {
 
 class MyApp extends StatelessWidget {
   final User? user;
-  final logger = Logger(
-    printer: PrettyPrinter(),
-  );
 
-  MyApp({super.key, required this.user});
+  const MyApp({super.key, required this.user});
 
   void cachingImages(BuildContext context) {
     // preventing pop-in of assets
@@ -94,12 +91,11 @@ class MyApp extends StatelessWidget {
                   // While fetching data, show a loading indicator.
                   return const CircularLoadingIcon();
                 } else if (snapshot.hasError) {
-                  logger.i(snapshot.error.toString());
+                  Logging.error(snapshot.error.toString(), fatal: true);
                   return Text(snapshot.error.toString());
                 } else {
                   //final userData = snapshot.data?[0];
-
-                  logger.i("Homepage Initialized");
+                  Logging.info("Homepage Initialized");
                   return const SafeArea(child: HomePage());
                 }
               },

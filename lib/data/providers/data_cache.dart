@@ -1,6 +1,6 @@
+import 'package:drone_2_0/data/providers/logging_provider.dart';
 import 'package:drone_2_0/service/local_storage_service.dart';
 import 'package:flutter/material.dart';
-import 'package:logger/logger.dart';
 
 class DataCache with ChangeNotifier {
   List _previousFlights = [];
@@ -48,13 +48,15 @@ class DataCache with ChangeNotifier {
 
   void updateFlightProperty(int timestamp, String propertyKey, dynamic value) {
     for (int i = _previousFlights.length - 1; i >= 0; i--) {
-      Logger().i(_previousFlights[i]["endTimestamp"] == timestamp);
+      Logging.info(
+        "End Timestamp equal to current Timestamp: ${(_previousFlights[i]["endTimestamp"] == timestamp).toString()}",
+      );
       if (_previousFlights[i]["endTimestamp"] == timestamp) {
         _previousFlights[i][propertyKey] = value;
         writeFlightRecords(_previousFlights);
         return;
       }
     }
-    Logger().e("Could not find corresponding Flight to update property");
+    Logging.error("Could not find corresponding Flight to update property");
   }
 }

@@ -1,9 +1,9 @@
 import 'package:drone_2_0/data/models/user_model.dart';
+import 'package:drone_2_0/data/providers/logging_provider.dart';
 import 'package:drone_2_0/service/storage_service.dart';
 import 'package:drone_2_0/service/user_profile_service.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:logger/logger.dart';
 
 class AuthenticationProvider with ChangeNotifier {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -64,7 +64,7 @@ class AuthenticationProvider with ChangeNotifier {
     _auth.currentUser?.updateDisplayName(newUsername);
     await _userDocument.setUserValue(
         userId: userId, key: "username", value: newUsername);
-    Logger().i("Changed Username of Current User: $userId");
+    Logging.info("Changed Username of Current User: $userId");
     notifyListeners();
   }
 
@@ -72,7 +72,7 @@ class AuthenticationProvider with ChangeNotifier {
     _fullName = newName;
     await _userDocument.setUserValue(
         userId: userId, key: "fullName", value: newName);
-    Logger().i("Changed Full Name of Current User: $userId");
+    Logging.info("Changed Full Name of Current User: $userId");
     notifyListeners();
   }
 
@@ -120,7 +120,7 @@ class AuthenticationProvider with ChangeNotifier {
     await _auth.sendPasswordResetEmail(email: email).then((value) {
       return true;
     }).catchError((e) {
-      Logger().e("Reset Password Exception: $e");
+      Logging.error("Reset Password Exception: $e");
       message = e.toString();
       return false;
     });

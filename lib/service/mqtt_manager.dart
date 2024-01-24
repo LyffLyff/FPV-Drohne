@@ -1,11 +1,9 @@
-import 'package:logger/logger.dart';
+import 'package:drone_2_0/data/providers/logging_provider.dart';
 import 'package:mqtt_client/mqtt_client.dart';
 import 'package:mqtt_client/mqtt_server_client.dart';
 import 'dart:async';
 
 class MQTTManager {
-  final Logger logger = Logger();
-
   late MqttServerClient _client;
   late final StreamController<Map<String, String>> _messageStreamController;
   Stream<Map<String, String>> get messageStream =>
@@ -59,7 +57,7 @@ class MQTTManager {
       return true;
     } catch (e) {
       // Exception during connection or listening attempt
-      logger.e('MQTT EXCEPTION: $e');
+      Logging.error('MQTT EXCEPTION: $e');
     }
     return false;
   }
@@ -77,11 +75,11 @@ class MQTTManager {
   }
 
   void onDisconnected() {
-    logger.e("MQTT: CLIENT DISCONNECTED");
+    Logging.error("MQTT: CLIENT DISCONNECTED");
   }
 
   void onConnected() {
-    logger.e("MQTT: CLIENT CONNECTED TO BROKER -> $_serverIp");
+    Logging.error("MQTT: CLIENT CONNECTED TO BROKER -> $_serverIp");
   }
 
   void disconnect() {

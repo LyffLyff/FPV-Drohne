@@ -3,11 +3,11 @@ import 'package:logger/logger.dart';
 class Logging {
   static final Logger _log = Logger();
 
-  static void info(String msg) {
+  static void info(dynamic msg) {
     _log.i("INFO: $msg");
   }
 
-  static void error(String msg, {bool fatal = false}) {
+  static void error(dynamic msg, {bool fatal = false}) {
     if (!fatal) {
       _log.e("ERROR: $msg");
     } else {
@@ -15,11 +15,11 @@ class Logging {
     }
   }
 
-  static void debug(String msg) {
+  static void debug(dynamic msg) {
     _log.d("DEBUG: $msg");
   }
 
-  static void warning(String msg) {
+  static void warning(dynamic msg) {
     _log.w("WARNING: $msg");
   }
 }

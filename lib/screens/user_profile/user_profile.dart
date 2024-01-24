@@ -1,12 +1,15 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:drone_2_0/data/providers/auth_provider.dart';
+import 'package:drone_2_0/data/providers/logging_provider.dart';
 import 'package:drone_2_0/extensions/extensions.dart';
 import 'package:drone_2_0/screens/user_profile/user_profile_options.dart';
 import 'package:drone_2_0/service/storage_service.dart';
 import 'package:drone_2_0/widgets/profile_image.dart';
+import 'package:drone_2_0/widgets/utils/error_bar.dart';
 import 'package:drone_2_0/widgets/utils/helper_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 import '../../themes/theme_constants.dart';
 import 'package:file_picker/file_picker.dart';
@@ -23,7 +26,7 @@ class UserProfile extends StatefulWidget {
 class _UserProfileState extends State<UserProfile> {
   Future<void> _selectProfileImage({required BuildContext context}) async {
     try {
-      Logger().i(
+      Logging.info(
         Provider.of<AuthenticationProvider>(context, listen: false)
             .currentUser
             ?.photoURL,
@@ -34,8 +37,10 @@ class _UserProfileState extends State<UserProfile> {
       );
       if (results == null) {
         // no file selected by user
-        ScaffoldMessenger.of(context)
-            .showSnackBar(const SnackBar(content: Text("Why no file??")));
+        ScaffoldMessenger.of(context).showSnackBar(
+          defaultSnackbar("No File Selected", color: Colors.deepOrange),
+        );
+        // ignore: duplicate_ignore
       } else {
         final path = results.files.single.path;
         final filename = results.files.single.name;
@@ -46,7 +51,7 @@ class _UserProfileState extends State<UserProfile> {
         var oldStorageURL = context.read<AuthenticationProvider>().storageUrl;
         if (oldStorageURL != "") {
           await StorageService().deleteFile(oldStorageURL);
-          Logger().i("Deleted Old Profile Image");
+          Logging.info("Deleted Old Profile Image");
         }
 
         // set new Storage URL in Auth User
@@ -54,11 +59,11 @@ class _UserProfileState extends State<UserProfile> {
         await Provider.of<AuthenticationProvider>(context, listen: false)
             .updatePhotoURL(newStorageURL);
 
-        print(path);
+        Logging.info("Local Image File: $path");
       }
     } on PlatformException catch (error) {
       // Permission denied by user most likely
-      Logger().e(error);
+      Logging.error(error.toString());
     }
   }
 

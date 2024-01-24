@@ -3,7 +3,6 @@ import 'package:drone_2_0/screens/homepage/flight_recording/livestream/stream_pl
 import 'package:drone_2_0/screens/homepage/flight_recording/livestream/video_overlay.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_vlc_player/flutter_vlc_player.dart';
-import 'package:logger/logger.dart';
 
 VlcPlayerOptions _controllerOptions = VlcPlayerOptions(
   advanced: VlcAdvancedOptions([
@@ -65,7 +64,7 @@ class _LiveViewState extends State<LiveView> {
     if (_videoPlayerController.value.playingState == PlayingState.initialized) {
       setState(() {});
     }
-    Logger().i(_videoPlayerController.value.playingState);
+    Logging.info(_videoPlayerController.value.playingState);
     if (_videoPlayerController.value.isInitialized) {
       // update recording blink widget
       if (_videoPlayerController.value.isRecording &&
@@ -151,7 +150,7 @@ class _LiveViewState extends State<LiveView> {
               IconButton(
                 iconSize: 24,
                 onPressed: () {
-                  Logger().i("Starting to record");
+                  Logging.info("Starting to record");
                 },
                 icon: const Icon(Icons.screenshot_monitor_rounded),
               ),

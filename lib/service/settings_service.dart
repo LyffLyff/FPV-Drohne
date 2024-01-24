@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:logger/logger.dart';
+import 'package:drone_2_0/data/providers/logging_provider.dart';
 
 class SettingsService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -13,7 +13,7 @@ class SettingsService {
           .doc(userId)
           .update({"settings": settings});
     } on FirebaseException catch (e) {
-      Logger().e(e);
+      Logging.error(e.toString());
     }
 
     return null;
@@ -34,7 +34,7 @@ class SettingsService {
       }
     } catch (e) {
       // Handle the exception here (e.g., log it, return a default value, etc.)
-      Logger().e("Error Fetching Single Setting: $e");
+      Logging.error("Error Fetching Single Setting: $e");
     }
     return null; // You can customize the error handling as needed
   }
