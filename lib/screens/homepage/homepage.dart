@@ -94,8 +94,8 @@ class _HomePageState extends State<HomePage> {
     Logger().i("Server Data Entered -> Show Homepage");
     setState(() {
       this.ipAdress = ipAdress;
-      this.mqttPort = int.parse(mqttPort);
-      this.videoPort = int.parse(videoPort);
+      this.mqttPort = int.tryParse(mqttPort) ?? 1883;
+      this.videoPort = int.tryParse(videoPort) ?? 1935;
       ipAdressSelected = true;
     });
   }

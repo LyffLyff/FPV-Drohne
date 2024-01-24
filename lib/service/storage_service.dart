@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:drone_2_0/data/providers/logging_provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:firebase_core/firebase_core.dart' as firebase_core;
@@ -22,9 +23,7 @@ class StorageService {
   Future<firebase_storage.ListResult> listFiles(String storageFolder) async {
     firebase_storage.ListResult result =
         await storage.ref(storageFolder).listAll();
-    for (var element in result.items) {
-      print(element);
-    }
+    Logging.info(result.items.toString());
     return result;
   }
 

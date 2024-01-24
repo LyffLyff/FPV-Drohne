@@ -178,8 +178,8 @@ void _loginWithEmailAndPassword(
 }
 
 void _googleLogin(BuildContext context) async {
-  final GlobalKey<State> _LoaderDialog = GlobalKey<State>();
-  LoaderDialog.showLoadingDialog(context, _LoaderDialog);
+  final GlobalKey<State> loaderDialogue = GlobalKey<State>();
+  LoaderDialog.showLoadingDialog(context, loaderDialogue);
 
   try {
     final UserCredential? credentials = await AuthService().signInWithGoogle();
@@ -206,6 +206,9 @@ void _googleLogin(BuildContext context) async {
 void _navigate({required BuildContext context}) async {
   await context.read<AuthenticationProvider>().initUser();
   // Use Navigator to navigate to the HomePage
+  if (!context.mounted) {
+    return;
+  }
   Navigator.of(context).pushReplacement(MaterialPageRoute(
     builder: (context) => const HomePage(),
   ));

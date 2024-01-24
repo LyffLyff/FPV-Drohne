@@ -1,4 +1,6 @@
+import 'package:drone_2_0/data/providers/logging_provider.dart';
 import 'package:drone_2_0/screens/homepage/flight_recording/livestream/stream_placeholder.dart';
+import 'package:drone_2_0/screens/homepage/flight_recording/livestream/video_overlay.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_vlc_player/flutter_vlc_player.dart';
 import 'package:logger/logger.dart';
@@ -58,7 +60,7 @@ class _LiveViewState extends State<LiveView> {
     if (!mounted) return;
     //
     if (_videoPlayerController.value.hasError) {
-      print("Error: ${_videoPlayerController.value.errorDescription}");
+      Logging.error(_videoPlayerController.value.errorDescription);
     }
     if (_videoPlayerController.value.playingState == PlayingState.initialized) {
       setState(() {});
@@ -106,49 +108,63 @@ class _LiveViewState extends State<LiveView> {
   @override
   Widget build(BuildContext context) {
     if (!_videoPlayerController.value.isInitialized) {
-      return const LivestreamPlaceholder();
-    }
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Stack(
-          children: [
-            VlcPlayer(
-              controller: _videoPlayerController,
-              aspectRatio: widget.aspectRatio,
-              placeholder: const LivestreamPlaceholder(),
-            ),
-          ],
+      return const Center(
+        child: SizedBox(
+          height: 300,
+          child: Stack(
+            children: [
+              LivestreamPlaceholder(),
+              VideoOverlay(),
+            ],
+          ),
         ),
-        const Divider(),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            IconButton(
-              color: Colors.white,
-              icon: _videoPlayerController.value.isPlaying
-                  ? const Icon(Icons.pause_circle_outline)
-                  : const Icon(Icons.play_circle_outline),
-              onPressed: () async {
-                await _togglePlaying();
-              },
-            ),
-            IconButton(
-              iconSize: 24,
-              onPressed: () {
-                Logger().i("Starting to record");
-              },
-              icon: const Icon(Icons.screenshot_monitor_rounded),
-            ),
-            IconButton(
-              onPressed: () {
-                _togglePlaying();
-              },
-              icon: const Icon(Icons.screenshot_monitor_rounded),
-            ),
-          ],
-        )
-      ],
+      );
+    }
+    return SizedBox(
+      height: 300,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Stack(
+            children: [
+              VlcPlayer(
+                controller: _videoPlayerController,
+                aspectRatio: widget.aspectRatio,
+                placeholder: const LivestreamPlaceholder(),
+              ),
+              const VideoOverlay(),
+            ],
+          ),
+          const Divider(),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              IconButton(
+                color: Colors.white,
+                icon: _videoPlayerController.value.isPlaying
+                    ? const Icon(Icons.pause_circle_outline)
+                    : const Icon(Icons.play_circle_outline),
+                onPressed: () async {
+                  await _togglePlaying();
+                },
+              ),
+              IconButton(
+                iconSize: 24,
+                onPressed: () {
+                  Logger().i("Starting to record");
+                },
+                icon: const Icon(Icons.screenshot_monitor_rounded),
+              ),
+              IconButton(
+                onPressed: () {
+                  _togglePlaying();
+                },
+                icon: const Icon(Icons.screenshot_monitor_rounded),
+              ),
+            ],
+          )
+        ],
+      ),
     );
   }
 }

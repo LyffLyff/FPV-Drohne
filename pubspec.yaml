@@ -102,6 +102,9 @@ flutter:
     - family: Raleway
       fonts: 
         - asset: assets/fonts/raleway/Raleway-ExtraLight.ttf
+    - family: VCR_OSD_Mono
+      fonts: 
+        - asset: assets/fonts/vcr_osd_mono/vcr_osd_mono.ttf
     - family: Moderne-Sans
       fonts:
         - asset: assets/fonts/moderne_sans.ttf
