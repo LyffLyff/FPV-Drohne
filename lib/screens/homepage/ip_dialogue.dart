@@ -1,17 +1,23 @@
 import 'package:drone_2_0/extensions/extensions.dart';
-import 'package:drone_2_0/widgets/input.dart';
+import 'package:drone_2_0/widgets/number_input.dart';
 import 'package:drone_2_0/widgets/utils/error_bar.dart';
+import 'package:drone_2_0/widgets/utils/helper_widgets.dart';
 import 'package:drone_2_0/widgets/utils/validators.dart';
 import 'package:flutter/material.dart';
 
 class IpDialogue extends StatelessWidget {
-  final VoidCallback onDataEntered;
+  final Function(String, String, String) onDataEntered;
   final TextEditingController ipAdressController;
+  final TextEditingController mqttPortController;
+  final TextEditingController videoPortController;
 
-  const IpDialogue(
-      {super.key,
-      required this.onDataEntered,
-      required this.ipAdressController});
+  const IpDialogue({
+    super.key,
+    required this.onDataEntered,
+    required this.ipAdressController,
+    required this.mqttPortController,
+    required this.videoPortController,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -23,17 +29,32 @@ class IpDialogue extends StatelessWidget {
           flex: 1,
         ),
         Text(
-          "Enter Server Data",
+          "Server Data",
           style: context.textTheme.headlineLarge,
+          textAlign: TextAlign.center,
         ),
         const Spacer(
           flex: 2,
         ),
-        StdInputField(
+        NumberInputField(
           controller: ipAdressController,
-          hintText: "IPv4 Adress of Server",
-          hideText: false,
+          hintText: "IPv4 Adress, e.g. 192.168.8.101",
           width: MediaQuery.sizeOf(context).width,
+        ),
+        const VerticalSpace(),
+        NumberInputField(
+          controller: mqttPortController,
+          hintText: "MQTT Port",
+          width: MediaQuery.sizeOf(context).width,
+        ),
+        const VerticalSpace(),
+        NumberInputField(
+          controller: videoPortController,
+          hintText: "Livestream Port",
+          width: MediaQuery.sizeOf(context).width,
+        ),
+        const VerticalSpace(
+          height: 32,
         ),
         ElevatedButton(
           onPressed: () {
@@ -41,10 +62,11 @@ class IpDialogue extends StatelessWidget {
               ScaffoldMessenger.of(context)
                   .showSnackBar(errorSnackbar("Badly formatted IP-Adress"));
             } else {
-              onDataEntered();
+              onDataEntered(ipAdressController.text, mqttPortController.text,
+                  videoPortController.text);
             }
           },
-          child: const Text("Enter Data"),
+          child: const Text("Connect to Server...."),
         ),
         const Spacer(
           flex: 2,

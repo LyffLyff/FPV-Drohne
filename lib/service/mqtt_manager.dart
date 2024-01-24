@@ -56,7 +56,6 @@ class MQTTManager {
       });
 
       // listen to connection errors
-
       return true;
     } catch (e) {
       // Exception during connection or listening attempt

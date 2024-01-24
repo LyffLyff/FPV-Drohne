@@ -1,4 +1,5 @@
 import 'package:drone_2_0/extensions/extensions.dart';
+import 'package:drone_2_0/screens/general/error/failed_connection.dart';
 import 'package:drone_2_0/screens/homepage/flight_recording/flight_data_recording/awaiting_connection_dialogue.dart';
 import 'package:drone_2_0/screens/homepage/flight_recording/flight_data_recording/chart_data.dart';
 import 'package:drone_2_0/screens/homepage/flight_recording/flight_data_recording/flight_data.dart';
@@ -65,15 +66,17 @@ class _FlightRecordsState extends State<FlightRecords> {
   Future<bool> initDataConnection() async {
     // Reading the initial value from the Database before listening to changes
     chartData = Map.from(_emptyChartData); // reset data in init
-    bool error = await mqttManager.connect();
+    bool connection = await mqttManager.connect();
 
     // Subscribe to topics
-    mqttManager.subscribeToTopic("data/velocity");
-    mqttManager.subscribeToTopic("data/height");
-    mqttManager.subscribeToTopic("data/temperature");
-    logger.i("SUBSCRIBED TO TOPICS");
+    if (connection) {
+      mqttManager.subscribeToTopic("data/velocity");
+      mqttManager.subscribeToTopic("data/height");
+      mqttManager.subscribeToTopic("data/temperature");
+      logger.i("SUBSCRIBED TO TOPICS");
+    }
 
-    return error;
+    return connection;
   }
 
   void limitDataPoints(String key) {
@@ -132,7 +135,7 @@ class _FlightRecordsState extends State<FlightRecords> {
                   if (snapshot.connectionState != ConnectionState.done) {
                     return const AwaitingConnection();
                   } else if (snapshot.data == false) {
-                    return ErrorWidget("No MQTT");
+                    return const ConnectionError();
                   }
 
                   // Widget return

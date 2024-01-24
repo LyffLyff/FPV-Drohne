@@ -23,6 +23,7 @@ class LightThemeWidgets {
     labelColor: Colors.black, // Icon Color
   );
 
+  /// Buttons ///
   static ElevatedButtonThemeData elevatedButtonThemeData =
       ElevatedButtonThemeData(
     style: ElevatedButton.styleFrom(
@@ -31,6 +32,13 @@ class LightThemeWidgets {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(8),
       ),
+    ),
+  );
+
+  static TextButtonThemeData textButtonThemeData = TextButtonThemeData(
+    style: TextButton.styleFrom(
+      textStyle: TextThemes.lightTextTheme.bodyMedium,
+      foregroundColor: LightColors.textColor,
     ),
   );
 }

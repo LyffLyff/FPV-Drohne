@@ -31,6 +31,28 @@ class DarkThemeWidgets {
     selectedTileColor: Colors.grey.shade900,
   );
 
+  // Input -> Textfield,...
+  static InputDecorationTheme inputDecorationTheme = InputDecorationTheme(
+    // Unfocused border -> with opacity < 1.0
+    border: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(16),
+      borderSide: BorderSide(color: DarkColors.secondaryColor),
+    ),
+
+    // Displayed during error Input -> e.g. Invalid Email
+    errorBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(16),
+      borderSide: const BorderSide(color: Colors.red),
+    ),
+
+    // When in focus after press
+    focusedBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(16),
+      borderSide: BorderSide(color: DarkColors.primaryColor),
+    ),
+  );
+
+  /// Buttons ///
   static ElevatedButtonThemeData elevatedButtonThemeData =
       ElevatedButtonThemeData(
     style: ElevatedButton.styleFrom(
@@ -39,6 +61,13 @@ class DarkThemeWidgets {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16),
       ),
+    ),
+  );
+
+  static TextButtonThemeData textButtonThemeData = TextButtonThemeData(
+    style: TextButton.styleFrom(
+      textStyle: TextThemes.darkTextTheme.bodyMedium,
+      foregroundColor: DarkColors.textColor,
     ),
   );
 }

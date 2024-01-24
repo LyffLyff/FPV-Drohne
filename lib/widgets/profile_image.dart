@@ -6,7 +6,7 @@ Widget profileImage(String storagePath, String downloadUrl) {
   return storagePath != ""
       ? CachedNetworkImage(
           placeholder: (context, url) => Padding(
-            padding: const EdgeInsets.all(20.0),
+            padding: const EdgeInsets.all(32),
             child: CircularLoadingIcon(
               length: 0.2 * MediaQuery.sizeOf(context).width,
             ),

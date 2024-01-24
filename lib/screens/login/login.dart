@@ -65,7 +65,7 @@ class LoginScreenState extends State<LoginScreen> {
             ),
             TextButton(
               onPressed: () {
-                Navigator.of(context).push(
+                Navigator.of(context).pushReplacement(
                   pageRouteAnimation(const ResetPassword()),
                 );
               },

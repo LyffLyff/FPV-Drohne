@@ -31,6 +31,8 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   String ipAdress = "";
+  int mqttPort = 0;
+  int videoPort = 0;
   bool ipAdressSelected = false;
   int currentPageIdx = 0;
   bool droneFlight = false;
@@ -49,16 +51,16 @@ class _HomePageState extends State<HomePage> {
     FlightRecords(
       flightData: flightData,
       ipAdress: ipAdress,
-      port: 1883,
+      port: mqttPort,
     ),
     DroneModelViewer(
       title: "Drone",
       ipAdress: ipAdress,
-      port: 1883,
+      port: mqttPort,
     ),
     LiveView(
         ipAdress: ipAdress,
-        port: 554,
+        port: videoPort,
         streamName: "live/stream",
         aspectRatio: 4 / 3),
   ];
@@ -87,9 +89,13 @@ class _HomePageState extends State<HomePage> {
 
   void _initConnectivity() async {}
 
-  void _onInitDialogueDataEntered() {
+  void _onInitDialogueDataEntered(
+      String ipAdress, String mqttPort, String videoPort) {
     Logger().i("Server Data Entered -> Show Homepage");
     setState(() {
+      this.ipAdress = ipAdress;
+      this.mqttPort = int.parse(mqttPort);
+      this.videoPort = int.parse(videoPort);
       ipAdressSelected = true;
     });
   }
@@ -161,6 +167,8 @@ class _HomePageState extends State<HomePage> {
                 ? IpDialogue(
                     onDataEntered: _onInitDialogueDataEntered,
                     ipAdressController: TextEditingController(),
+                    mqttPortController: TextEditingController(),
+                    videoPortController: TextEditingController(),
                   )
                 : StreamBuilder(
                     stream:

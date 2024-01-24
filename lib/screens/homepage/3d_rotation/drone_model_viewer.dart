@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_cube/flutter_cube.dart';
 import 'package:drone_2_0/service/mqtt_manager.dart';
 
+enum ModelAxis { yaw, roll, pitch }
+
 class DroneModelViewer extends StatefulWidget {
   final String? title;
   final String ipAdress;
@@ -39,10 +41,26 @@ class DroneModelViewerState extends State<DroneModelViewer> {
     _model.world.add(_cube!);
   }
 
+  void updateModel() {
+    _cube?.updateTransform();
+    _model.update();
+  }
+
   Future<bool> _rotationManagerInit() async {
     bool error = await mqttManager.connect();
     if (!error) {
       mqttManager.subscribeToTopic("data/rotation");
+      mqttManager.messageStream.listen((event) {
+        List<double> rotationData = [];
+        event.values.first.split(" ").forEach((element) {
+          // converting split list of strings to the rotation values as floating point
+          rotationData.add(double.parse(element));
+        });
+        _cube?.rotation.z = rotationData[ModelAxis.pitch.index];
+        _cube?.rotation.y = rotationData[ModelAxis.yaw.index];
+        _cube?.rotation.x = rotationData[ModelAxis.roll.index];
+        updateModel();
+      });
     }
     return error;
   }

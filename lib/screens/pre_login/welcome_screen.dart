@@ -31,8 +31,8 @@ class WelcomeScreen extends StatelessWidget {
                 placeholder:
                     AssetImage(context.read<ThemeManager>().getLogoPath()),
               ),
-              Divider(),
-              VerticalSpace(height: 10),
+              const Divider(),
+              const VerticalSpace(height: 10),
               Align(
                   alignment: Alignment.center,
                   child: Text(
@@ -40,22 +40,22 @@ class WelcomeScreen extends StatelessWidget {
                     textAlign: TextAlign.center,
                     style: context.textTheme.bodyMedium,
                   )),
-              VerticalSpace(height: 10),
+              const VerticalSpace(height: 10),
               ElevatedButton(
-                child: Text("Already have an account? Sign In"),
+                child: const Text("Already have an account? Sign In"),
                 onPressed: () {
                   Navigator.of(context)
                       .push(pageRouteAnimation(const LoginScreen()));
                 },
               ),
               ElevatedButton(
-                child: Text("Register as new User"),
+                child: const Text("Register as new User"),
                 onPressed: () {
                   Navigator.of(context)
                       .push(pageRouteAnimation(const Registration()));
                 },
               ),
-              Spacer(),
+              const Spacer(),
             ],
           ),
         ),

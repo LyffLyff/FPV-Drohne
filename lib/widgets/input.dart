@@ -25,11 +25,14 @@ class StdInputField extends StatelessWidget {
         width: width,
         child: TextField(
             controller: controller,
+            cursorColor: context.primaryColor,
             decoration: InputDecoration(
-              contentPadding: EdgeInsets.symmetric(vertical: 16.0, horizontal: hasIcon ? 0 : 8),
+              contentPadding: EdgeInsets.symmetric(
+                  vertical: 16.0, horizontal: hasIcon ? 0 : 8),
               hintText: hintText,
               prefixIcon: hasIcon ? Icon(icon) : null,
-              isCollapsed: true,  // fixing hintText not being centered correctly when prefixIcon exists
+              isCollapsed:
+                  true, // fixing hintText not being centered correctly when prefixIcon exists
               border: const OutlineInputBorder(
                 borderRadius: BorderRadius.all(
                   Radius.circular(16),

@@ -42,6 +42,9 @@ class AppTheme {
     primaryColor: DarkColors.primaryColor,
     hintColor: DarkColors.accentColor,
     dividerColor: Colors.grey.shade900,
+    colorScheme: const ColorScheme.dark().copyWith(
+      error: const Color(0xff003300),
+    ),
 
     // Text
     textTheme: TextThemes.darkTextTheme,
@@ -56,13 +59,17 @@ class AppTheme {
     //AppBar
     appBarTheme: DarkThemeWidgets.appBarTheme,
 
-    // Elevated Button
-    elevatedButtonTheme: DarkThemeWidgets.elevatedButtonThemeData,
-
     // Tabs
     iconTheme: DarkThemeWidgets.iconThemeData,
     tabBarTheme: const TabBarTheme(
       labelColor: Colors.white, // Icon Color
     ),
+
+    // Input
+    inputDecorationTheme: DarkThemeWidgets.inputDecorationTheme,
+
+    /// Buttons
+    elevatedButtonTheme: DarkThemeWidgets.elevatedButtonThemeData,
+    textButtonTheme: DarkThemeWidgets.textButtonThemeData,
   );
 }
