@@ -1,4 +1,5 @@
 import 'package:drone_2_0/data/providers/auth_provider.dart';
+import 'package:drone_2_0/service/auth/auth_error_handler.dart';
 import 'package:drone_2_0/service/auth/auth_service.dart';
 import 'package:drone_2_0/themes/theme_constants.dart';
 import 'package:drone_2_0/widgets/input.dart';
@@ -103,7 +104,7 @@ class _RegistrationState extends State<Registration> {
               width: double.infinity,
               child: ElevatedButton(
                 onPressed: () async {
-                  final message = await AuthService().registration(
+                  final authStatus = await AuthService().registration(
                     email: _emailController.text,
                     password: _passwordController.text,
                     username: _userNameController.text,
@@ -114,11 +115,13 @@ class _RegistrationState extends State<Registration> {
                   // ignore: use_build_context_synchronously
                   if (!context.mounted) return;
 
-                  if (message!.contains('Success')) {
+                  if (authStatus == AuthStatus.successful) {
                     Navigator.of(context).pushReplacementNamed("LoginScreen");
                   } else {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      errorSnackbar(message),
+                      defaultSnackbar(
+                        AuthExceptionHandler.generateErrorMessage(authStatus),
+                      ),
                     );
                   }
                 },

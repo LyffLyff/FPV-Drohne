@@ -1,5 +1,6 @@
 import 'package:drone_2_0/data/models/user_model.dart';
 import 'package:drone_2_0/data/providers/auth_provider.dart';
+import 'package:drone_2_0/service/auth/auth_error_handler.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
@@ -8,7 +9,7 @@ class AuthService {
     return FirebaseAuth.instance.currentUser;
   }
 
-  Future<String?> registration({
+  Future<AuthStatus?> registration({
     required String email,
     required String password,
     required String username,
@@ -36,21 +37,15 @@ class AuthService {
             username: username,
           ));
 
-      return 'Success';
+      return AuthStatus.successful;
     } on FirebaseAuthException catch (e) {
-      if (e.code == 'weak-password') {
-        return 'The password provided is too weak.';
-      } else if (e.code == 'email-already-in-use') {
-        return 'The account already exists for that email.';
-      } else {
-        return e.message;
-      }
+      return AuthExceptionHandler.handleAuthException(e);
     } catch (e) {
-      return e.toString();
+      return AuthStatus.unknown;
     }
   }
 
-  Future<String?> login({
+  Future<AuthStatus?> login({
     required String email,
     required String password,
   }) async {
@@ -59,17 +54,11 @@ class AuthService {
         email: email,
         password: password,
       );
-      return 'Success';
+      return AuthStatus.successful;
     } on FirebaseAuthException catch (e) {
-      if (e.code == 'user-not-found') {
-        return 'No user found for that email.';
-      } else if (e.code == 'wrong-password') {
-        return 'Wrong password provided for that user.';
-      } else {
-        return e.message;
-      }
+      return AuthExceptionHandler.handleAuthException(e);
     } catch (e) {
-      return e.toString();
+      return AuthStatus.unknown;
     }
   }
 

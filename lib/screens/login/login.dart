@@ -1,6 +1,7 @@
 import 'package:drone_2_0/data/providers/auth_provider.dart';
 import 'package:drone_2_0/screens/login/registration.dart';
 import 'package:drone_2_0/screens/login/reset_password.dart';
+import 'package:drone_2_0/service/auth/auth_error_handler.dart';
 import 'package:drone_2_0/service/auth/auth_service.dart';
 import 'package:drone_2_0/screens/homepage/homepage.dart';
 import 'package:drone_2_0/themes/theme_constants.dart';
@@ -160,19 +161,18 @@ void _loginWithEmailAndPassword(
   // fixing issue that autocompletes adds SPACES at the end -> making email "badly formatted"
   email = email.trimRight();
 
-  final message = await AuthService().login(
+  final authStatus = await AuthService().login(
     email: email,
     password: password,
   );
   if (context.mounted) {
-    if (message!.contains('Success')) {
+    if (authStatus == AuthStatus.successful) {
       _navigate(context: context);
     } else {
-      Navigator.pop(context);
-      print("Error");
       ScaffoldMessenger.of(context).showSnackBar(
-        errorSnackbar(message),
+        defaultSnackbar(AuthExceptionHandler.generateErrorMessage(authStatus)),
       );
+      Navigator.pop(context);
     }
   }
 }
@@ -194,7 +194,7 @@ void _googleLogin(BuildContext context) async {
       } else {
         Navigator.pop(context);
         ScaffoldMessenger.of(context).showSnackBar(
-          errorSnackbar("ERROR ON GOOGLE SIGN IN"),
+          defaultSnackbar("Google Sign In Error"),
         );
       }
     }

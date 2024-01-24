@@ -60,7 +60,7 @@ class IpDialogue extends StatelessWidget {
           onPressed: () {
             if (!Validators.validateIpAdress(ipAdressController.text)) {
               ScaffoldMessenger.of(context)
-                  .showSnackBar(errorSnackbar("Badly formatted IP-Adress"));
+                  .showSnackBar(defaultSnackbar("Badly formatted IP-Adress"));
             } else {
               onDataEntered(ipAdressController.text, mqttPortController.text,
                   videoPortController.text);

@@ -35,7 +35,7 @@ class DroneModelViewerState extends State<DroneModelViewer> {
     _cube = Object(
       fileName: 'assets/models/drone.obj',
       lighting: true,
-      scale: Vector3.all(10),
+      scale: Vector3.all(8),
       rotation: Vector3(0, 0, 0),
     ); // X -> Upside Down, Y -> Rotation in Plane (Camera Look away / to you), Z -> Upside Down;
     _model.world.add(_cube!);

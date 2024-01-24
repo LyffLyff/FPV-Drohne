@@ -69,7 +69,7 @@ class _UserProfileOptionsState extends State<UserProfileOptions> {
                     if (!message.contains("Success")) {
                       // ignore: use_build_context_synchronously
                       ScaffoldMessenger.of(context).showSnackBar(
-                        errorSnackbar(message),
+                        defaultSnackbar(message),
                       );
                     }
                   }
@@ -104,9 +104,11 @@ Future<String> _saveUserdata(AuthenticationProvider userProvider,
   await userProvider.updateUsername(newUsername);
 
   // Updating UserData in FireStore
-  return UserProfileService()
-      .updateMultipleUserValues(userId: userProvider.userId, newUserdata: {
-    "username": newUsername,
-    "fullName": newName,
-  });
+  return UserProfileService().updateMultipleUserValues(
+    userId: userProvider.userId,
+    newUserdata: {
+      "username": newUsername,
+      "fullName": newName,
+    },
+  );
 }

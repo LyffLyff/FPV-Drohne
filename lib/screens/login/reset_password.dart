@@ -29,11 +29,13 @@ class ResetPassword extends StatelessWidget {
                   String message = await context
                       .read<AuthenticationProvider>()
                       .resetPassword(email: controller.text);
+                  // ignore: use_build_context_synchronously
                   if (!context.mounted) {
                     return;
                   }
-                  ScaffoldMessenger.of(context)
-                      .showSnackBar(errorSnackbar(message));
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    defaultSnackbar(message),
+                  );
                 },
                 icon: const Icon(Icons.send))
           ],
