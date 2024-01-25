@@ -49,7 +49,7 @@ class _LiveViewState extends State<LiveView> {
       autoInitialize: true,
       "rtmp://${widget.ipAdress}:${widget.port}/${widget.streamName}",
       hwAcc: HwAcc.auto,
-      autoPlay: false,
+      autoPlay: true,
       options: _controllerOptions,
     );
     _videoPlayerController.addListener(listener);
@@ -106,7 +106,7 @@ class _LiveViewState extends State<LiveView> {
 
   @override
   Widget build(BuildContext context) {
-    if (!_videoPlayerController.value.isInitialized) {
+    /*if (!_videoPlayerController.value.isInitialized) {
       return const Center(
         child: SizedBox(
           height: 300,
@@ -118,9 +118,20 @@ class _LiveViewState extends State<LiveView> {
           ),
         ),
       );
-    }
+    }*/
+    Logging.debug("STREAM: ${widget.ipAdress}");
     return SizedBox(
       height: 300,
+      width: MediaQuery.sizeOf(context).width,
+      child: VlcPlayer(
+        controller: _videoPlayerController,
+        aspectRatio: widget.aspectRatio,
+        placeholder: const LivestreamPlaceholder(),
+      ),
+    );
+    return SizedBox(
+      height: 300,
+      width: MediaQuery.sizeOf(context).width,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
