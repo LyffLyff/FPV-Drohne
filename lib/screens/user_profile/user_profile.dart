@@ -111,7 +111,7 @@ class _UserProfileState extends State<UserProfile> {
                     gradient: LinearGradient(
                   begin: Alignment.bottomCenter,
                   end: Alignment.topCenter,
-                  colors: [context.backgroundColor, Colors.transparent],
+                  colors: [context.colorScheme.background, Colors.transparent],
                 )),
               ),
               Container(

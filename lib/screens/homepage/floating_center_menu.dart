@@ -6,11 +6,13 @@ import 'package:flutter/material.dart';
 class FloatingCenterMenu extends StatefulWidget {
   final VoidCallback stopRecording;
   final VoidCallback startRecording;
+  final bool isConnected;
 
   const FloatingCenterMenu({
     super.key,
     required this.stopRecording,
     required this.startRecording,
+    required this.isConnected,
   });
 
   @override
@@ -61,7 +63,7 @@ class _FloatingCenterMenuState extends State<FloatingCenterMenu> {
             height: 64,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: context.canvasColor,
+              color: context.colorScheme.background,
               boxShadow: [
                 BoxShadow(
                   color: Colors.black.withOpacity(0.4),

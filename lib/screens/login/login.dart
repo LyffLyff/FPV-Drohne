@@ -72,10 +72,11 @@ class LoginScreenState extends State<LoginScreen> {
                   pageRouteAnimation(const ResetPassword()),
                 );
               },
-              child: const Align(
+              child: Align(
                 alignment: Alignment.bottomRight,
                 child: Text(
                   "Forgot Password?",
+                  style: context.textTheme.labelSmall,
                 ),
               ),
             ),

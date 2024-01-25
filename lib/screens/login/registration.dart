@@ -23,15 +23,18 @@ class RegistrationState extends State<Registration> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _sirNameController = TextEditingController();
   final TextEditingController _userNameController = TextEditingController();
+  final _keyboardVisibilityController = KeyboardVisibilityController();
   bool keyboardVisible = false;
 
   @override
   void initState() {
     super.initState();
-    KeyboardVisibilityController().onChange.listen((bool visible) {
-      setState(() {
-        keyboardVisible = visible;
-      });
+    _keyboardVisibilityController.onChange.listen((bool visible) {
+      if (mounted) {
+        setState(() {
+          keyboardVisible = visible;
+        });
+      }
     });
   }
 

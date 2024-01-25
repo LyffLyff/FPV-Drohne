@@ -51,7 +51,7 @@ class NavDrawer extends StatelessWidget {
         children: <Widget>[
           DrawerHeader(
             decoration: BoxDecoration(
-              color: context.canvasColor,
+              color: context.colorScheme.background,
             ),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,

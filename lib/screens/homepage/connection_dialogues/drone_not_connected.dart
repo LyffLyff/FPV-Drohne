@@ -10,8 +10,8 @@ class DroneNotConnected extends StatelessWidget {
   Widget build(BuildContext context) {
     return AlertDialog(
       icon: const Icon(
-        Icons.error_outline,
-        size: 56,
+        Icons.sensors_rounded,
+        size: 64,
       ),
       title: const Text(
         'Drone available',
@@ -20,6 +20,7 @@ class DroneNotConnected extends StatelessWidget {
       content: Text(
         'Check if the Drone and the corresponding Box is turned on and properly initialized.\nIf the Problem consists check the Help section in the Side menu for further information',
         style: context.textTheme.bodySmall,
+        textAlign: TextAlign.center,
       ),
       actions: const <Widget>[
         Padding(
@@ -29,7 +30,7 @@ class DroneNotConnected extends StatelessWidget {
               Text("Waiting for Connection..."),
               VerticalSpace(height: 10),
               CircularLoadingIcon(
-                length: 20,
+                length: 24,
               ),
             ],
           ),

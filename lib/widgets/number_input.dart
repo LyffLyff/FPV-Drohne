@@ -21,7 +21,7 @@ class NumberInputField extends StatelessWidget {
     bool hasIcon = icon != null;
     return TextField(
       controller: controller,
-      cursorColor: context.primaryColor,
+      cursorColor: context.colorScheme.primary,
       decoration: InputDecoration(
         contentPadding:
             EdgeInsets.symmetric(vertical: 16.0, horizontal: hasIcon ? 0 : 8),

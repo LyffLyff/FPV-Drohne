@@ -19,12 +19,12 @@ class WelcomeScreen extends StatelessWidget {
     precacheImage(AssetImage(logoPath), context);
     return Scaffold(
       body: SafeArea(
-        child: Container(
-          margin: const EdgeInsets.all(Margins.stdMargin),
+        child: Padding(
+          padding: const EdgeInsets.all(Margins.stdMargin),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              const VerticalSpace(height: 40),
+              const Spacer(),
               FadeInImage(
                 image: AssetImage(context.read<ThemeManager>().getLogoPath()),
                 fit: BoxFit.fill,
@@ -32,15 +32,13 @@ class WelcomeScreen extends StatelessWidget {
                     AssetImage(context.read<ThemeManager>().getLogoPath()),
               ),
               const Divider(),
-              const VerticalSpace(height: 10),
-              Align(
-                  alignment: Alignment.center,
-                  child: Text(
-                    "Welcome to the \nFPV-Drone Application :)",
-                    textAlign: TextAlign.center,
-                    style: context.textTheme.bodyMedium,
-                  )),
-              const VerticalSpace(height: 10),
+              const VerticalSpace(height: 8),
+              Text(
+                "Welcome to the \nFPV-Drone Application :)",
+                textAlign: TextAlign.center,
+                style: context.textTheme.bodyMedium,
+              ),
+              const VerticalSpace(height: 18),
               ElevatedButton(
                 child: const Text("Already have an account? Sign In"),
                 onPressed: () {
@@ -55,7 +53,9 @@ class WelcomeScreen extends StatelessWidget {
                       .push(pageRouteAnimation(const Registration()));
                 },
               ),
-              const Spacer(),
+              const Spacer(
+                flex: 2,
+              ),
             ],
           ),
         ),

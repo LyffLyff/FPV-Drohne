@@ -36,6 +36,7 @@ class _HomePageState extends State<HomePage> {
   bool ipAdressSelected = false;
   bool droneFlight = false;
   bool isOnline = false;
+  bool isConnected = false;
   RealtimeDatabaseService rtdbService = RealtimeDatabaseService();
 
   // Server Config
@@ -111,7 +112,7 @@ class _HomePageState extends State<HomePage> {
           // Style
           style: GnavStyle.google,
           iconSize: 28,
-          tabBackgroundColor: context.hoverColor,
+          tabBackgroundColor: context.colorScheme.onBackground,
           tabMargin: const EdgeInsets.symmetric(
               vertical: 5), // setting the space between buttons and end of bar
           padding: const EdgeInsets.symmetric(
@@ -156,7 +157,7 @@ class _HomePageState extends State<HomePage> {
             );
           },
           child: StreamBuilder(
-            stream: RealtimeDatabaseService().listenToValue("is_online"),
+            stream: rtdbService.listenToValue("is_online"),
             builder: (context, snapshot) {
               if (!snapshot.hasData) {
                 return const CircularLoadingIcon();
@@ -183,7 +184,7 @@ class _HomePageState extends State<HomePage> {
                         return const CircularLoadingIcon();
                       }
                       // check if drone is connected -> flag in RTDB
-                      var isConnected = snapshot.data.snapshot.value;
+                      isConnected = snapshot.data.snapshot.value;
                       if (isConnected) {
                         // Show Server Dialogue for Ip and Port Configuration
                         if (!ipAdressSelected) {
@@ -227,6 +228,7 @@ class _HomePageState extends State<HomePage> {
                     },
                   ),
                   FloatingCenterMenu(
+                    isConnected: isConnected,
                     startRecording: _startRecording,
                     stopRecording: _stopRecording,
                   ),

@@ -35,6 +35,9 @@ class DarkThemeWidgets {
 
   // Input -> Textfield,...
   static InputDecorationTheme inputDecorationTheme = InputDecorationTheme(
+    fillColor: DarkColors.colorScheme.primary,
+    hintStyle: TextThemes.darkTextTheme.labelSmall,
+    isCollapsed: true,
     // Unfocused border -> with opacity < 1.0
     border: OutlineInputBorder(
       borderRadius: BorderRadius.circular(16),
@@ -58,7 +61,9 @@ class DarkThemeWidgets {
       ElevatedButtonThemeData(
     style: ElevatedButton.styleFrom(
       //backgroundColor: DarkColors.accentColor,
-      foregroundColor: DarkColors.textColor,
+      textStyle: TextThemes.darkTextTheme.labelMedium,
+      backgroundColor: DarkColors.colorScheme.primary,
+      foregroundColor: DarkColors.colorScheme.onPrimary,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16),
       ),

@@ -49,8 +49,8 @@ class TextThemes {
       color: DarkColors.textColor,
     ),
     bodyMedium: _stdTextTheme.copyWith(
-      fontSize: 16,
-      fontWeight: FontWeight.w400,
+      fontSize: 18,
+      fontWeight: FontWeight.w600,
       color: DarkColors.textColor,
     ),
     bodySmall: _stdTextTheme.copyWith(

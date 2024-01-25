@@ -25,10 +25,14 @@ class StdInputField extends StatelessWidget {
         width: width,
         child: TextField(
             controller: controller,
-            cursorColor: context.primaryColor,
+            cursorColor: context.colorScheme.primary,
             decoration: InputDecoration(
-              contentPadding: EdgeInsets.symmetric(
-                  vertical: 16.0, horizontal: hasIcon ? 0 : 8),
+              contentPadding: EdgeInsets.only(
+                top: 16.0,
+                bottom: 16.0,
+                right: 8.0,
+                left: hasIcon ? 0 : 8,
+              ),
               hintText: hintText,
               prefixIcon: hasIcon ? Icon(icon) : null,
               isCollapsed:

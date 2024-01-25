@@ -10,11 +10,14 @@ class GeneralFlightData extends StatelessWidget {
   final String weatherIcon;
 
   const GeneralFlightData(
-      {super.key, required this.timestamp, required this.durationInSeconds, required this.weatherIcon});
+      {super.key,
+      required this.timestamp,
+      required this.durationInSeconds,
+      required this.weatherIcon});
 
   BoxDecoration _getRectangleDecoration(BuildContext context) {
     return BoxDecoration(
-        color: context.canvasColor,
+        color: context.colorScheme.background,
         shape: BoxShape.rectangle,
         borderRadius: BorderRadius.circular(16));
   }
@@ -45,7 +48,7 @@ class GeneralFlightData extends StatelessWidget {
         DecoratedBox(
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            border: Border.all(width: 4, color: context.canvasColor),
+            border: Border.all(width: 4, color: context.colorScheme.background),
           ),
           child: Padding(
             padding: const EdgeInsets.all(32),

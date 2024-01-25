@@ -12,7 +12,8 @@ class CircularLoadingIcon extends StatelessWidget {
         width: length,
         height: length,
         child: CircularProgressIndicator.adaptive(
-            backgroundColor: context.primaryColor),
+          backgroundColor: context.colorScheme.onPrimary,
+        ),
       ),
     );
   }
