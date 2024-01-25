@@ -106,7 +106,7 @@ class _LiveViewState extends State<LiveView> {
 
   @override
   Widget build(BuildContext context) {
-    /*if (!_videoPlayerController.value.isInitialized) {
+    if (!_videoPlayerController.value.isInitialized) {
       return const Center(
         child: SizedBox(
           height: 300,
@@ -118,24 +118,16 @@ class _LiveViewState extends State<LiveView> {
           ),
         ),
       );
-    }*/
-    Logging.debug("STREAM: ${widget.ipAdress}");
-    return SizedBox(
-      height: 300,
-      width: MediaQuery.sizeOf(context).width,
-      child: VlcPlayer(
-        controller: _videoPlayerController,
-        aspectRatio: widget.aspectRatio,
-        placeholder: const LivestreamPlaceholder(),
-      ),
-    );
-    return SizedBox(
-      height: 300,
-      width: MediaQuery.sizeOf(context).width,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Stack(
+    }
+    Logging.debug(
+        "PLAYER Initialized -> Loading Stream: ${widget.ipAdress}:${widget.port}");
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        SizedBox(
+          width: MediaQuery.sizeOf(context).width,
+          height: 320,
+          child: Stack(
             children: [
               VlcPlayer(
                 controller: _videoPlayerController,
@@ -145,36 +137,36 @@ class _LiveViewState extends State<LiveView> {
               const VideoOverlay(),
             ],
           ),
-          const Divider(),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              IconButton(
-                color: Colors.white,
-                icon: _videoPlayerController.value.isPlaying
-                    ? const Icon(Icons.pause_circle_outline)
-                    : const Icon(Icons.play_circle_outline),
-                onPressed: () async {
-                  await _togglePlaying();
-                },
-              ),
-              IconButton(
-                iconSize: 24,
-                onPressed: () {
-                  Logging.info("Starting to record");
-                },
-                icon: const Icon(Icons.screenshot_monitor_rounded),
-              ),
-              IconButton(
-                onPressed: () {
-                  _togglePlaying();
-                },
-                icon: const Icon(Icons.screenshot_monitor_rounded),
-              ),
-            ],
-          )
-        ],
-      ),
+        ),
+        const Divider(),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            IconButton(
+              color: Colors.white,
+              icon: _videoPlayerController.value.isPlaying
+                  ? const Icon(Icons.pause_circle_outline)
+                  : const Icon(Icons.play_circle_outline),
+              onPressed: () async {
+                await _togglePlaying();
+              },
+            ),
+            IconButton(
+              iconSize: 24,
+              onPressed: () {
+                Logging.info("Starting to record");
+              },
+              icon: const Icon(Icons.screenshot_monitor_rounded),
+            ),
+            IconButton(
+              onPressed: () {
+                _togglePlaying();
+              },
+              icon: const Icon(Icons.screenshot_monitor_rounded),
+            ),
+          ],
+        )
+      ],
     );
   }
 }
