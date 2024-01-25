@@ -111,7 +111,7 @@ class _PreviousFlightsState extends State<PreviousFlights> {
     return Scaffold(
       appBar: AppBar(
         title: Title(
-            color: context.appBarTheme.backgroundColor ?? Colors.grey.shade900,
+            color: context.colorScheme.background,
             child: const Text("Previous Flights")),
       ),
       body: FutureBuilder(

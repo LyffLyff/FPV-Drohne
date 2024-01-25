@@ -22,13 +22,13 @@ MaterialColor createMaterialColor(Color color) {
 }
 
 const _textColor = Color(0xFFf5ebef);
-const _backgroundColor = Color(0xFF090306);
+const _backgroundColor = Color.fromARGB(255, 24, 24, 24);
 const _primaryColor = Color(0xFFe384a8);
-const _primaryFgColor = Color(0xFF090306);
+const _primaryFgColor = Color.fromARGB(255, 247, 223, 235);
 const _secondaryColor = Color(0xFF8f1241);
 const _secondaryFgColor = Color(0xFFf5ebef);
 const _accentColor = Color(0xFFf73780);
-const _accentFgColor = Color(0xFF090306);
+const _accentFgColor = Color.fromARGB(255, 0, 0, 0);
 
 const _colorScheme = ColorScheme(
   brightness: Brightness.dark,

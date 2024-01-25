@@ -93,10 +93,10 @@ class LoginScreenState extends State<LoginScreen> {
             const VerticalSpace(height: 64),
             Row(
               children: [
-                const Expanded(
+                Expanded(
                     child: Divider(
                   thickness: 1,
-                  color: Colors.grey,
+                  color: context.colorScheme.onBackground,
                 )),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -105,10 +105,10 @@ class LoginScreenState extends State<LoginScreen> {
                     style: context.textTheme.displaySmall,
                   ),
                 ),
-                const Expanded(
+                Expanded(
                     child: Divider(
                   thickness: 1,
-                  color: Colors.grey,
+                  color: context.colorScheme.onBackground,
                 ))
               ],
             ),

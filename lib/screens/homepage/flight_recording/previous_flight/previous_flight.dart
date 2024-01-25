@@ -1,4 +1,3 @@
-import 'package:drone_2_0/extensions/extensions.dart';
 import 'package:drone_2_0/screens/homepage/flight_recording/previous_flight/flight_data_tab.dart';
 import 'package:drone_2_0/screens/homepage/flight_recording/previous_flight/general.dart';
 import 'package:flutter/material.dart';

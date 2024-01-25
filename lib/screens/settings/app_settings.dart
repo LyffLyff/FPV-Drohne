@@ -18,21 +18,20 @@ void colorSettings(bool darkMode) {
   if (darkMode) {
     // dark mode sytem colors
     mySystemTheme = SystemUiOverlayStyle.light.copyWith(
-      statusBarColor: Colors.grey.shade900,
+      //statusBarColor: Colors.grey.shade900,
       statusBarIconBrightness: Brightness.light,
       systemNavigationBarIconBrightness: Brightness.light,
       systemNavigationBarContrastEnforced: true,
-      systemNavigationBarColor: Colors.grey.shade900,
+      //systemNavigationBarColor: Colors.grey.shade900,
     );
   } else {
     // light mode sytem colors
     mySystemTheme = SystemUiOverlayStyle.dark.copyWith(
-      statusBarColor: Colors.grey.shade200,
+      //statusBarColor: Colors.grey.shade200,
       statusBarIconBrightness: Brightness.dark,
       systemNavigationBarIconBrightness: Brightness.dark,
-      systemNavigationBarColor: Colors.grey.shade200,
+      //systemNavigationBarColor: Colors.grey.shade200,
     );
   }
   SystemChrome.setSystemUIOverlayStyle(mySystemTheme);
-
 }

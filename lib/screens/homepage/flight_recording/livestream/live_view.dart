@@ -45,6 +45,7 @@ class _LiveViewState extends State<LiveView> {
   @override
   void initState() {
     super.initState();
+    Logging.debug("LiveView Initializing");
     _videoPlayerController = VlcPlayerController.network(
       autoInitialize: true,
       "rtmp://${widget.ipAdress}:${widget.port}/${widget.streamName}",
@@ -107,6 +108,7 @@ class _LiveViewState extends State<LiveView> {
   @override
   Widget build(BuildContext context) {
     if (!_videoPlayerController.value.isInitialized) {
+      Logging.debug("LiveView not Initialized -> ${widget.ipAdress}");
       return const Center(
         child: SizedBox(
           height: 300,
