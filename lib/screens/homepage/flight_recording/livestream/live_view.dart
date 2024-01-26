@@ -107,7 +107,7 @@ class _LiveViewState extends State<LiveView> {
 
   @override
   Widget build(BuildContext context) {
-    if (!_videoPlayerController.value.isInitialized) {
+    if (!_videoPlayerController.value.isInitialized && false) {
       Logging.debug("LiveView not Initialized -> ${widget.ipAdress}");
       return const Center(
         child: SizedBox(

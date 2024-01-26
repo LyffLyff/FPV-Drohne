@@ -1,9 +1,10 @@
+import 'package:drone_2_0/data/providers/logging_provider.dart';
 import 'package:drone_2_0/screens/homepage/flight_recording/flight_data_recording/awaiting_connection_dialogue.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cube/flutter_cube.dart';
 import 'package:drone_2_0/service/mqtt_manager.dart';
 
-enum ModelAxis { yaw, roll, pitch }
+enum ModelAxis { pitch, roll, yaw }
 
 class DroneModelViewer extends StatefulWidget {
   final String? title;
@@ -48,22 +49,25 @@ class DroneModelViewerState extends State<DroneModelViewer> {
   }
 
   Future<bool> _rotationManagerInit() async {
-    bool error = await mqttManager.connect();
-    if (!error) {
+    bool connection = await mqttManager.connect();
+
+    if (connection) {
       mqttManager.subscribeToTopic("data/rotation");
+      Logging.info("Subscribed to Rotation Topic");
       mqttManager.messageStream.listen((event) {
         List<double> rotationData = [];
         event.values.first.split(" ").forEach((element) {
           // converting split list of strings to the rotation values as floating point
           rotationData.add(double.parse(element));
         });
-        _cube?.rotation.z = rotationData[ModelAxis.pitch.index];
+        Logging.info(rotationData);
+        _cube?.rotation.z = rotationData[ModelAxis.roll.index];
         _cube?.rotation.y = rotationData[ModelAxis.yaw.index];
-        _cube?.rotation.x = rotationData[ModelAxis.roll.index];
+        _cube?.rotation.x = rotationData[ModelAxis.pitch.index];
         updateModel();
       });
     }
-    return error;
+    return connection;
   }
 
   @override
@@ -99,7 +103,7 @@ class DroneModelViewerState extends State<DroneModelViewer> {
                 onChanged: (newVal) {
                   setState(() {
                     yRotation = newVal;
-                    _cube?.rotation.z = newVal;
+                    _cube?.rotation.y = newVal;
                     _cube?.updateTransform();
                     _model.update();
                   });
