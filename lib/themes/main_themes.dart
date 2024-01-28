@@ -45,7 +45,7 @@ class AppTheme {
 
     // NavigationBars
     navigationBarTheme: DarkThemeWidgets.navigationBarTheme,
-    //bottomNavigationBarTheme: DarkThemeWidgets.bottomNavigationBarTheme,
+    bottomNavigationBarTheme: DarkThemeWidgets.bottomNavigationBarTheme,
 
     // Scaffold
     //scaffoldBackgroundColor: DarkColors.secondaryColor,

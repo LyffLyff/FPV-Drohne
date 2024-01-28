@@ -61,7 +61,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   void _stopRecording() async {
-    int endTimestamp = DateTime.now().millisecondsSinceEpoch ~/ 1000;
+    int endTimestamp = DateTime.now().millisecondsSinceEpoch;
     if (flightData.finishFlight(
         endTimestamp, FlightRecordingFinishType.manual, context)) {
       Navigator.of(context).push(

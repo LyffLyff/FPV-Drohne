@@ -1,3 +1,4 @@
+import 'package:drone_2_0/extensions/extensions.dart';
 import 'package:drone_2_0/screens/homepage/flight_recording/previous_flight/flight_data_tab.dart';
 import 'package:drone_2_0/screens/homepage/flight_recording/previous_flight/general.dart';
 import 'package:flutter/material.dart';
@@ -91,20 +92,21 @@ class _PreviousFlightState extends State<PreviousFlight> {
         child: _widgetOptions.elementAt(_selectedIndex),
       ),
       bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
+        items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.analytics),
+            icon: const Icon(Icons.analytics),
             label: 'General',
+            backgroundColor: context.colorScheme.surface,
           ),
-          BottomNavigationBarItem(
+          const BottomNavigationBarItem(
             icon: Icon(Icons.speed),
             label: 'Velocity',
           ),
-          BottomNavigationBarItem(
+          const BottomNavigationBarItem(
             icon: Icon(Icons.show_chart),
             label: 'Height',
           ),
-          BottomNavigationBarItem(
+          const BottomNavigationBarItem(
             icon: Icon(Icons.thermostat),
             label: 'Temperature',
           ),

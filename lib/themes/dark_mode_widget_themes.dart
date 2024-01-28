@@ -16,7 +16,13 @@ class DarkThemeWidgets {
 
   static BottomNavigationBarThemeData bottomNavigationBarTheme =
       BottomNavigationBarThemeData(
-    backgroundColor: DarkColors.backgroundColor,
+    backgroundColor: DarkColors.colorScheme.background,
+    unselectedIconTheme: IconThemeData(
+      color: DarkColors.colorScheme.primary,
+    ),
+    selectedIconTheme: IconThemeData(
+      color: DarkColors.colorScheme.secondary,
+    ),
   );
 
   static IconThemeData iconThemeData = const IconThemeData(

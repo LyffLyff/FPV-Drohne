@@ -63,9 +63,10 @@ class LightColors {
   static Color backgroundColor = const Color.fromARGB(255, 227, 233, 237);
   static Color textColor = const Color.fromARGB(255, 16, 21, 25);
   static ColorScheme colorScheme = _colorScheme.copyWith(
-      onBackground: const Color.fromARGB(255, 16, 21, 25),
-      background: const Color.fromARGB(255, 227, 233, 237),
-      error: const Color(0xffB3261E),
-      onError: const Color(0xff601410),
-      brightness: Brightness.light);
+    onBackground: const Color.fromARGB(255, 16, 21, 25),
+    background: const Color.fromARGB(255, 227, 233, 237),
+    error: const Color(0xffB3261E),
+    onError: const Color(0xff601410),
+    brightness: Brightness.light,
+  );
 }
