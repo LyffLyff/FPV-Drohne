@@ -112,7 +112,7 @@ class _HomePageState extends State<HomePage> {
           // Style
           style: GnavStyle.google,
           iconSize: 28,
-          tabBackgroundColor: context.colorScheme.onBackground,
+          tabBackgroundColor: context.colorScheme.secondary,
           tabMargin: const EdgeInsets.symmetric(
               vertical: 5), // setting the space between buttons and end of bar
           padding: const EdgeInsets.symmetric(

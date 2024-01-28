@@ -37,11 +37,8 @@ class SettingsScreen extends StatelessWidget {
                 inactiveTrackColor: Colors.grey.shade300,
                 value: themeManager.isDark,
                 title: const Text("Theme Mode"),
-                subtitle: Text(
+                subtitle: const Text(
                   'Light/Dark Mode Toggle',
-                  style: TextStyle(
-                    color: Colors.blueGrey[600],
-                  ),
                 ),
                 controlAffinity: ListTileControlAffinity.trailing,
                 onChanged: ((value) {

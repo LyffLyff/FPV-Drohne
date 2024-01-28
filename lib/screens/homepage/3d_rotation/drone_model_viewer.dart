@@ -26,6 +26,7 @@ class DroneModelViewerState extends State<DroneModelViewer> {
   double xRotation = 0; // PITCH
   double yRotation = 0; // YAW
   double zRotation = 0; // ROLL
+  double yawOffset = 20; // Offset for Model to look at camera
   bool initialized = false;
   late final MQTTManager mqttManager;
   late Scene _model;
@@ -38,7 +39,7 @@ class DroneModelViewerState extends State<DroneModelViewer> {
       lighting: true,
       backfaceCulling: true,
       scale: Vector3.all(8),
-      rotation: Vector3(0, 0, 0),
+      rotation: Vector3(yawOffset, 0, 0),
     ); // X -> Upside Down, Y -> Rotation in Plane (Camera Look away / to you), Z -> Upside Down;
     _model.world.add(_cube!);
   }
@@ -62,7 +63,7 @@ class DroneModelViewerState extends State<DroneModelViewer> {
         });
         Logging.info(rotationData);
         _cube?.rotation.z = rotationData[ModelAxis.roll.index];
-        _cube?.rotation.y = rotationData[ModelAxis.yaw.index];
+        _cube?.rotation.y = rotationData[ModelAxis.yaw.index] + yawOffset;
         _cube?.rotation.x = rotationData[ModelAxis.pitch.index];
         updateModel();
       });

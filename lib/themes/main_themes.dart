@@ -6,34 +6,34 @@ import 'package:flutter/material.dart';
 
 class AppTheme {
   static ThemeData lightTheme = ThemeData(
-    brightness: Brightness.light, // Text Black -> White Mode
-    primarySwatch: createMaterialColor(LightColors.primaryColor),
-    primaryColor: LightColors.primaryColor,
-    hintColor: LightColors.accentColor,
-    dividerColor: Colors.white,
+    // General
     colorScheme: LightColors.colorScheme,
 
     // Text
     textTheme: TextThemes.lightTextTheme,
 
-    //AppBar
-    appBarTheme: LightThemeWidgets.appBarTheme,
-
-    //Navigation Bar
-    bottomAppBarTheme:
-        BottomAppBarTheme(color: Colors.grey.shade900.withOpacity(0.5)),
+    // NavigationBars
+    navigationBarTheme: LightThemeWidgets.navigationBarTheme,
     //bottomNavigationBarTheme: DarkThemeWidgets.bottomNavigationBarTheme,
 
     // Scaffold
-    scaffoldBackgroundColor: LightColors.backgroundColor,
+    //scaffoldBackgroundColor: DarkColors.secondaryColor,
 
-    // Elevated Button
-    elevatedButtonTheme: LightThemeWidgets.elevatedButtonThemeData,
+    //AppBar
+    appBarTheme: LightThemeWidgets.appBarTheme,
 
     // Tabs
     iconTheme: LightThemeWidgets.iconThemeData,
+    tabBarTheme: const TabBarTheme(
+      labelColor: Colors.white, // Icon Color
+    ),
 
-    tabBarTheme: const TabBarTheme(indicatorColor: Colors.black),
+    // Input
+    inputDecorationTheme: LightThemeWidgets.inputDecorationTheme,
+
+    /// Buttons
+    elevatedButtonTheme: LightThemeWidgets.elevatedButtonThemeData,
+    textButtonTheme: LightThemeWidgets.textButtonThemeData,
   );
 
   static ThemeData darkTheme = ThemeData(

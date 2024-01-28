@@ -23,6 +23,16 @@ class LightThemeWidgets {
     labelColor: Colors.black, // Icon Color
   );
 
+  static InputDecorationTheme inputDecorationTheme = InputDecorationTheme(
+    fillColor: DarkColors.colorScheme.primary,
+    hintStyle: TextThemes.darkTextTheme.labelSmall,
+    isCollapsed: true,
+    // Unfocused border -> with opacity < 1.0
+    border: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(16),
+    ),
+  );
+
   /// Buttons ///
   static ElevatedButtonThemeData elevatedButtonThemeData =
       ElevatedButtonThemeData(
@@ -33,6 +43,10 @@ class LightThemeWidgets {
         borderRadius: BorderRadius.circular(8),
       ),
     ),
+  );
+
+  static DrawerThemeData drawerTheme = DrawerThemeData(
+    backgroundColor: LightColors.colorScheme.background,
   );
 
   static TextButtonThemeData textButtonThemeData = TextButtonThemeData(
