@@ -92,6 +92,9 @@ class _PreviousFlightState extends State<PreviousFlight> {
         child: _widgetOptions.elementAt(_selectedIndex),
       ),
       bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.shifting,
+        fixedColor: context.colorScheme.onBackground,
+        selectedLabelStyle: const TextStyle(color: Colors.white),
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: const Icon(Icons.analytics),

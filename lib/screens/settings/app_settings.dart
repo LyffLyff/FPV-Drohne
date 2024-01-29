@@ -1,3 +1,4 @@
+import 'package:drone_2_0/themes/colors.dart';
 import 'package:flutter/services.dart';
 
 void defaultAppSettings({bool darkMode = true}) {
@@ -17,19 +18,19 @@ void colorSettings(bool darkMode) {
   if (darkMode) {
     // dark mode sytem colors
     mySystemTheme = SystemUiOverlayStyle.light.copyWith(
-      //statusBarColor: Colors.grey.shade900,
+      statusBarColor: DarkColors.colorScheme.background,
       statusBarIconBrightness: Brightness.light,
       systemNavigationBarIconBrightness: Brightness.light,
       systemNavigationBarContrastEnforced: true,
-      //systemNavigationBarColor: Colors.grey.shade900,
+      systemNavigationBarColor: DarkColors.colorScheme.background,
     );
   } else {
     // light mode sytem colors
     mySystemTheme = SystemUiOverlayStyle.dark.copyWith(
-      //statusBarColor: Colors.grey.shade200,
+      statusBarColor: LightColors.colorScheme.background,
       statusBarIconBrightness: Brightness.dark,
       systemNavigationBarIconBrightness: Brightness.dark,
-      //systemNavigationBarColor: Colors.grey.shade200,
+      systemNavigationBarColor: LightColors.colorScheme.background,
     );
   }
   SystemChrome.setSystemUIOverlayStyle(mySystemTheme);
