@@ -59,7 +59,7 @@ class FinishedFlight extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Flight Finished"),
+        title: const Text("Dispose Flight"),
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),

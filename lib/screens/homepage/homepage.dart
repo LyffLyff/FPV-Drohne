@@ -1,5 +1,6 @@
 import 'package:drone_2_0/data/providers/auth_provider.dart';
 import 'package:drone_2_0/data/providers/logging_provider.dart';
+import 'package:drone_2_0/data/shared_preferences.dart';
 import 'package:drone_2_0/extensions/extensions.dart';
 import 'package:drone_2_0/screens/homepage/3d_rotation/drone_model_viewer.dart';
 import 'package:drone_2_0/screens/homepage/connection_dialogues/drone_not_connected.dart';
@@ -83,10 +84,18 @@ class _HomePageState extends State<HomePage> {
     droneFlight = true;
   }
 
-  void _onInitDialogueDataEntered(
-      String ipAdress, String mqttPort, String videoPort) {
+  Future<void> _onInitDialogueDataEntered(
+      String ipAdress, String mqttPort, String videoPort) async {
     Logging.info("Server Data Entered -> Show Homepage");
     Logging.info("ENTERED CONFIG: $ipAdress  $mqttPort  $videoPort");
+
+    // Safe Data for later Sessions
+    final SharedPrefs sharedPrefs = SharedPrefs();
+    await sharedPrefs.saveText("serverIp", ipAdress);
+    await sharedPrefs.saveText("mqttPort", mqttPort);
+    await sharedPrefs.saveText("videoPort", videoPort);
+
+    // update data in homepage main screens
     setState(() {
       this.ipAdress = ipAdress;
       this.mqttPort = int.tryParse(mqttPort) ?? 1883;
@@ -106,44 +115,41 @@ class _HomePageState extends State<HomePage> {
         ),
         centerTitle: true,
       ),
-      bottomNavigationBar: Visibility(
-        visible: ipAdressSelected,
-        child: GNav(
-          // Style
-          style: GnavStyle.google,
-          iconSize: 28,
-          tabBackgroundColor: context.colorScheme.secondary,
-          tabMargin: const EdgeInsets.symmetric(
-              vertical: 5), // setting the space between buttons and end of bar
-          padding: const EdgeInsets.symmetric(
-              horizontal: 5,
-              vertical: 10), // setting thickness of button and bar in general
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          gap: 10,
+      bottomNavigationBar: GNav(
+        // Style
+        style: GnavStyle.google,
+        iconSize: 28,
+        tabBackgroundColor: context.colorScheme.secondary,
+        tabMargin: const EdgeInsets.symmetric(
+            vertical: 5), // setting the space between buttons and end of bar
+        padding: const EdgeInsets.symmetric(
+            horizontal: 5,
+            vertical: 10), // setting thickness of button and bar in general
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        gap: 10,
 
-          // Function
-          selectedIndex: currentPageIdx,
-          tabs: const [
-            GButton(
-              icon: Icons.data_exploration,
-              text: "Flight Records",
-            ),
-            GButton(
-              icon: Icons.rotate_right_outlined,
-              text: "3D-Space",
-            ),
-            GButton(
-              icon: Icons.video_camera_back,
-              text: "Live View",
-            ),
-          ],
+        // Function
+        selectedIndex: currentPageIdx,
+        tabs: const [
+          GButton(
+            icon: Icons.data_exploration,
+            text: "Flight Records",
+          ),
+          GButton(
+            icon: Icons.rotate_right_outlined,
+            text: "3D-Space",
+          ),
+          GButton(
+            icon: Icons.video_camera_back,
+            text: "Live View",
+          ),
+        ],
 
-          onTabChange: (value) {
-            setState(() {
-              currentPageIdx = value;
-            });
-          },
-        ),
+        onTabChange: (value) {
+          setState(() {
+            currentPageIdx = value;
+          });
+        },
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),

@@ -59,6 +59,7 @@ dependencies:
   flutter_vlc_player: ^7.2.0
   flutter_cube: ^0.1.1
   google_fonts: ^6.1.0
+  shared_preferences: ^2.2.2
 
 dev_dependencies:
   flutter_test:
