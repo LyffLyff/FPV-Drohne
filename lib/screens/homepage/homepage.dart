@@ -58,7 +58,7 @@ class _HomePageState extends State<HomePage> {
     super.dispose();
 
     // at the end set -> "is_connected" to false since collecting data isn't possible when app closed
-    rtdbService.updateData("", {"is_connected": true});
+    _disconnectRTDBFlags(false);
   }
 
   void _stopRecording() async {
@@ -76,6 +76,13 @@ class _HomePageState extends State<HomePage> {
     flightData = FlightData();
     droneFlight = false;
     ipAdressSelected = false;
+
+    _disconnectRTDBFlags(false);
+  }
+
+  void _disconnectRTDBFlags(bool toggle) {
+    rtdbService.updateData("", {"is_connected": toggle});
+    rtdbService.updateData("", {"server_selected": toggle});
   }
 
   void _startRecording() async {
@@ -102,6 +109,9 @@ class _HomePageState extends State<HomePage> {
       this.videoPort = int.tryParse(videoPort) ?? 1935;
       ipAdressSelected = true;
     });
+
+    // setting flag that sever was selected -> for bottom menu visibility
+    rtdbService.updateData("", {"server_selected": true});
   }
 
   @override
@@ -115,40 +125,51 @@ class _HomePageState extends State<HomePage> {
         ),
         centerTitle: true,
       ),
-      bottomNavigationBar: GNav(
-        // Style
-        style: GnavStyle.google,
-        iconSize: 28,
-        tabBackgroundColor: context.colorScheme.secondary,
-        tabMargin: const EdgeInsets.symmetric(
-            vertical: 5), // setting the space between buttons and end of bar
-        padding: const EdgeInsets.symmetric(
-            horizontal: 5,
-            vertical: 10), // setting thickness of button and bar in general
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        gap: 10,
+      bottomNavigationBar: StreamBuilder<dynamic>(
+        stream: rtdbService.listenToValue("server_selected"),
+        builder: (context, snapshot) {
+          bool visibility = ((snapshot.data?.snapshot.value ?? false) as bool);
+          return Visibility(
+            visible: visibility,
+            child: GNav(
+              // Style
+              style: GnavStyle.google,
+              iconSize: 28,
+              tabBackgroundColor: context.colorScheme.secondary,
+              tabMargin: const EdgeInsets.symmetric(
+                  vertical:
+                      5), // setting the space between buttons and end of bar
+              padding: const EdgeInsets.symmetric(
+                  horizontal: 5,
+                  vertical:
+                      10), // setting thickness of button and bar in general
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              gap: 10,
 
-        // Function
-        selectedIndex: currentPageIdx,
-        tabs: const [
-          GButton(
-            icon: Icons.data_exploration,
-            text: "Flight Records",
-          ),
-          GButton(
-            icon: Icons.rotate_right_outlined,
-            text: "3D-Space",
-          ),
-          GButton(
-            icon: Icons.video_camera_back,
-            text: "Live View",
-          ),
-        ],
+              // Function
+              selectedIndex: currentPageIdx,
+              tabs: const [
+                GButton(
+                  icon: Icons.data_exploration,
+                  text: "Flight Records",
+                ),
+                GButton(
+                  icon: Icons.rotate_right_outlined,
+                  text: "3D-Space",
+                ),
+                GButton(
+                  icon: Icons.video_camera_back,
+                  text: "Live View",
+                ),
+              ],
 
-        onTabChange: (value) {
-          setState(() {
-            currentPageIdx = value;
-          });
+              onTabChange: (value) {
+                setState(() {
+                  currentPageIdx = value;
+                });
+              },
+            ),
+          );
         },
       ),
       body: Padding(
@@ -174,7 +195,9 @@ class _HomePageState extends State<HomePage> {
                   // stopping the recording of the flight if the drone suddenly looses connection
                   // -> "is_online" is set to false by drone not the user
                   _stopRecording();
-                  ipAdressSelected = false;
+                  setState(() {
+                    ipAdressSelected = false;
+                  });
                 }
                 return const DroneOffline();
               }
@@ -222,10 +245,11 @@ class _HomePageState extends State<HomePage> {
                               port: mqttPort,
                             ),
                             LiveView(
-                                ipAdress: ipAdress,
-                                port: videoPort,
-                                streamName: "live/stream",
-                                aspectRatio: 4 / 3),
+                              ipAdress: ipAdress,
+                              port: videoPort,
+                              streamName: "live/stream",
+                              aspectRatio: 4 / 3,
+                            ),
                           ],
                         );
                       } else {

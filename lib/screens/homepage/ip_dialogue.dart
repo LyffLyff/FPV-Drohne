@@ -1,4 +1,3 @@
-import 'package:drone_2_0/data/providers/logging_provider.dart';
 import 'package:drone_2_0/data/shared_preferences.dart';
 import 'package:drone_2_0/extensions/extensions.dart';
 import 'package:drone_2_0/widgets/number_input.dart';

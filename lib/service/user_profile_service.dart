@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:drone_2_0/data/providers/logging_provider.dart';
 
 class UserProfileService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -52,61 +53,77 @@ class UserProfileService {
 
   Future<void> addFlightData(String collection, String userId, int timestamp,
       Map<String, dynamic> newFlightData) async {
-    // this function adds a new entry of flight data to the subcollection within the user document
-    await FirebaseFirestore.instance
-        .collection(collection)
-        .doc(userId)
-        .collection("flight_data")
-        .doc(timestamp.toString())
-        .set(newFlightData);
+    try {
+      await FirebaseFirestore.instance
+          .collection(collection)
+          .doc(userId)
+          .collection("flight_data")
+          .doc(timestamp.toString())
+          .set(newFlightData);
 
-    // sets timestamp when last updated
-    await FirebaseFirestore.instance
-        .collection(collection)
-        .doc(userId)
-        .collection("data_timestamps")
-        .doc("flight_data_age")
-        .set({"flight_data_age": DateTime.now().millisecondsSinceEpoch});
+      await FirebaseFirestore.instance
+          .collection(collection)
+          .doc(userId)
+          .collection("data_timestamps")
+          .doc("flight_data_age")
+          .set({"flight_data_age": DateTime.now().millisecondsSinceEpoch});
+    } catch (e) {
+      // Handle the exception here
+      print('Error in addFlightData: $e');
+    }
   }
 
   Future<void> updateFlightDataProperty(
       String userId, int timestamp, String key, dynamic value) async {
-    await FirebaseFirestore.instance
-        .collection("users")
-        .doc(userId)
-        .collection("flight_data")
-        .doc(timestamp.toString())
-        .update({key: value});
+    try {
+      await FirebaseFirestore.instance
+          .collection("users")
+          .doc(userId)
+          .collection("flight_data")
+          .doc(timestamp.toString())
+          .update({key: value});
+    } catch (e) {
+      Logging.error('Error in updateFlightDataProperty: $e');
+    }
   }
 
   Future<List> getFlightDataSets(String userId) async {
-    // loading flight data
-    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
-        .collection("users")
-        .doc(userId)
-        .collection("flight_data")
-        .get();
+    try {
+      QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+          .collection("users")
+          .doc(userId)
+          .collection("flight_data")
+          .get();
 
-    // returning list of documents within flight_data subcollection
-    return querySnapshot.docs.map((doc) => doc.data() as Map).toList();
+      return querySnapshot.docs.map((doc) => doc.data() as Map).toList();
+    } catch (e) {
+      // Handle the exception here
+      Logging.error('Error in getFlightDataSets: $e');
+      return [];
+    }
   }
 
   Future<dynamic> fetchDataAge(
       {required String userId, required String timestampKey}) async {
-    if (userId.isEmpty) {
-      return "";
+    try {
+      if (userId.isEmpty) {
+        return "";
+      }
+      var docSnapshot = await _firestore
+          .collection("users")
+          .doc(userId)
+          .collection("data_timestamps")
+          .doc("flight_data_age")
+          .get();
+      if (docSnapshot.exists) {
+        Map<String, dynamic>? data = docSnapshot.data();
+        return data?[timestampKey];
+      }
+      return null;
+    } catch (e) {
+      Logging.error('Error in fetchDataAge: $e');
+      return null;
     }
-    var docSnapshot = await _firestore
-        .collection("users")
-        .doc(userId)
-        .collection("data_timestamps")
-        .doc("flight_data_age")
-        .get();
-    if (docSnapshot.exists) {
-      Map<String, dynamic>? data = docSnapshot.data();
-      return data?[timestampKey];
-    }
-    return null;
   }
 
   Future<String> setMultipleDocumentFields(

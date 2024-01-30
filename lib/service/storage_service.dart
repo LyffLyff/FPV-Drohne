@@ -21,28 +21,31 @@ class StorageService {
     }
   }
 
-  Future<firebase_storage.ListResult> listFiles(String storageFolder) async {
-    firebase_storage.ListResult result =
-        await storage.ref(storageFolder).listAll();
-    Logging.info(result.items.toString());
-    return result;
+  Future<void> listFiles(String storageFolder) async {
+    try {
+      firebase_storage.ListResult result =
+          await storage.ref(storageFolder).listAll();
+      Logging.info(result.items.toString());
+    } catch (e) {
+      Logging.error('Error in listFiles: $e');
+    }
   }
 
-  Future<bool> fileExists(firebase_storage.Reference fileRef) async {
-    final results = await fileRef.listAll();
-    return results.items.isNotEmpty;
+  Future<void> fileExists(firebase_storage.Reference fileRef) async {
+    try {
+      Logging.info(await fileRef.listAll());
+    } catch (e) {
+      Logging.error('Error in fileExists: $e');
+    }
   }
 
   Future<void> deleteFile(String storagePath) async {
     final fileRef = storage.ref(storagePath);
-
     try {
       await fileRef.delete();
     } on FirebaseException catch (e) {
       Logging.error(e);
     }
-    /*if (await fileExists(fileRef))  {
-    }*/
   }
 
   Future<String> downloadURL(String storageURL) async {
