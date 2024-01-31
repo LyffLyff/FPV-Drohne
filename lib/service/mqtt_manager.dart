@@ -20,9 +20,10 @@ class MQTTManager {
 
   Future<bool> connect() async {
     _client = MqttServerClient(_serverIp, _clientIdentifier,
-        maxConnectionAttempts: 5);
+        maxConnectionAttempts: 3);
     _client.port = _port;
-    //_client.logging(on: true);
+    _client.autoReconnect = true;
+    _client.logging(on: true);
 
     _client.onDisconnected = onDisconnected;
     _client.onConnected = onConnected;

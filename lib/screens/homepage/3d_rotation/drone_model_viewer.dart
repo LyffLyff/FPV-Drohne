@@ -1,4 +1,5 @@
 import 'package:drone_2_0/data/providers/logging_provider.dart';
+import 'package:drone_2_0/extensions/extensions.dart';
 import 'package:drone_2_0/screens/homepage/flight_recording/flight_data_recording/awaiting_connection_dialogue.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cube/flutter_cube.dart';
@@ -27,6 +28,12 @@ class DroneModelViewerState extends State<DroneModelViewer> {
   double yRotation = 0; // YAW
   double zRotation = 0; // ROLL
   double yawOffset = 20; // Offset for Model to look at camera
+  double pitchOffset = -10;
+
+  //Adjustable Yaw Offset
+  List<double> offsets = [0, 90, 180, 270];
+  int offsetIndex = 0;
+
   bool initialized = false;
   late final MQTTManager mqttManager;
   late Scene _model;
@@ -34,13 +41,15 @@ class DroneModelViewerState extends State<DroneModelViewer> {
 
   void _onSceneCreated(Scene scene) {
     _model = scene;
+    scene.light
+        .setColor(const Color.fromARGB(255, 255, 201, 76), 0.1, 0.8, 0.5);
+    scene.light.position.setFrom(Vector3.all(20));
     _cube = Object(
       fileName: 'assets/models/drone.obj',
       lighting: true,
-      backfaceCulling: true,
       scale: Vector3.all(8),
-      rotation: Vector3(yawOffset, 0, 0),
-    ); // X -> Upside Down, Y -> Rotation in Plane (Camera Look away / to you), Z -> Upside Down;
+      rotation: Vector3(pitchOffset, offsets[offsetIndex], 0),
+    ); // X -> Nose up / down , Y -> Rotation in Plane (Camera Look away / to you), Z -> Wings up/down;
     _model.world.add(_cube!);
   }
 
@@ -64,7 +73,7 @@ class DroneModelViewerState extends State<DroneModelViewer> {
         Logging.info(rotationData);
         _cube?.rotation.z = rotationData[ModelAxis.roll.index];
         _cube?.rotation.y = rotationData[ModelAxis.yaw.index] + yawOffset;
-        _cube?.rotation.x = rotationData[ModelAxis.pitch.index];
+        _cube?.rotation.x = rotationData[ModelAxis.pitch.index] + pitchOffset;
         updateModel();
       });
     }
@@ -83,7 +92,7 @@ class DroneModelViewerState extends State<DroneModelViewer> {
         future: initialized ? null : _rotationManagerInit(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const AwaitingConnection();
+            //return const AwaitingConnection();
           }
           initialized = true;
           return Column(
@@ -97,18 +106,29 @@ class DroneModelViewerState extends State<DroneModelViewer> {
                   onSceneCreated: _onSceneCreated,
                 ),
               ),
-              Slider.adaptive(
-                value: yRotation,
-                min: -180.0,
-                max: 180.0,
-                onChanged: (newVal) {
-                  setState(() {
-                    yRotation = newVal;
-                    _cube?.rotation.y = newVal;
-                    _cube?.updateTransform();
-                    _model.update();
-                  });
-                },
+              const Divider(),
+              DecoratedBox(
+                decoration: BoxDecoration(
+                    color: context.colorScheme.secondary,
+                    shape: BoxShape.rectangle,
+                    borderRadius: BorderRadius.circular(16)),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    IconButton(
+                      onPressed: () {
+                        // incrementing offsetIndex
+                        setState(() {
+                          offsetIndex += 1;
+                          offsetIndex %= offsets.length;
+                          _cube?.rotation.y = offsets[offsetIndex];
+                          updateModel();
+                        });
+                      },
+                      icon: const Icon(Icons.rotate_left_rounded),
+                    ),
+                  ],
+                ),
               )
             ],
           );
