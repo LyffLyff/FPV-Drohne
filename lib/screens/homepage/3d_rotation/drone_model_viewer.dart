@@ -30,6 +30,14 @@ class DroneModelViewerState extends State<DroneModelViewer> {
   double yawOffset = 20; // Offset for Model to look at camera
   double pitchOffset = -10;
 
+  double ambientValue = 0.055;
+  double diffuseValue = 0.995;
+  double specularValue = 1;
+
+  final double modelWidgetHeight = 400;
+
+  double val = 0;
+
   //Adjustable Yaw Offset
   List<double> offsets = [0, 90, 180, 270];
   int offsetIndex = 0;
@@ -42,11 +50,12 @@ class DroneModelViewerState extends State<DroneModelViewer> {
   void _onSceneCreated(Scene scene) {
     _model = scene;
     scene.light
-        .setColor(const Color.fromARGB(255, 255, 201, 76), 0.1, 0.8, 0.5);
-    scene.light.position.setFrom(Vector3.all(20));
+        .setColor(Colors.white, ambientValue, diffuseValue, diffuseValue);
+    scene.light.position.setFrom(Vector3(-500, 1400, -450));
     _cube = Object(
       fileName: 'assets/models/drone.obj',
       lighting: true,
+      backfaceCulling: true,
       scale: Vector3.all(8),
       rotation: Vector3(pitchOffset, offsets[offsetIndex], 0),
     ); // X -> Nose up / down , Y -> Rotation in Plane (Camera Look away / to you), Z -> Wings up/down;
@@ -91,21 +100,29 @@ class DroneModelViewerState extends State<DroneModelViewer> {
     return FutureBuilder<bool>(
         future: initialized ? null : _rotationManagerInit(),
         builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            //return const AwaitingConnection();
+          if (snapshot.connectionState != ConnectionState.waiting) {
+            initialized = true;
           }
-          initialized = true;
           return Column(
             children: [
-              SizedBox(
-                width: MediaQuery.sizeOf(context).width,
-                height: 400,
-                child: Cube(
-                  interactive:
-                      false, // only interaction through MQTT -> Pitch, Roll, Yaw
-                  onSceneCreated: _onSceneCreated,
-                ),
-              ),
+              initialized
+                  ? SizedBox(
+                      width: MediaQuery.sizeOf(context).width,
+                      height: modelWidgetHeight,
+                      child: Cube(
+                        interactive:
+                            false, // only interaction through MQTT -> Pitch, Roll, Yaw
+                        onSceneCreated: _onSceneCreated,
+                      ),
+                    )
+                  : Visibility(
+                      visible:
+                          snapshot.connectionState == ConnectionState.waiting,
+                      child: SizedBox(
+                        height: modelWidgetHeight,
+                        child: const AwaitingConnection(),
+                      ),
+                    ),
               const Divider(),
               DecoratedBox(
                 decoration: BoxDecoration(
@@ -129,7 +146,24 @@ class DroneModelViewerState extends State<DroneModelViewer> {
                     ),
                   ],
                 ),
-              )
+              ),
+              Slider(
+                label: 'Ambient',
+                max: 2000,
+                min: -1000,
+                value: ambientValue,
+                onChanged: (value) {
+                  setState(() {
+                    ambientValue = value;
+                    print(value);
+                    // Last = small
+                    // Middle > 100
+                    // First = value
+                    _model.light.position.setFrom(Vector3(-500, 1400, -450));
+                    updateModel();
+                  });
+                },
+              ),
             ],
           );
         });
