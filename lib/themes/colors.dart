@@ -23,7 +23,7 @@ MaterialColor createMaterialColor(Color color) {
 
 const _textColor = Color(0xFFf5ebef);
 const _backgroundColor = Color.fromARGB(255, 24, 24, 24);
-const _primaryColor = Color(0xFFe384a8);
+const _primaryColor = Color(0xFF8F1241);
 const _primaryFgColor = Color.fromARGB(255, 247, 223, 235);
 const _secondaryColor = Color(0xFF8F1241);
 const _secondaryFgColor = Color(0xFFf5ebef);
@@ -57,10 +57,6 @@ class DarkColors {
 }
 
 class LightColors {
-  static Color primaryColor = const Color.fromARGB(255, 40, 53, 62);
-  static Color secondaryColor = const Color.fromARGB(255, 224, 230, 235);
-  static Color accentColor = const Color.fromARGB(255, 99, 132, 156);
-  static Color backgroundColor = const Color.fromARGB(255, 227, 233, 237);
   static Color textColor = const Color.fromARGB(255, 16, 21, 25);
   static ColorScheme colorScheme = _colorScheme.copyWith(
     onBackground: const Color.fromARGB(255, 16, 21, 25),

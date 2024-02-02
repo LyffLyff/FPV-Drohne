@@ -102,6 +102,9 @@ class _HomePageState extends State<HomePage> {
     await sharedPrefs.saveText("mqttPort", mqttPort);
     await sharedPrefs.saveText("videoPort", videoPort);
 
+    // setting flag that sever was selected -> for bottom menu visibility
+    rtdbService.updateData("", {"server_selected": true});
+
     // update data in homepage main screens
     setState(() {
       this.ipAdress = ipAdress;
@@ -109,9 +112,6 @@ class _HomePageState extends State<HomePage> {
       this.videoPort = int.tryParse(videoPort) ?? 1935;
       ipAdressSelected = true;
     });
-
-    // setting flag that sever was selected -> for bottom menu visibility
-    rtdbService.updateData("", {"server_selected": true});
   }
 
   @override

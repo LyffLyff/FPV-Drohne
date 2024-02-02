@@ -77,6 +77,7 @@ class FinishedFlight extends StatelessWidget {
               hideText: false,
               width: MediaQuery.sizeOf(context).width,
               hintText: 'Title',
+              onSubmitFunction: (String text) {},
             ),
             const VerticalSpace(),
             WeatherSelection(

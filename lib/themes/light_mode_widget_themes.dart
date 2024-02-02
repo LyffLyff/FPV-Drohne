@@ -37,7 +37,7 @@ class LightThemeWidgets {
   static ElevatedButtonThemeData elevatedButtonThemeData =
       ElevatedButtonThemeData(
     style: ElevatedButton.styleFrom(
-      backgroundColor: LightColors.accentColor,
+      backgroundColor: LightColors.colorScheme.surface,
       foregroundColor: LightColors.textColor,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(8),

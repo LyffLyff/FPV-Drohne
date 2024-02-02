@@ -1,6 +1,7 @@
 import 'package:drone_2_0/data/providers/logging_provider.dart';
 import 'package:drone_2_0/extensions/extensions.dart';
 import 'package:drone_2_0/screens/homepage/flight_recording/flight_data_recording/awaiting_connection_dialogue.dart';
+import 'package:drone_2_0/widgets/utils/helper_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cube/flutter_cube.dart';
 import 'package:drone_2_0/service/mqtt_manager.dart';
@@ -27,12 +28,16 @@ class DroneModelViewerState extends State<DroneModelViewer> {
   double xRotation = 0; // PITCH
   double yRotation = 0; // YAW
   double zRotation = 0; // ROLL
-  double yawOffset = 20; // Offset for Model to look at camera
   double pitchOffset = -10;
 
   double ambientValue = 0.055;
   double diffuseValue = 0.995;
   double specularValue = 1;
+
+  // Slider
+  double zoom = 8;
+  double yawOffset = 0; // Offset for Model to look at camera
+  double sliderTextWidth = 92;
 
   final double modelWidgetHeight = 400;
 
@@ -56,9 +61,9 @@ class DroneModelViewerState extends State<DroneModelViewer> {
       fileName: 'assets/models/drone.obj',
       lighting: true,
       backfaceCulling: true,
-      scale: Vector3.all(8),
+      scale: Vector3.all(zoom),
       rotation: Vector3(pitchOffset, offsets[offsetIndex], 0),
-    ); // X -> Nose up / down , Y -> Rotation in Plane (Camera Look away / to you), Z -> Wings up/down;
+    ); // X -> Nose up / down , Y -> Rotation in Plane (Camera way / to you), Z -> Wings up/down;
     _model.world.add(_cube!);
   }
 
@@ -124,45 +129,70 @@ class DroneModelViewerState extends State<DroneModelViewer> {
                       ),
                     ),
               const Divider(),
+              const VerticalSpace(
+                height: 8,
+              ),
               DecoratedBox(
                 decoration: BoxDecoration(
-                    color: context.colorScheme.secondary,
-                    shape: BoxShape.rectangle,
-                    borderRadius: BorderRadius.circular(16)),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    IconButton(
-                      onPressed: () {
-                        // incrementing offsetIndex
-                        setState(() {
-                          offsetIndex += 1;
-                          offsetIndex %= offsets.length;
-                          _cube?.rotation.y = offsets[offsetIndex];
-                          updateModel();
-                        });
-                      },
-                      icon: const Icon(Icons.rotate_left_rounded),
-                    ),
-                  ],
+                  color: Colors.transparent,
+                  borderRadius: BorderRadius.circular(16),
+                  border: Border.all(color: context.colorScheme.primary),
                 ),
-              ),
-              Slider(
-                label: 'Ambient',
-                max: 2000,
-                min: -1000,
-                value: ambientValue,
-                onChanged: (value) {
-                  setState(() {
-                    ambientValue = value;
-                    print(value);
-                    // Last = small
-                    // Middle > 100
-                    // First = value
-                    _model.light.position.setFrom(Vector3(-500, 1400, -450));
-                    updateModel();
-                  });
-                },
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    children: [
+                      Row(
+                        children: [
+                          SizedBox(
+                            width: sliderTextWidth,
+                            child: const Text(
+                              "Scale:",
+                              textAlign: TextAlign.end,
+                            ),
+                          ),
+                          Slider(
+                            label: 'Scale',
+                            max: 20,
+                            min: 1,
+                            value: zoom,
+                            onChanged: (value) {
+                              setState(() {
+                                zoom = value;
+                                _model.camera.far = zoom;
+                                updateModel();
+                              });
+                            },
+                          ),
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          SizedBox(
+                            width: sliderTextWidth,
+                            child: const Text(
+                              "Rotation:",
+                              textAlign: TextAlign.end,
+                            ),
+                          ),
+                          Slider(
+                            label: 'Yaw-Offset',
+                            max: 180,
+                            min: -180,
+                            value: zoom,
+                            onChanged: (value) {
+                              setState(() {
+                                yawOffset = value;
+                                _cube?.rotation.x = yawOffset;
+                                updateModel();
+                              });
+                            },
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
               ),
             ],
           );

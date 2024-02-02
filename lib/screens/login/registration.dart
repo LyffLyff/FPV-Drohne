@@ -69,6 +69,7 @@ class RegistrationState extends State<Registration> {
               hintText: "Email",
               hideText: false,
               icon: Icons.person,
+              onSubmitFunction: (String t) {},
             ),
             const VerticalSpace(),
             StdInputField(
@@ -77,6 +78,7 @@ class RegistrationState extends State<Registration> {
               hintText: "Password",
               hideText: true,
               icon: Icons.password,
+              onSubmitFunction: (String t) {},
             ),
             const VerticalSpace(),
             StdInputField(
@@ -85,6 +87,7 @@ class RegistrationState extends State<Registration> {
               hintText: "Username",
               hideText: false,
               icon: Icons.perm_contact_cal,
+              onSubmitFunction: (String t) {},
             ),
             const VerticalSpace(),
             StdInputField(
@@ -93,6 +96,7 @@ class RegistrationState extends State<Registration> {
               hintText: "Name",
               hideText: false,
               icon: Icons.perm_contact_cal,
+              onSubmitFunction: (String t) {},
             ),
             const VerticalSpace(),
             StdInputField(
@@ -101,6 +105,7 @@ class RegistrationState extends State<Registration> {
               hintText: "Sirname",
               hideText: false,
               icon: Icons.perm_contact_cal,
+              onSubmitFunction: (String t) {},
             ),
             const VerticalSpace(height: 10),
             SizedBox(

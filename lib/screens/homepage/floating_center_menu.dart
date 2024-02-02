@@ -63,40 +63,23 @@ class _FloatingCenterMenuState extends State<FloatingCenterMenu> {
             height: 64,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: context.colorScheme.background,
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.4),
-                  spreadRadius: 2,
-                  blurRadius: 5,
-                  offset: const Offset(0, 3),
-                ),
-              ],
+              color: context.colorScheme.primary,
             ),
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8),
               child: Row(
                 children: [
                   IconButton.filled(
-                    style: const ButtonStyle(
-                        backgroundColor:
-                            // hiding the background purple which is standard
-                            MaterialStatePropertyAll(Colors.transparent)),
+                    style: ButtonStyle(
+                      foregroundColor: MaterialStatePropertyAll(
+                          context.colorScheme.onBackground),
+                      backgroundColor:
+                          // hiding the background purple which is standard
+                          const MaterialStatePropertyAll(Colors.transparent),
+                    ),
                     iconSize: 24,
                     onPressed: () {
                       Logging.info("Toggle Recording");
-                      /*if (!isRecordingFlight) {
-                        // drone not online unable to start flight
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: const Text(
-                                'Cannot Record Flight without connection!'),
-                            backgroundColor: Colors.red
-                                .shade800, // Customize the background color if needed
-                          ),
-                        );
-                        return;
-                      }*/
                       toggleRecording();
                     },
                     icon: isRecordingFlight

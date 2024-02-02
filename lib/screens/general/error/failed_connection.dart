@@ -7,7 +7,7 @@ class ConnectionError extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-        backgroundColor: context.errorColor,
+        backgroundColor: Colors.transparent,
         icon: const Icon(
           Icons.wifi_tethering_error_rounded_rounded,
           size: 32,

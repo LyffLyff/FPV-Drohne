@@ -57,6 +57,7 @@ class LoginScreenState extends State<LoginScreen> {
               controller: _emailController,
               hintText: "Email",
               icon: Icons.person,
+              onSubmitFunction: (String text) {},
             ),
             const VerticalSpace(height: 8),
             StdInputField(
@@ -65,6 +66,9 @@ class LoginScreenState extends State<LoginScreen> {
               controller: _passwordController,
               hintText: "Password",
               icon: Icons.password,
+              onSubmitFunction: (String text) {
+                print("hoe");
+              },
             ),
             TextButton(
               onPressed: () {

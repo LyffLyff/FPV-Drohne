@@ -20,10 +20,12 @@ class ResetPassword extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             StdInputField(
-                hintText: "Email-Address",
-                width: MediaQuery.sizeOf(context).width,
-                hideText: false,
-                controller: controller),
+              hintText: "Email-Address",
+              width: MediaQuery.sizeOf(context).width,
+              hideText: false,
+              controller: controller,
+              onSubmitFunction: (String t) {},
+            ),
             IconButton(
                 onPressed: () async {
                   String message = await context

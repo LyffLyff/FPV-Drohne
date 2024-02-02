@@ -1,5 +1,6 @@
 import 'package:drone_2_0/data/providers/logging_provider.dart';
 import 'package:drone_2_0/screens/general/error/failed_connection.dart';
+import 'package:drone_2_0/screens/homepage/flight_recording/error_terminal.dart';
 import 'package:drone_2_0/screens/homepage/flight_recording/flight_data_recording/awaiting_connection_dialogue.dart';
 import 'package:drone_2_0/screens/homepage/flight_recording/flight_data_recording/chart_data.dart';
 import 'package:drone_2_0/screens/homepage/flight_recording/flight_data_recording/flight_data.dart';
@@ -68,9 +69,10 @@ class _FlightRecordsState extends State<FlightRecords> {
 
     // Subscribe to topics
     if (connection) {
-      mqttManager.subscribeToTopic("data/velocity");
       mqttManager.subscribeToTopic("data/height");
       mqttManager.subscribeToTopic("data/temperature");
+      mqttManager.subscribeToTopic("data/voltage");
+      mqttManager.subscribeToTopic("data/messages");
       Logging.info("Subscribed to Flight Records MQTT Topics");
     }
 
@@ -120,6 +122,11 @@ class _FlightRecordsState extends State<FlightRecords> {
               Tab(
                 icon: Icon(
                   Icons.thermostat_rounded,
+                ),
+              ),
+              Tab(
+                icon: Icon(
+                  Icons.terminal_rounded,
                 ),
               ),
             ],
@@ -176,12 +183,6 @@ class _FlightRecordsState extends State<FlightRecords> {
                               child: TabBarView(
                                 children: [
                                   StreamDisplay(
-                                      title: "Velocity",
-                                      xAxisName: "meters per second",
-                                      yAxisName: "second since start",
-                                      dataArray: chartData["velocity"] ?? [],
-                                      lastMeasurement: lastMeasurement),
-                                  StreamDisplay(
                                       title: "Height",
                                       xAxisName: "meters",
                                       yAxisName: "second since start",
@@ -193,6 +194,13 @@ class _FlightRecordsState extends State<FlightRecords> {
                                       yAxisName: "second since start",
                                       dataArray: chartData["temperature"] ?? [],
                                       lastMeasurement: lastMeasurement),
+                                  StreamDisplay(
+                                      title: "Velocity",
+                                      xAxisName: "meters per second",
+                                      yAxisName: "second since start",
+                                      dataArray: chartData["velocity"] ?? [],
+                                      lastMeasurement: lastMeasurement),
+                                  const ErrorTerminal(),
                                 ],
                               ),
                             ),
