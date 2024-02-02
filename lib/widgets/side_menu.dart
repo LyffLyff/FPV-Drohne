@@ -4,6 +4,7 @@ import 'package:drone_2_0/data/providers/data_cache.dart';
 import 'package:drone_2_0/data/providers/logging_provider.dart';
 import 'package:drone_2_0/screens/homepage/app_info.dart';
 import 'package:drone_2_0/screens/homepage/flight_recording/previous_flight/previous_flights.dart';
+import 'package:drone_2_0/screens/homepage/help.dart';
 import 'package:drone_2_0/screens/pre_login/welcome_screen.dart';
 import 'package:drone_2_0/screens/settings/settings.dart';
 import 'package:drone_2_0/screens/user_profile/user_profile.dart';
@@ -145,6 +146,18 @@ class NavDrawer extends StatelessWidget {
             ),
             onTap: () => {
               Navigator.of(context).push(pageRouteAnimation(const AppInfo())),
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.question_answer_rounded),
+            titleAlignment: ListTileTitleAlignment.center,
+            title: Text(
+              'Help / FAQ',
+              style: context.textTheme.displayMedium,
+            ),
+            onTap: () => {
+              Navigator.of(context)
+                  .push(pageRouteAnimation(const HelpSection())),
             },
           ),
           ListTile(

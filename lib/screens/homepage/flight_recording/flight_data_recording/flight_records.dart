@@ -104,7 +104,7 @@ class _FlightRecordsState extends State<FlightRecords> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 3,
+      length: 4,
       child: Column(
         children: [
           const TabBar(
@@ -185,20 +185,20 @@ class _FlightRecordsState extends State<FlightRecords> {
                                   StreamDisplay(
                                       title: "Height",
                                       xAxisName: "meters",
-                                      yAxisName: "second since start",
+                                      yAxisName: "seconds since start",
                                       dataArray: chartData["height"] ?? [],
                                       lastMeasurement: lastMeasurement),
                                   StreamDisplay(
                                       title: "Temperature",
                                       xAxisName: "celsius",
-                                      yAxisName: "second since start",
+                                      yAxisName: "seconds since start",
                                       dataArray: chartData["temperature"] ?? [],
                                       lastMeasurement: lastMeasurement),
                                   StreamDisplay(
-                                      title: "Velocity",
-                                      xAxisName: "meters per second",
-                                      yAxisName: "second since start",
-                                      dataArray: chartData["velocity"] ?? [],
+                                      title: "Spannung",
+                                      xAxisName: "voltage",
+                                      yAxisName: "seconds since start",
+                                      dataArray: chartData["voltage"] ?? [],
                                       lastMeasurement: lastMeasurement),
                                   const ErrorTerminal(),
                                 ],
