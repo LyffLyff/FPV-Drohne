@@ -148,13 +148,15 @@ class _FlightRecordsState extends State<FlightRecords> {
                         stream: _combinedStreams(),
                         builder: (context, snapshot) {
                           if (snapshot.hasError) {
-                            return Center(
-                              child: Text('Error: ${snapshot.error}'),
+                            return const Expanded(
+                              child: ConnectionError(),
                             );
                           }
 
                           if (!snapshot.hasData) {
-                            return const Expanded(child: AwaitingConnection());
+                            return const Expanded(
+                              child: AwaitingConnection(),
+                            );
                           }
 
                           // Extract data from the snapshot
@@ -200,7 +202,9 @@ class _FlightRecordsState extends State<FlightRecords> {
                                       yAxisName: "seconds since start",
                                       dataArray: chartData["voltage"] ?? [],
                                       lastMeasurement: lastMeasurement),
-                                  const ErrorTerminal(),
+                                  ErrorTerminal(
+                                    mqttManager: mqttManager,
+                                  ),
                                 ],
                               ),
                             ),

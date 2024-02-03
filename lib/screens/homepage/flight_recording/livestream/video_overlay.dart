@@ -1,43 +1,50 @@
+import 'package:drone_2_0/screens/homepage/flight_recording/livestream/overlay_text.dart';
 import 'package:flutter/material.dart';
-
-TextStyle _overlayStyle = const TextStyle(
-  fontFamily: "VCR_OSD_Mono",
-);
 
 class VideoOverlay extends StatelessWidget {
   const VideoOverlay({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
+    return const Padding(
+      padding: EdgeInsets.all(8.0),
       child: Column(
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                "TOP LEFT",
-                style: _overlayStyle,
+              OverlayText(
+                text: "TOP LEFT",
               ),
-              Text(
-                "TOP RIGHT",
-                style: _overlayStyle,
+              OverlayText(
+                text: "TOP RIGHT",
               ),
             ],
           ),
-          const Spacer(),
-          const Row(
+          Spacer(),
+          Row(
             children: [
               Spacer(),
               Column(
                 children: [
-                  Text(" -"),
-                  Text("--"),
-                  Text(" -"),
-                  Text(" -"),
-                  Text("--"),
-                  Text(" -"),
+                  OverlayText(
+                    text: " -",
+                  ),
+                  OverlayText(
+                    text: "--",
+                  ),
+                  OverlayText(
+                    text: " -",
+                  ),
+                  OverlayText(
+                    text: " -",
+                  ),
+                  OverlayText(
+                    text: "--",
+                  ),
+                  OverlayText(
+                    text: " -",
+                  ),
                 ],
               ),
               Spacer(
@@ -45,28 +52,38 @@ class VideoOverlay extends StatelessWidget {
               ),
               Column(
                 children: [
-                  Text("- "),
-                  Text("--"),
-                  Text("- "),
-                  Text("- "),
-                  Text("--"),
-                  Text("- "),
+                  OverlayText(
+                    text: "- ",
+                  ),
+                  OverlayText(
+                    text: "--",
+                  ),
+                  OverlayText(
+                    text: "- ",
+                  ),
+                  OverlayText(
+                    text: "- ",
+                  ),
+                  OverlayText(
+                    text: "--",
+                  ),
+                  OverlayText(
+                    text: "- ",
+                  ),
                 ],
               ),
               Spacer(),
             ],
           ),
-          const Spacer(),
+          Spacer(),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                "BOTTOM LEFT",
-                style: _overlayStyle,
+              OverlayText(
+                text: "BOTTOM LEFT",
               ),
-              Text(
-                "BOTTOM RIGHT",
-                style: _overlayStyle,
+              OverlayText(
+                text: "BOTTOM RIGHT",
               ),
             ],
           ),

@@ -107,22 +107,7 @@ class _LiveViewState extends State<LiveView> {
 
   @override
   Widget build(BuildContext context) {
-    if (!_videoPlayerController.value.isInitialized && false) {
-      Logging.debug("LiveView not Initialized -> ${widget.ipAdress}");
-      return const Center(
-        child: SizedBox(
-          height: 300,
-          child: Stack(
-            children: [
-              LivestreamPlaceholder(),
-              VideoOverlay(),
-            ],
-          ),
-        ),
-      );
-    }
-    Logging.debug(
-        "PLAYER Initialized -> Loading Stream: ${widget.ipAdress}:${widget.port}");
+    Logging.debug("Reloading Stream: ${widget.ipAdress}:${widget.port}");
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -145,7 +130,6 @@ class _LiveViewState extends State<LiveView> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             IconButton(
-              color: Colors.white,
               icon: _videoPlayerController.value.isPlaying
                   ? const Icon(Icons.pause_circle_outline)
                   : const Icon(Icons.play_circle_outline),
