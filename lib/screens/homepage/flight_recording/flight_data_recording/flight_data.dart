@@ -30,7 +30,8 @@ class FlightData {
     "velocity": Map.from(_emptySingleSensorMap),
     "height": Map.from(_emptySingleSensorMap),
     "batterVoltage": Map.from(_emptySingleSensorMap),
-    "temperature": Map.from(_emptySingleSensorMap)
+    "temperature": Map.from(_emptySingleSensorMap),
+    "errorMessages": Map.from(_emptySingleSensorMap),
   };
 
   void addDatapoint(String dataKey, dynamic newValue, int timestamp) {

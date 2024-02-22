@@ -111,17 +111,17 @@ class _FlightRecordsState extends State<FlightRecords> {
             tabs: [
               Tab(
                 icon: Icon(
-                  Icons.speed,
-                ),
-              ),
-              Tab(
-                icon: Icon(
                   Icons.height_outlined,
                 ),
               ),
               Tab(
                 icon: Icon(
                   Icons.thermostat_rounded,
+                ),
+              ),
+              Tab(
+                icon: Icon(
+                  Icons.battery_charging_full_rounded,
                 ),
               ),
               Tab(

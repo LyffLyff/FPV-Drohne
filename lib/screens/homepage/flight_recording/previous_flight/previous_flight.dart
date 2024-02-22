@@ -51,13 +51,6 @@ class _PreviousFlightState extends State<PreviousFlight> {
         weatherIcon: widget.flightData["weather"] ?? "wi-day-sunny",
       ),
       FlightDataTab(
-        chartTitle: 'Velocity',
-        xAxisTitle: 'Timestamps',
-        yAxisTitle: 'Velocity',
-        flightDataValues: createDatalist(widget.flightData["data"]["velocity"]),
-        measurementUnit: 'm/s\u00B2',
-      ),
-      FlightDataTab(
         chartTitle: '',
         xAxisTitle: '',
         yAxisTitle: '',
@@ -71,6 +64,13 @@ class _PreviousFlightState extends State<PreviousFlight> {
         flightDataValues:
             createDatalist(widget.flightData["data"]["temperature"]),
         measurementUnit: '°C',
+      ),
+      FlightDataTab(
+        chartTitle: 'Battery Voltage',
+        xAxisTitle: 'Timestamps',
+        yAxisTitle: 'Voltage',
+        flightDataValues: createDatalist(widget.flightData["data"]["voltage"]),
+        measurementUnit: 'V',
       ),
     ];
   }
@@ -102,16 +102,16 @@ class _PreviousFlightState extends State<PreviousFlight> {
             backgroundColor: context.colorScheme.surface,
           ),
           const BottomNavigationBarItem(
-            icon: Icon(Icons.speed),
-            label: 'Velocity',
-          ),
-          const BottomNavigationBarItem(
             icon: Icon(Icons.show_chart),
             label: 'Height',
           ),
           const BottomNavigationBarItem(
             icon: Icon(Icons.thermostat),
             label: 'Temperature',
+          ),
+          const BottomNavigationBarItem(
+            icon: Icon(Icons.speed),
+            label: 'Battery Voltage',
           ),
         ],
         currentIndex: _selectedIndex,
