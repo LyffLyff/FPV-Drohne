@@ -1,3 +1,5 @@
+import 'package:drone_2_0/extensions/extensions.dart';
+import 'package:drone_2_0/widgets/utils/helper_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
@@ -67,53 +69,69 @@ class _FlightDataTabState extends State<FlightDataTab> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        SfCartesianChart(
-          // Initialize category axis
-          primaryXAxis: CategoryAxis(zoomFactor: 0.5),
-          enableAxisAnimation: true,
-          zoomPanBehavior: ZoomPanBehavior(
+        SizedBox(
+          height: 256,
+          child: SfCartesianChart(
+            // Initialize category axis
+            primaryXAxis: CategoryAxis(zoomFactor: 0.5),
+            enableAxisAnimation: true,
+            zoomPanBehavior: ZoomPanBehavior(
 
-              /// To enable the pinch zooming as true.
-              enablePinching: true,
-              zoomMode: ZoomMode.x,
-              enablePanning: true,
-              enableMouseWheelZooming: false),
-          indicators: <TechnicalIndicators>[
-            MomentumIndicator(
-              isVisible: true,
-              period: 1,
-              seriesName: 'help',
-            )
-          ],
-          series: <ChartSeries>[
-            // Initialize line series
-            LineSeries<ChartData, num>(
-              name: "help",
-              dataSource: widget.flightDataValues,
-              xValueMapper: (ChartData data, _) => data.x,
-              yValueMapper: (ChartData data, _) => data.y,
-            ),
-            LineSeries<ChartData2, num>(
-              dataSource: <ChartData2>[
-                ChartData2(0, avg), // Start point at x = 0, y = 40
-                ChartData2(30, avg.toDouble()), // End point at x = 30, y = 40
-              ],
-              xValueMapper: (ChartData2 data, _) => data.x,
-              yValueMapper: (ChartData2 data, _) => data.y,
-              // Customize line appearance as needed
-              color: const Color.fromARGB(
-                  255, 243, 33, 170), // Set your desired line color
-              /*trendlines: [
-                Trendline(type: TrendlineType.logarithmic),
-              ],*/
+                /// To enable the pinch zooming as true.
+                enablePinching: true,
+                zoomMode: ZoomMode.x,
+                enablePanning: true,
+                enableMouseWheelZooming: false),
+            indicators: <TechnicalIndicators>[
+              MomentumIndicator(
+                isVisible: true,
+                period: 1,
+                seriesName: 'help',
+              )
+            ],
+            series: <ChartSeries>[
+              // Initialize line series
+              LineSeries<ChartData, num>(
+                name: "",
+                dataSource: widget.flightDataValues,
+                xValueMapper: (ChartData data, _) => data.x,
+                yValueMapper: (ChartData data, _) => data.y,
+              ),
+              LineSeries<ChartData2, num>(
+                dataSource: <ChartData2>[
+                  ChartData2(0, avg), // Start point at x = 0, y = 40
+                  ChartData2(30, avg.toDouble()), // End point at x = 30, y = 40
+                ],
+                xValueMapper: (ChartData2 data, _) => data.x,
+                yValueMapper: (ChartData2 data, _) => data.y,
+                // Customize line appearance as needed
+                color: const Color.fromARGB(
+                    255, 243, 33, 170), // Set your desired line color
+                /*trendlines: [
+                  Trendline(type: TrendlineType.logarithmic),
+                ],*/
 
-              width: 1, // Adjust line width if necessary
-            ),
-          ],
+                width: 1, // Adjust line width if necessary
+              ),
+            ],
+          ),
         ),
-        Text("Peak: $maxValue ${widget.measurementUnit}"),
-        Text("Min: $minValue ${widget.measurementUnit}"),
-        Text("Avg.: $avg ${widget.measurementUnit}"),
+        const VerticalSpace(),
+        DecoratedBox(
+          decoration: BoxDecoration(
+            shape: BoxShape.rectangle,
+            borderRadius: BorderRadius.circular(10),
+            color: context.colorScheme.primary,
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              Text("Max:\n $maxValue ${widget.measurementUnit}"),
+              Text("Min:\n $minValue ${widget.measurementUnit}"),
+              Text("Avg:\n $avg ${widget.measurementUnit}"),
+            ],
+          ),
+        )
       ],
     );
   }

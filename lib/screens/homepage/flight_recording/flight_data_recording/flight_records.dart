@@ -13,7 +13,7 @@ import 'package:async/async.dart';
 enum MQTTData { identifier, value, timestamp }
 
 Map<String, List<ChartData>> _emptyChartData = {
-  "velocity": [],
+  "voltage": [],
   "height": [],
   "temperature": [],
 };
@@ -38,9 +38,9 @@ class _FlightRecordsState extends State<FlightRecords> {
   late final MQTTManager mqttManager;
   Map<String, List<ChartData>> chartData =
       Map.from(_emptyChartData); // copy of empty chart data
-  int timeAxisValue = 0;
+  num timeAxisValue = 0;
   num lastMeasurement = 1;
-  int flightStartTimestamp = -1;
+  num flightStartTimestamp = -1;
   List<dynamic> snapData = [];
 
   Stream<dynamic> _combinedStreams() {
@@ -52,7 +52,7 @@ class _FlightRecordsState extends State<FlightRecords> {
         List<String> data = event.values.first.split(" ");
         List<dynamic> convertedData = [data[0]];
         convertedData.add(double.parse(data[1]));
-        convertedData.add(int.parse(data[2]));
+        convertedData.add(num.parse(data[2]));
         return convertedData;
         // ignore: unnecessary_null_comparison
       }).where((data) => data != null); // Filter out null values
@@ -85,7 +85,7 @@ class _FlightRecordsState extends State<FlightRecords> {
         : chartData[key])!;
   }
 
-  setData(String key, int xValue) {
+  setData(String key, num xValue) {
     chartData[key]?.add(ChartData(xValue, snapData[MQTTData.value.index]));
     widget.flightData.addDatapoint(key, snapData[MQTTData.value.index], xValue);
     lastMeasurement = snapData[1];
@@ -148,6 +148,7 @@ class _FlightRecordsState extends State<FlightRecords> {
                         stream: _combinedStreams(),
                         builder: (context, snapshot) {
                           if (snapshot.hasError) {
+                            Logging.error(snapshot.error.toString());
                             return const Expanded(
                               child: ConnectionError(),
                             );
@@ -163,45 +164,58 @@ class _FlightRecordsState extends State<FlightRecords> {
                           snapData = snapshot.data;
 
                           if (flightStartTimestamp == -1) {
-                            flightStartTimestamp = snapData[2];
+                            flightStartTimestamp =
+                                snapData[MQTTData.timestamp.index];
                           }
-                          timeAxisValue = (snapData[2] - flightStartTimestamp);
+                          timeAxisValue = snapData[MQTTData.timestamp.index];
+                          //timeAxisValue = (snapData[MQTTData.timestamp.index] -
+                          //    flightStartTimestamp);
 
                           switch (snapData[MQTTData.identifier.index]) {
-                            case "V":
-                              chartData["velocity"] =
-                                  setData("velocity", timeAxisValue);
+                            case "B":
+                              setData("voltage", timeAxisValue);
                             case "H":
+                              Logging.info(snapData[MQTTData.value.index]);
+                              Logging.info(timeAxisValue);
                               setData("height", timeAxisValue);
                             case "T":
                               setData("temperature", timeAxisValue);
                           }
-
-                          Logging.info(chartData["height"]!.length.toString());
-
                           return Expanded(
                             child: Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: TabBarView(
                                 children: [
                                   StreamDisplay(
-                                      title: "Height",
-                                      xAxisName: "meters",
-                                      yAxisName: "seconds since start",
-                                      dataArray: chartData["height"] ?? [],
-                                      lastMeasurement: lastMeasurement),
+                                    title: "Height",
+                                    xAxisName: "meters",
+                                    yAxisName: "seconds since start",
+                                    dataArray: chartData["height"] ?? [],
+                                    lastMeasurement: lastMeasurement,
+                                    minY: 0,
+                                    unit: 'm',
+                                    maxY: 200,
+                                  ),
                                   StreamDisplay(
-                                      title: "Temperature",
-                                      xAxisName: "celsius",
-                                      yAxisName: "seconds since start",
-                                      dataArray: chartData["temperature"] ?? [],
-                                      lastMeasurement: lastMeasurement),
+                                    title: "Temperature",
+                                    xAxisName: "celsius",
+                                    yAxisName: "seconds since start",
+                                    dataArray: chartData["temperature"] ?? [],
+                                    lastMeasurement: lastMeasurement,
+                                    unit: '°C',
+                                    maxY: 70,
+                                    minY: 20,
+                                  ),
                                   StreamDisplay(
-                                      title: "Spannung",
-                                      xAxisName: "voltage",
-                                      yAxisName: "seconds since start",
-                                      dataArray: chartData["voltage"] ?? [],
-                                      lastMeasurement: lastMeasurement),
+                                    title: "Spannung",
+                                    xAxisName: "voltage",
+                                    yAxisName: "seconds since start",
+                                    dataArray: chartData["voltage"] ?? [],
+                                    lastMeasurement: lastMeasurement,
+                                    unit: 'V',
+                                    maxY: 25,
+                                    minY: 10,
+                                  ),
                                   ErrorTerminal(
                                     mqttManager: mqttManager,
                                   ),

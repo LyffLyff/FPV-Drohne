@@ -34,7 +34,7 @@ class FlightData {
     "errorMessages": Map.from(_emptySingleSensorMap),
   };
 
-  void addDatapoint(String dataKey, dynamic newValue, int timestamp) {
+  void addDatapoint(String dataKey, dynamic newValue, num timestamp) {
     data[dataKey]?["timestamps"]?.add(timestamp);
     data[dataKey]?["values"]?.add(newValue);
   }

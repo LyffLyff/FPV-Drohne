@@ -206,8 +206,7 @@ class _HomePageState extends State<HomePage> {
               return Stack(
                 children: [
                   StreamBuilder<dynamic>(
-                    stream:
-                        RealtimeDatabaseService().listenToValue("is_connected"),
+                    stream: rtdbService.listenToValue("is_connected"),
                     builder: (context, snapshot) {
                       if (!snapshot.hasData) {
                         return const CircularLoadingIcon();
@@ -244,12 +243,12 @@ class _HomePageState extends State<HomePage> {
                               ipAdress: ipAdress,
                               port: mqttPort,
                             ),
-                            LiveView(
+                            /*LiveView(
                               ipAdress: ipAdress,
                               port: videoPort,
                               streamName: "live/stream",
                               aspectRatio: 4 / 3,
-                            ),
+                            ),*/
                           ],
                         );
                       } else {

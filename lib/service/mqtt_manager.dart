@@ -22,8 +22,7 @@ class MQTTManager {
     _client = MqttServerClient(_serverIp, _clientIdentifier,
         maxConnectionAttempts: 3);
     _client.port = _port;
-    _client.autoReconnect = true;
-    _client.logging(on: true);
+    _client.logging(on: false);
 
     _client.onDisconnected = onDisconnected;
     _client.onConnected = onConnected;
@@ -76,11 +75,11 @@ class MQTTManager {
   }
 
   void onDisconnected() {
-    Logging.error("MQTT: CLIENT DISCONNECTED");
+    Logging.info("MQTT: CLIENT DISCONNECTED");
   }
 
   void onConnected() {
-    Logging.error("MQTT: CLIENT CONNECTED TO BROKER -> $_serverIp");
+    Logging.info("MQTT: CLIENT CONNECTED TO BROKER -> $_serverIp:$_port");
   }
 
   void disconnect() {

@@ -69,7 +69,8 @@ class _PreviousFlightState extends State<PreviousFlight> {
         chartTitle: 'Battery Voltage',
         xAxisTitle: 'Timestamps',
         yAxisTitle: 'Voltage',
-        flightDataValues: createDatalist(widget.flightData["data"]["voltage"]),
+        flightDataValues:
+            createDatalist(widget.flightData["data"]["batterVoltage"]),
         measurementUnit: 'V',
       ),
     ];
@@ -110,7 +111,7 @@ class _PreviousFlightState extends State<PreviousFlight> {
             label: 'Temperature',
           ),
           const BottomNavigationBarItem(
-            icon: Icon(Icons.speed),
+            icon: Icon(Icons.battery_charging_full_rounded),
             label: 'Battery Voltage',
           ),
         ],

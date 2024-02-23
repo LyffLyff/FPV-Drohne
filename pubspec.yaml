@@ -58,9 +58,10 @@ dependencies:
   mqtt_client: ^10.0.1
   flutter_vlc_player: ^7.2.0
   flutter_cube: ^0.1.1
-  google_fonts: ^6.1.0
   shared_preferences: ^2.2.2
   expandable: ^5.0.1
+  image_picker: ^1.0.7
+  image_gallery_saver: ^2.0.3
 
 dev_dependencies:
   flutter_test:

@@ -10,6 +10,9 @@ class StreamDisplay extends StatelessWidget {
   final String title;
   final String xAxisName;
   final String yAxisName;
+  final String unit;
+  final double maxY;
+  final double minY;
 
   const StreamDisplay(
       {super.key,
@@ -17,7 +20,10 @@ class StreamDisplay extends StatelessWidget {
       required this.xAxisName,
       required this.yAxisName,
       required this.dataArray,
-      required this.lastMeasurement});
+      required this.lastMeasurement,
+      required this.unit,
+      required this.maxY,
+      required this.minY});
 
   @override
   Widget build(BuildContext context) {
@@ -35,6 +41,8 @@ class StreamDisplay extends StatelessWidget {
             title: AxisTitle(text: xAxisName),
           ),
           primaryYAxis: NumericAxis(
+            minimum: minY,
+            maximum: maxY,
             name: yAxisName,
             title: AxisTitle(text: yAxisName),
           ),
@@ -65,10 +73,10 @@ class StreamDisplay extends StatelessWidget {
                 children: <TextSpan>[
                   TextSpan(
                       text: dataArray.isNotEmpty
-                          ? dataArray[dataArray.length - 1].y.toString()
+                          ? dataArray[dataArray.length - 1].y.toStringAsFixed(2)
                           : "-"),
                   TextSpan(
-                    text: ' m/s',
+                    text: " $unit",
                     style: context.textTheme.headlineMedium,
                   ),
                 ],

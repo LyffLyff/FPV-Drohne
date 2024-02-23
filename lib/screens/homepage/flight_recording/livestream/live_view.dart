@@ -1,8 +1,10 @@
 import 'package:drone_2_0/data/providers/logging_provider.dart';
 import 'package:drone_2_0/screens/homepage/flight_recording/livestream/stream_placeholder.dart';
 import 'package:drone_2_0/screens/homepage/flight_recording/livestream/video_overlay.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_vlc_player/flutter_vlc_player.dart';
+import 'package:image_gallery_saver/image_gallery_saver.dart';
 
 VlcPlayerOptions _controllerOptions = VlcPlayerOptions(
   advanced: VlcAdvancedOptions([
@@ -105,6 +107,11 @@ class _LiveViewState extends State<LiveView> {
         : await _videoPlayerController.play();
   }
 
+  Future<void> takeScreenshot() async {
+    Uint8List imageData = await _videoPlayerController.takeSnapshot();
+    await ImageGallerySaver.saveImage(imageData);
+  }
+
   @override
   Widget build(BuildContext context) {
     Logging.debug("Reloading Stream: ${widget.ipAdress}:${widget.port}");
@@ -139,14 +146,9 @@ class _LiveViewState extends State<LiveView> {
             ),
             IconButton(
               iconSize: 24,
-              onPressed: () {
-                Logging.info("Starting to record");
-              },
-              icon: const Icon(Icons.screenshot_monitor_rounded),
-            ),
-            IconButton(
-              onPressed: () {
-                _togglePlaying();
+              onPressed: () async {
+                Logging.info("Taking Screenshot");
+                await takeScreenshot();
               },
               icon: const Icon(Icons.screenshot_monitor_rounded),
             ),
