@@ -121,8 +121,6 @@ class LoginScreenState extends State<LoginScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                const Icon(Icons.apple_sharp, size: 32),
-                const Icon(Icons.android, size: 32),
                 GestureDetector(
                   onTap: () {
                     _googleLogin(context);
