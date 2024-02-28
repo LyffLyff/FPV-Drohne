@@ -1,4 +1,3 @@
-
 class Margins {
-    static const double stdMargin = 10;
+  static const double stdMargin = 8;
 }
