@@ -38,7 +38,7 @@ class _WeatherSelectionState extends State<WeatherSelection> {
         border: Border.all(),
       ),
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 20),
+        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 24),
         child: Row(
           children: [
             const Spacer(),
@@ -61,7 +61,8 @@ class _WeatherSelectionState extends State<WeatherSelection> {
                         });
                         widget.selectionCallback(_icons[_focusIndex]);
                       },
-                      child: Image.asset("${context.read<ThemeManager>().getWeatherIconPath()}${_icons[index]}.png",
+                      child: Image.asset(
+                              "${context.read<ThemeManager>().getWeatherIconPath()}${_icons[index]}.png",
                               filterQuality: FilterQuality.none)
                           .animate(target: _focusIndex == index ? 1 : 0)
                           .fade(begin: 0.3, end: 1.0)
