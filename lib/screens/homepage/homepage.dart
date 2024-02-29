@@ -11,7 +11,7 @@ import 'package:drone_2_0/screens/homepage/floating_center_menu.dart';
 import 'package:drone_2_0/screens/homepage/homepage_tabs.dart';
 import 'package:drone_2_0/screens/homepage/ip_dialogue.dart';
 import 'package:drone_2_0/screens/homepage/special/special_screen.dart';
-import 'package:drone_2_0/screens/settings/app_settings.dart';
+import 'package:drone_2_0/data/app_settings.dart';
 import 'package:drone_2_0/service/realtime_db_service.dart';
 import 'package:drone_2_0/themes/theme_manager.dart';
 import 'package:drone_2_0/widgets/animations/animation_routes.dart';
@@ -142,9 +142,9 @@ class _HomePageState extends State<HomePage> {
               padding: const EdgeInsets.symmetric(
                   horizontal: 5,
                   vertical:
-                      10), // setting thickness of button and bar in general
+                      8), // setting thickness of button and bar in general
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              gap: 10,
+              gap: 8,
 
               // Function
               selectedIndex: currentPageIdx,

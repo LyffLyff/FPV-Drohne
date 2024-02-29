@@ -107,7 +107,7 @@ class RegistrationState extends State<Registration> {
               icon: Icons.perm_contact_cal,
               onSubmitFunction: (String t) {},
             ),
-            const VerticalSpace(height: 10),
+            const VerticalSpace(height: 8),
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(

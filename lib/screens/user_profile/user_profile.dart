@@ -44,7 +44,7 @@ class _UserProfileState extends State<UserProfile> {
       } else {
         final path = results.files.single.path;
         final filename = results.files.single.name;
-        const folder = "test_images";
+        const folder = "user_profiles";
         await StorageService().uploadFile(folder, path!, filename);
 
         // delete old profile image from Storage

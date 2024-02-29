@@ -53,7 +53,7 @@ class _FloatingCenterMenuState extends State<FloatingCenterMenu> {
   @override
   Widget build(BuildContext context) {
     return Positioned(
-      bottom: 20, // distance from bottom
+      bottom: 24, // distance from bottom
       left: 0,
       right: 0,
       child: Row(

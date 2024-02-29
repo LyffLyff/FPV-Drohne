@@ -3,7 +3,7 @@ import 'package:drone_2_0/data/providers/logging_provider.dart';
 import 'package:drone_2_0/screens/homepage/homepage.dart';
 import 'package:drone_2_0/screens/login/login.dart';
 import 'package:drone_2_0/screens/pre_login/welcome_screen.dart';
-import 'package:drone_2_0/screens/settings/app_settings.dart';
+import 'package:drone_2_0/data/app_settings.dart';
 import 'package:drone_2_0/themes/main_themes.dart';
 import 'package:drone_2_0/themes/theme_manager.dart';
 import 'package:drone_2_0/widgets/loading_icons.dart';

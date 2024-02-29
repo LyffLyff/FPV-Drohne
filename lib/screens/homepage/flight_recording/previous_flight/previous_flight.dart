@@ -89,7 +89,7 @@ class _PreviousFlightState extends State<PreviousFlight> {
         title: Text(widget.flightData["title"]),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(10),
+        padding: const EdgeInsets.all(8),
         child: _widgetOptions.elementAt(_selectedIndex),
       ),
       bottomNavigationBar: BottomNavigationBar(

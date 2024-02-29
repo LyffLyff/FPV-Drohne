@@ -120,7 +120,7 @@ class _FlightDataTabState extends State<FlightDataTab> {
         DecoratedBox(
           decoration: BoxDecoration(
             shape: BoxShape.rectangle,
-            borderRadius: BorderRadius.circular(10),
+            borderRadius: BorderRadius.circular(8),
             color: context.colorScheme.primary,
           ),
           child: Row(

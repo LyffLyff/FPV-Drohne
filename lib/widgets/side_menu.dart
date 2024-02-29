@@ -85,7 +85,7 @@ class NavDrawer extends StatelessWidget {
                     ),
                   ),
                 ),
-                const VerticalSpace(height: 10),
+                const VerticalSpace(height: 8),
                 SizedBox(
                   height: 25,
                   child: Text(

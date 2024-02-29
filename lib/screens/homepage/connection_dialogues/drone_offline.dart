@@ -24,13 +24,13 @@ class DroneOffline extends StatelessWidget {
       ),
       actions: const <Widget>[
         Padding(
-          padding: EdgeInsets.symmetric(vertical: 10),
+          padding: EdgeInsets.symmetric(vertical: 8),
           child: Column(
             children: [
               Text("Awaiting the online signal...."),
-              VerticalSpace(height: 10),
+              VerticalSpace(height: 8),
               CircularLoadingIcon(
-                length: 20,
+                length: 24,
               ),
             ],
           ),
