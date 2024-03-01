@@ -8,6 +8,7 @@ import 'package:drone_2_0/screens/homepage/help.dart';
 import 'package:drone_2_0/screens/pre_login/welcome_screen.dart';
 import 'package:drone_2_0/screens/settings/settings.dart';
 import 'package:drone_2_0/screens/user_profile/user_profile.dart';
+import 'package:drone_2_0/themes/theme_manager.dart';
 import 'package:drone_2_0/widgets/animations/animation_routes.dart';
 import 'package:drone_2_0/widgets/profile_image.dart';
 import 'package:drone_2_0/widgets/utils/helper_widgets.dart';
@@ -46,7 +47,13 @@ class NavDrawer extends StatelessWidget {
       );
     }
 
+    Color textColor =
+        Provider.of<ThemeManager>(context).isDark ? Colors.white : Colors.black;
+    TextStyle textStyle =
+        context.textTheme.displayMedium!.copyWith(color: textColor);
+
     return Drawer(
+      backgroundColor: context.colorScheme.background,
       child: ListView(
         padding: EdgeInsets.zero,
         children: <Widget>[
@@ -93,19 +100,19 @@ class NavDrawer extends StatelessWidget {
                     textAlign: TextAlign.start,
                     overflow: TextOverflow.fade,
                     softWrap: false,
-                    style: context.textTheme.bodyMedium,
+                    style: textStyle,
                   ),
                 ),
               ],
             ),
           ),
           ListTile(
-            leading: const Icon(Icons.account_box),
-            titleAlignment: ListTileTitleAlignment.center,
-            title: Text(
-              'Profile',
-              style: context.textTheme.displayMedium,
+            leading: Icon(
+              Icons.account_box,
+              color: textColor,
             ),
+            titleAlignment: ListTileTitleAlignment.center,
+            title: Text('Profile', style: textStyle),
             onTap: () => {
               Navigator.of(context).push(
                 MaterialPageRoute(builder: (context) => const UserProfile()),
@@ -113,11 +120,14 @@ class NavDrawer extends StatelessWidget {
             },
           ),
           ListTile(
-            leading: const Icon(Icons.insights),
+            leading: Icon(
+              Icons.insights,
+              color: textColor,
+            ),
             titleAlignment: ListTileTitleAlignment.center,
             title: Text(
               'Previous Flights',
-              style: context.textTheme.displayMedium,
+              style: textStyle,
             ),
             onTap: () => {
               Navigator.of(context).push(
@@ -126,11 +136,11 @@ class NavDrawer extends StatelessWidget {
             },
           ),
           ListTile(
-            leading: const Icon(Icons.settings),
+            leading: Icon(Icons.settings, color: textColor),
             titleAlignment: ListTileTitleAlignment.center,
             title: Text(
               'Settings',
-              style: context.textTheme.displayMedium,
+              style: textStyle,
             ),
             onTap: () => {
               Navigator.of(context)
@@ -138,22 +148,28 @@ class NavDrawer extends StatelessWidget {
             },
           ),
           ListTile(
-            leading: const Icon(Icons.info),
+            leading: Icon(
+              Icons.info,
+              color: textColor,
+            ),
             titleAlignment: ListTileTitleAlignment.center,
             title: Text(
               'App Info',
-              style: context.textTheme.displayMedium,
+              style: textStyle,
             ),
             onTap: () => {
               Navigator.of(context).push(pageRouteAnimation(const AppInfo())),
             },
           ),
           ListTile(
-            leading: const Icon(Icons.question_answer_rounded),
+            leading: Icon(
+              Icons.question_answer_rounded,
+              color: textColor,
+            ),
             titleAlignment: ListTileTitleAlignment.center,
             title: Text(
               'Help / FAQ',
-              style: context.textTheme.displayMedium,
+              style: textStyle,
             ),
             onTap: () => {
               Navigator.of(context)
@@ -161,11 +177,14 @@ class NavDrawer extends StatelessWidget {
             },
           ),
           ListTile(
-            leading: const Icon(Icons.input),
+            leading: Icon(
+              Icons.input,
+              color: textColor,
+            ),
             titleAlignment: ListTileTitleAlignment.center,
             title: Text(
               'Logout',
-              style: context.textTheme.displayMedium,
+              style: textStyle,
             ),
             onTap: () => {logout()},
           ),

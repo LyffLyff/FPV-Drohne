@@ -72,7 +72,7 @@ class _FloatingCenterMenuState extends State<FloatingCenterMenu> {
                   IconButton.filled(
                     style: ButtonStyle(
                       foregroundColor: MaterialStatePropertyAll(
-                          context.colorScheme.onBackground),
+                          context.colorScheme.onPrimary),
                       backgroundColor:
                           // hiding the background purple which is standard
                           const MaterialStatePropertyAll(Colors.transparent),

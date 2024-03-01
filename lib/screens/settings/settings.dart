@@ -1,5 +1,6 @@
 import 'package:drone_2_0/data/providers/auth_provider.dart';
 import 'package:drone_2_0/data/app_settings.dart';
+import 'package:drone_2_0/extensions/extensions.dart';
 import 'package:drone_2_0/service/settings_service.dart';
 import 'package:drone_2_0/themes/theme_constants.dart';
 import 'package:drone_2_0/themes/theme_manager.dart';
@@ -34,11 +35,17 @@ class SettingsScreen extends StatelessWidget {
             children: [
               SwitchListTile.adaptive(
                 activeColor: Colors.white,
-                inactiveTrackColor: Colors.grey.shade300,
+                inactiveTrackColor: Colors.black,
                 value: themeManager.isDark,
-                title: const Text("Theme Mode"),
-                subtitle: const Text(
+                title: Text(
+                  "Theme Mode",
+                  style: context.textTheme.bodyLarge?.copyWith(
+                      color: themeManager.isDark ? Colors.white : Colors.black),
+                ),
+                subtitle: Text(
                   'Light/Dark Mode Toggle',
+                  style: context.textTheme.bodySmall?.copyWith(
+                      color: themeManager.isDark ? Colors.white : Colors.black),
                 ),
                 controlAffinity: ListTileControlAffinity.trailing,
                 onChanged: ((value) {

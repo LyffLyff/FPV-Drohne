@@ -148,18 +148,24 @@ class _HomePageState extends State<HomePage> {
 
               // Function
               selectedIndex: currentPageIdx,
-              tabs: const [
+              tabs: [
                 GButton(
                   icon: Icons.data_exploration,
                   text: "Flight Records",
+                  iconColor: context.colorScheme.onBackground,
+                  iconActiveColor: context.colorScheme.background,
                 ),
                 GButton(
                   icon: Icons.rotate_right_outlined,
                   text: "3D-Space",
+                  iconColor: context.colorScheme.onBackground,
+                  iconActiveColor: context.colorScheme.onPrimary,
                 ),
                 GButton(
                   icon: Icons.video_camera_back,
                   text: "Live View",
+                  iconColor: context.colorScheme.onBackground,
+                  iconActiveColor: context.colorScheme.background,
                 ),
               ],
 
@@ -243,12 +249,12 @@ class _HomePageState extends State<HomePage> {
                               ipAdress: ipAdress,
                               port: mqttPort,
                             ),
-                            /*LiveView(
+                            LiveView(
                               ipAdress: ipAdress,
                               port: videoPort,
                               streamName: "live/stream",
                               aspectRatio: 4 / 3,
-                            ),*/
+                            ),
                           ],
                         );
                       } else {

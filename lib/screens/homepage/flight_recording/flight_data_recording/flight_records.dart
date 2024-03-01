@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:drone_2_0/data/providers/logging_provider.dart';
+import 'package:drone_2_0/extensions/extensions.dart';
 import 'package:drone_2_0/screens/general/error/failed_connection.dart';
 import 'package:drone_2_0/screens/homepage/flight_recording/error_terminal.dart';
 import 'package:drone_2_0/screens/homepage/flight_recording/flight_data_recording/awaiting_connection_dialogue.dart';
@@ -56,7 +59,7 @@ class _FlightRecordsState extends State<FlightRecords> {
         return convertedData;
         // ignore: unnecessary_null_comparison
       }).where((data) => data != null); // Filter out null values
-    } on FirebaseException catch (e) {
+    } on SocketException catch (e) {
       Logging.error(e.toString());
       return const Stream.empty();
     }
@@ -80,8 +83,10 @@ class _FlightRecordsState extends State<FlightRecords> {
   }
 
   void limitDataPoints(String key) {
-    chartData[key] = (chartData[key]!.length > 500
-        ? chartData[key]!.sublist(chartData[key]!.length - 500)
+    // limitiert eine Flugdaten-Map auf 500 Datenwerte -> Scrollende Diagramme
+    int maxDataPoints = 500;
+    chartData[key] = (chartData[key]!.length > maxDataPoints
+        ? chartData[key]!.sublist(chartData[key]!.length - maxDataPoints)
         : chartData[key])!;
   }
 
@@ -107,26 +112,30 @@ class _FlightRecordsState extends State<FlightRecords> {
       length: 4,
       child: Column(
         children: [
-          const TabBar(
+          TabBar(
             tabs: [
               Tab(
                 icon: Icon(
                   Icons.height_outlined,
+                  color: context.colorScheme.onBackground,
                 ),
               ),
               Tab(
                 icon: Icon(
                   Icons.thermostat_rounded,
+                  color: context.colorScheme.onBackground,
                 ),
               ),
               Tab(
                 icon: Icon(
                   Icons.battery_charging_full_rounded,
+                  color: context.colorScheme.onBackground,
                 ),
               ),
               Tab(
                 icon: Icon(
                   Icons.terminal_rounded,
+                  color: context.colorScheme.onBackground,
                 ),
               ),
             ],

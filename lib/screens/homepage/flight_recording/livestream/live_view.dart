@@ -1,4 +1,5 @@
 import 'package:drone_2_0/data/providers/logging_provider.dart';
+import 'package:drone_2_0/screens/general/error/failed_connection.dart';
 import 'package:drone_2_0/screens/homepage/flight_recording/livestream/stream_placeholder.dart';
 import 'package:drone_2_0/screens/homepage/flight_recording/livestream/video_overlay.dart';
 import 'package:flutter/foundation.dart';
@@ -43,6 +44,7 @@ class _LiveViewState extends State<LiveView> {
   double recordingTextOpacity = 0;
   DateTime lastRecordingShowTime = DateTime.now();
   bool isRecording = false;
+  bool connectionError = false;
 
   @override
   void initState() {
@@ -63,9 +65,11 @@ class _LiveViewState extends State<LiveView> {
     //
     if (_videoPlayerController.value.hasError) {
       Logging.error(_videoPlayerController.value.errorDescription);
-    }
-    if (_videoPlayerController.value.playingState == PlayingState.initialized) {
-      setState(() {});
+    } else if (_videoPlayerController.value.playingState ==
+        PlayingState.initialized) {
+      setState(() {
+        connectionError = false;
+      });
     }
     Logging.info(_videoPlayerController.value.playingState);
     if (_videoPlayerController.value.isInitialized) {
@@ -89,6 +93,11 @@ class _LiveViewState extends State<LiveView> {
           _videoPlayerController.value.recordPath;
         }
       }
+    } else if (_videoPlayerController.value.playingState !=
+        PlayingState.stopped) {
+      setState(() {
+        connectionError = true;
+      });
     }
   }
 
@@ -123,11 +132,13 @@ class _LiveViewState extends State<LiveView> {
           height: 320,
           child: Stack(
             children: [
-              VlcPlayer(
-                controller: _videoPlayerController,
-                aspectRatio: widget.aspectRatio,
-                placeholder: const LivestreamPlaceholder(),
-              ),
+              connectionError
+                  ? const ConnectionError()
+                  : VlcPlayer(
+                      controller: _videoPlayerController,
+                      aspectRatio: widget.aspectRatio,
+                      placeholder: const LivestreamPlaceholder(),
+                    ),
               const VideoOverlay(),
             ],
           ),
