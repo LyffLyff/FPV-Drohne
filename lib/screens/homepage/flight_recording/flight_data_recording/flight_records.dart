@@ -9,7 +9,6 @@ import 'package:drone_2_0/screens/homepage/flight_recording/flight_data_recordin
 import 'package:drone_2_0/screens/homepage/flight_recording/flight_data_recording/flight_data.dart';
 import 'package:drone_2_0/screens/homepage/flight_recording/flight_data_recording/stream_displayer.dart';
 import 'package:drone_2_0/service/mqtt_manager.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:async/async.dart';
 
@@ -22,11 +21,11 @@ Map<String, List<ChartData>> _emptyChartData = {
 };
 
 class FlightRecords extends StatefulWidget {
-  final FlightData flightData;
+  FlightData flightData;
   final String ipAdress;
   final int port;
 
-  const FlightRecords({
+  FlightRecords({
     super.key,
     required this.flightData,
     required this.ipAdress,
@@ -46,16 +45,16 @@ class _FlightRecordsState extends State<FlightRecords> {
   int flightStartTimestamp = -1;
   List<dynamic> snapData = [];
 
-  Stream<dynamic> _combinedStreams() {
+  Stream<dynamic> _dataStreams() {
     try {
       final mqttStream = mqttManager.messageStream;
       final combinedStream = StreamGroup.merge([mqttStream]);
 
       return combinedStream.map((event) {
         List<String> data = event.values.first.split(" ");
-        List<dynamic> convertedData = [data[0]];
-        convertedData.add(double.parse(data[1]));
-        convertedData.add(int.parse(data[2]));
+        List<dynamic> convertedData = [data[MQTTData.identifier.index]];
+        convertedData.add(double.parse(data[MQTTData.value.index]));
+        convertedData.add(int.parse(data[MQTTData.timestamp.index]));
         return convertedData;
         // ignore: unnecessary_null_comparison
       }).where((data) => data != null); // Filter out null values
@@ -66,8 +65,10 @@ class _FlightRecordsState extends State<FlightRecords> {
   }
 
   Future<bool> initDataConnection() async {
-    // Reading the initial value from the Database before listening to changes
-    chartData = Map.from(_emptyChartData); // reset data in init
+    // reset data on init
+    chartData = Map.from(_emptyChartData);
+    widget.flightData = FlightData();
+
     bool connection = await mqttManager.connect();
 
     // Subscribe to topics
@@ -154,7 +155,7 @@ class _FlightRecordsState extends State<FlightRecords> {
                   return Column(
                     children: [
                       StreamBuilder(
-                        stream: _combinedStreams(),
+                        stream: _dataStreams(),
                         builder: (context, snapshot) {
                           if (snapshot.hasError) {
                             return const Expanded(

@@ -57,12 +57,15 @@ class _LiveViewState extends State<LiveView> {
       autoPlay: true,
       options: _controllerOptions,
     );
+
+    // Defining the Function that is called as soon as anything changes on the Status of the Player
     _videoPlayerController.addListener(listener);
   }
 
   void listener() {
     if (!mounted) return;
-    //
+
+    // Checking an Error occurred
     if (_videoPlayerController.value.hasError) {
       Logging.error(_videoPlayerController.value.errorDescription);
     } else if (_videoPlayerController.value.playingState ==
@@ -73,9 +76,9 @@ class _LiveViewState extends State<LiveView> {
     }
     Logging.info(_videoPlayerController.value.playingState);
     if (_videoPlayerController.value.isInitialized) {
-      // update recording blink widget
       if (_videoPlayerController.value.isRecording &&
           _videoPlayerController.value.isPlaying) {
+        // Hochzählen einer Variable in Sekunden seit Start einer Aufnahme
         if (DateTime.now().difference(lastRecordingShowTime).inSeconds >= 1) {
           setState(() {
             lastRecordingShowTime = DateTime.now();

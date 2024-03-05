@@ -28,7 +28,7 @@ void main() async {
   await themeManager.initThemeSettings(user?.uid ?? "");
 
   // initialize colors after theme loaded
-  colorSettings(themeManager.isDark);
+  appNavigationColorSettings(themeManager.isDark);
 
   // init cached data
   final DataCache dataCache = DataCache();

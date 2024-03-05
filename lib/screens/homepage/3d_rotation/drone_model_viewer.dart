@@ -73,7 +73,7 @@ class DroneModelViewerState extends State<DroneModelViewer> {
   Future<bool> _rotationManagerInit() async {
     bool connection = await mqttManager.connect();
 
-    if (connection && false) {
+    if (connection) {
       mqttManager.subscribeToTopic("data/rotation");
       Logging.info("Subscribed to Rotation Topic");
       mqttManager.messageStream.listen((event) {

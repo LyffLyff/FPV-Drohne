@@ -66,9 +66,7 @@ class LoginScreenState extends State<LoginScreen> {
               controller: _passwordController,
               hintText: "Password",
               icon: Icons.password,
-              onSubmitFunction: (String text) {
-                print("hoe");
-              },
+              onSubmitFunction: (String text) {},
             ),
             TextButton(
               onPressed: () {
