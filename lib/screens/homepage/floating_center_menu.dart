@@ -64,6 +64,7 @@ class _FloatingCenterMenuState extends State<FloatingCenterMenu> {
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               color: context.colorScheme.primary,
+              border: Border.all(width: 2),
             ),
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8),
@@ -72,7 +73,8 @@ class _FloatingCenterMenuState extends State<FloatingCenterMenu> {
                   IconButton.filled(
                     style: ButtonStyle(
                       foregroundColor: MaterialStatePropertyAll(
-                          context.colorScheme.onPrimary),
+                        context.colorScheme.onPrimary,
+                      ),
                       backgroundColor:
                           // hiding the background purple which is standard
                           const MaterialStatePropertyAll(Colors.transparent),

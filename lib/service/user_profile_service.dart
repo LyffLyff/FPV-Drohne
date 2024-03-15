@@ -69,7 +69,7 @@ class UserProfileService {
           .set({"flight_data_age": DateTime.now().millisecondsSinceEpoch});
     } catch (e) {
       // Handle the exception here
-      print('Error in addFlightData: $e');
+      Logging.error('Error in addFlightData: $e');
     }
   }
 

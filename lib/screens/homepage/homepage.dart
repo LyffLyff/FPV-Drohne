@@ -25,7 +25,6 @@ import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
-
   static String id = 'homepage';
 
   @override
@@ -44,6 +43,10 @@ class _HomePageState extends State<HomePage> {
   String ipAdress = "";
   int mqttPort = 0;
   int videoPort = 0;
+  String videoProtocol = "";
+  String videoApplicationName = "";
+  String videoStreamKey = "";
+  double videoAspectRatio = 4 / 3;
 
   FlightData flightData = FlightData();
 
@@ -92,7 +95,12 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<void> _onInitDialogueDataEntered(
-      String ipAdress, String mqttPort, String videoPort) async {
+      String ipAdress,
+      String mqttPort,
+      String videoProtocol,
+      String videoApplicationName,
+      String videoStreamKey,
+      String videoPort) async {
     Logging.info("Server Data Entered -> Show Homepage");
     Logging.info("ENTERED CONFIG: $ipAdress  $mqttPort  $videoPort");
 
@@ -101,6 +109,9 @@ class _HomePageState extends State<HomePage> {
     await sharedPrefs.saveText("serverIp", ipAdress);
     await sharedPrefs.saveText("mqttPort", mqttPort);
     await sharedPrefs.saveText("videoPort", videoPort);
+    await sharedPrefs.saveText("videoProtocol", videoProtocol);
+    await sharedPrefs.saveText("videoAppName", videoApplicationName);
+    await sharedPrefs.saveText("videoStreamKey", videoStreamKey);
 
     // setting flag that sever was selected -> for bottom menu visibility
     rtdbService.updateData("", {"server_selected": true});
@@ -110,6 +121,9 @@ class _HomePageState extends State<HomePage> {
       this.ipAdress = ipAdress;
       this.mqttPort = int.tryParse(mqttPort) ?? 1883;
       this.videoPort = int.tryParse(videoPort) ?? 1935;
+      this.videoProtocol = videoProtocol;
+      this.videoApplicationName = videoApplicationName;
+      this.videoStreamKey = videoStreamKey;
       ipAdressSelected = true;
     });
   }
@@ -153,19 +167,19 @@ class _HomePageState extends State<HomePage> {
                   icon: Icons.data_exploration,
                   text: "Flight Records",
                   iconColor: context.colorScheme.onBackground,
-                  iconActiveColor: context.colorScheme.background,
+                  iconActiveColor: context.colorScheme.inversePrimary,
                 ),
                 GButton(
                   icon: Icons.rotate_right_outlined,
                   text: "3D-Space",
                   iconColor: context.colorScheme.onBackground,
-                  iconActiveColor: context.colorScheme.onPrimary,
+                  iconActiveColor: context.colorScheme.inversePrimary,
                 ),
                 GButton(
                   icon: Icons.video_camera_back,
                   text: "Live View",
                   iconColor: context.colorScheme.onBackground,
-                  iconActiveColor: context.colorScheme.background,
+                  iconActiveColor: context.colorScheme.inversePrimary,
                 ),
               ],
 
@@ -227,6 +241,9 @@ class _HomePageState extends State<HomePage> {
                             ipAdressController: TextEditingController(),
                             mqttPortController: TextEditingController(),
                             videoPortController: TextEditingController(),
+                            videoProtocolController: TextEditingController(),
+                            videoAppNameController: TextEditingController(),
+                            videoStreamKeyController: TextEditingController(),
                           );
                         }
 
@@ -252,8 +269,10 @@ class _HomePageState extends State<HomePage> {
                             LiveView(
                               ipAdress: ipAdress,
                               port: videoPort,
-                              streamName: "live/stream",
-                              aspectRatio: 4 / 3,
+                              aspectRatio: videoAspectRatio,
+                              streamKey: videoStreamKey,
+                              applicationName: videoApplicationName,
+                              protocol: videoProtocol,
                             ),
                           ],
                         );

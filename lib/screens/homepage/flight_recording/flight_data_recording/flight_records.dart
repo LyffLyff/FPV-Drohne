@@ -9,7 +9,6 @@ import 'package:drone_2_0/screens/homepage/flight_recording/flight_data_recordin
 import 'package:drone_2_0/screens/homepage/flight_recording/flight_data_recording/flight_data.dart';
 import 'package:drone_2_0/screens/homepage/flight_recording/flight_data_recording/stream_displayer.dart';
 import 'package:drone_2_0/service/mqtt_manager.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:async/async.dart';
 
