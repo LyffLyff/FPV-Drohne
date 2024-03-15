@@ -134,10 +134,10 @@ class _PreviousFlightsState extends State<PreviousFlights> {
                 .setPreviousFlights(data!); // set data in cache
           }
           if (data != null) {
-            // sorting data
+// sorting data
             _sortData();
 
-            // displaying data
+// displaying data
             return ListView.separated(
               physics: const BouncingScrollPhysics(),
               itemCount: data!.length + 1,

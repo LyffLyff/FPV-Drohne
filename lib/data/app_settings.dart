@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 
 void defaultAppSettings({bool darkMode = true}) {
   // OS Navigation
-  colorSettings(darkMode);
+  appNavigationColorSettings(darkMode);
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
 
   // Prevent turning phone
@@ -13,7 +13,7 @@ void defaultAppSettings({bool darkMode = true}) {
   ]);
 }
 
-void colorSettings(bool darkMode) {
+void appNavigationColorSettings(bool darkMode) {
   SystemUiOverlayStyle mySystemTheme;
   if (darkMode) {
     // dark mode sytem colors

@@ -29,8 +29,7 @@ class MQTTManager {
 
     final MqttConnectMessage connMess = MqttConnectMessage()
         .withClientIdentifier(_clientIdentifier)
-        .startClean()
-        .withWillQos(MqttQos.atLeastOnce);
+        .startClean();
 
     _client.connectionMessage = connMess;
 
@@ -39,10 +38,11 @@ class MQTTManager {
 
       // listening to received messages from the connected broker
       _client.updates?.listen((List<MqttReceivedMessage<MqttMessage>> event) {
-        for (var message in event) {
+        for (MqttReceivedMessage<MqttMessage> message in event) {
           if (message.payload is MqttPublishMessage) {
             final MqttPublishMessage publishMessage =
                 message.payload as MqttPublishMessage;
+            // convert databytes to string
             final String payload = MqttPublishPayload.bytesToStringAsString(
                 publishMessage.payload.message);
             final String topic = message.topic;

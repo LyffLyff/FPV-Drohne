@@ -53,7 +53,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    colorSettings(context.read<ThemeManager>().isDark);
+    appNavigationColorSettings(context.read<ThemeManager>().isDark);
   }
 
   @override

@@ -50,7 +50,7 @@ class SettingsScreen extends StatelessWidget {
                 controlAffinity: ListTileControlAffinity.trailing,
                 onChanged: ((value) {
                   themeManager.setTheme(value);
-                  colorSettings(value);
+                  appNavigationColorSettings(value);
                   SettingsService().addNewSettings(
                     userId: Provider.of<AuthenticationProvider>(context,
                             listen: false)
