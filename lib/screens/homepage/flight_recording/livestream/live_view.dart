@@ -9,14 +9,19 @@ import 'package:image_gallery_saver/image_gallery_saver.dart';
 
 VlcPlayerOptions _controllerOptions = VlcPlayerOptions(
   advanced: VlcAdvancedOptions([
-    VlcAdvancedOptions.networkCaching(300),
+    VlcAdvancedOptions.clockSynchronization(1),
+
+    // no caching -> realtime image
+    VlcAdvancedOptions.liveCaching(0),
+    VlcAdvancedOptions.networkCaching(0),
+    VlcAdvancedOptions.fileCaching(0),
   ]),
   rtp: VlcRtpOptions([
     // got the feeling with it, it runs smoother
     VlcRtpOptions.rtpOverRtsp(true),
   ]),
   video: VlcVideoOptions([
-    VlcVideoOptions.dropLateFrames(false), // better late than never
+    VlcVideoOptions.dropLateFrames(true), // better late than never
     VlcVideoOptions.skipFrames(
         true), // never drop any image received -> else sometimes playing audio without video
   ]),
@@ -126,7 +131,7 @@ class _LiveViewState extends State<LiveView> {
 
   @override
   Widget build(BuildContext context) {
-    Logging.debug("Reloading Stream: ${widget.ipAdress}:${widget.port}");
+    //Logging.debug("Reloading Stream: ${widget.ipAdress}:${widget.port}");
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
