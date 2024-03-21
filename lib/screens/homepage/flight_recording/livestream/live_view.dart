@@ -8,6 +8,7 @@ import 'package:flutter_vlc_player/flutter_vlc_player.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
 
 VlcPlayerOptions _controllerOptions = VlcPlayerOptions(
+<<<<<<< HEAD
   advanced: VlcAdvancedOptions([
     VlcAdvancedOptions.clockSynchronization(1),
 
@@ -26,6 +27,22 @@ VlcPlayerOptions _controllerOptions = VlcPlayerOptions(
         true), // never drop any image received -> else sometimes playing audio without video
   ]),
 );
+=======
+    advanced: VlcAdvancedOptions([
+      // no caching -> always in present
+      VlcAdvancedOptions.networkCaching(300),
+      //"--no-sout-caching" // disables caching
+    ]),
+    rtp: VlcRtpOptions([
+      // got the feeling with it, it runs smoother
+      //VlcRtpOptions.rtpOverRtsp(true),
+    ]),
+    video: VlcVideoOptions([]),
+    http: VlcHttpOptions([
+      VlcHttpOptions.httpReconnect(true),
+      VlcHttpOptions.httpContinuous(true)
+    ]));
+>>>>>>> 383b9072da62ecd164d8b3c847d5631bd3915e5c
 
 class LiveView extends StatefulWidget {
   final String protocol;
@@ -54,11 +71,12 @@ class _LiveViewState extends State<LiveView> {
   DateTime lastRecordingShowTime = DateTime.now();
   bool isRecording = false;
   bool connectionError = false;
+  late String url;
 
   @override
   void initState() {
     super.initState();
-    String url =
+    url =
         "${widget.protocol}://${widget.ipAdress}:${widget.port}/${widget.applicationName}/${widget.streamKey}";
     Logging.debug("LiveView Initializing: $url");
     _videoPlayerController = VlcPlayerController.network(
@@ -137,13 +155,19 @@ class _LiveViewState extends State<LiveView> {
 
   @override
   Widget build(BuildContext context) {
+<<<<<<< HEAD
     //Logging.debug("Reloading Stream: ${widget.ipAdress}:${widget.port}");
+=======
+>>>>>>> 383b9072da62ecd164d8b3c847d5631bd3915e5c
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
+        Center(
+          child: Text(url),
+        ),
         SizedBox(
           width: MediaQuery.sizeOf(context).width,
-          height: 320,
+          height: 300,
           child: Stack(
             children: [
               connectionError
