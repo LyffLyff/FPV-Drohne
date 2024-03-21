@@ -28,17 +28,21 @@ VlcPlayerOptions _controllerOptions = VlcPlayerOptions(
 );
 
 class LiveView extends StatefulWidget {
+  final String protocol;
   final String ipAdress;
   final int port;
-  final String streamName;
+  final String applicationName;
+  final String streamKey;
   final double aspectRatio;
 
   const LiveView(
       {super.key,
-      required this.ipAdress,
       required this.port,
-      required this.streamName,
-      required this.aspectRatio});
+      required this.aspectRatio,
+      required this.protocol,
+      required this.applicationName,
+      required this.streamKey,
+      required this.ipAdress});
 
   @override
   State<LiveView> createState() => _LiveViewState();
@@ -54,10 +58,12 @@ class _LiveViewState extends State<LiveView> {
   @override
   void initState() {
     super.initState();
-    Logging.debug("LiveView Initializing");
+    String url =
+        "${widget.protocol}://${widget.ipAdress}:${widget.port}/${widget.applicationName}/${widget.streamKey}";
+    Logging.debug("LiveView Initializing: $url");
     _videoPlayerController = VlcPlayerController.network(
       autoInitialize: true,
-      "rtmp://${widget.ipAdress}:${widget.port}/${widget.streamName}",
+      url,
       hwAcc: HwAcc.auto,
       autoPlay: true,
       options: _controllerOptions,

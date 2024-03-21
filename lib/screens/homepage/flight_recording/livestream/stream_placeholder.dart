@@ -5,9 +5,14 @@ class LivestreamPlaceholder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const DecoratedBox(
+    return const Center(
+      child: DecoratedBox(
         decoration:
             BoxDecoration(shape: BoxShape.rectangle, color: Colors.black),
-        child: Center(child: Text("Error Opening Livestream :(")));
+        child: Center(
+          child: Text("Error Opening Livestream :("),
+        ),
+      ),
+    );
   }
 }
