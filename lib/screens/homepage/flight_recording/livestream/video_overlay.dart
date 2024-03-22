@@ -2,13 +2,20 @@ import 'package:drone_2_0/screens/homepage/flight_recording/livestream/overlay_t
 import 'package:flutter/material.dart';
 
 class VideoOverlay extends StatelessWidget {
-  const VideoOverlay({super.key});
+  final double aspectRatio;
+  final bool isFullscreen;
+  const VideoOverlay(
+      {super.key, required this.aspectRatio, required this.isFullscreen});
+
+  double getPadding() {
+    return 2;
+  }
 
   @override
   Widget build(BuildContext context) {
-    return const Padding(
-      padding: EdgeInsets.all(8.0),
-      child: Column(
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: getPadding()),
+      child: const Column(
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,

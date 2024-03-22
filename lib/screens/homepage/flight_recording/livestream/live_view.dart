@@ -8,7 +8,6 @@ import 'package:flutter_vlc_player/flutter_vlc_player.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
 
 VlcPlayerOptions _controllerOptions = VlcPlayerOptions(
-<<<<<<< HEAD
   advanced: VlcAdvancedOptions([
     VlcAdvancedOptions.clockSynchronization(1),
 
@@ -27,22 +26,6 @@ VlcPlayerOptions _controllerOptions = VlcPlayerOptions(
         true), // never drop any image received -> else sometimes playing audio without video
   ]),
 );
-=======
-    advanced: VlcAdvancedOptions([
-      // no caching -> always in present
-      VlcAdvancedOptions.networkCaching(300),
-      //"--no-sout-caching" // disables caching
-    ]),
-    rtp: VlcRtpOptions([
-      // got the feeling with it, it runs smoother
-      //VlcRtpOptions.rtpOverRtsp(true),
-    ]),
-    video: VlcVideoOptions([]),
-    http: VlcHttpOptions([
-      VlcHttpOptions.httpReconnect(true),
-      VlcHttpOptions.httpContinuous(true)
-    ]));
->>>>>>> 383b9072da62ecd164d8b3c847d5631bd3915e5c
 
 class LiveView extends StatefulWidget {
   final String protocol;
@@ -155,19 +138,17 @@ class _LiveViewState extends State<LiveView> {
 
   @override
   Widget build(BuildContext context) {
-<<<<<<< HEAD
     //Logging.debug("Reloading Stream: ${widget.ipAdress}:${widget.port}");
-=======
->>>>>>> 383b9072da62ecd164d8b3c847d5631bd3915e5c
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Center(
           child: Text(url),
         ),
+        const Divider(),
         SizedBox(
           width: MediaQuery.sizeOf(context).width,
-          height: 300,
+          height: 320,
           child: Stack(
             children: [
               connectionError
@@ -177,7 +158,10 @@ class _LiveViewState extends State<LiveView> {
                       aspectRatio: widget.aspectRatio,
                       placeholder: const LivestreamPlaceholder(),
                     ),
-              const VideoOverlay(),
+              VideoOverlay(
+                aspectRatio: widget.aspectRatio,
+                isFullscreen: false,
+              ),
             ],
           ),
         ),
@@ -200,6 +184,38 @@ class _LiveViewState extends State<LiveView> {
                 await takeScreenshot();
               },
               icon: const Icon(Icons.screenshot_monitor_rounded),
+            ),
+            IconButton(
+              iconSize: 24,
+              onPressed: () async {
+                Logging.info("Opening Fullscreen");
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => SafeArea(
+                      child: Scaffold(
+                    appBar: AppBar(
+                      title: const RotatedBox(
+                          quarterTurns: 1, child: Text("B\nA\nC\nK\n")),
+                    ),
+                    body: RotatedBox(
+                      quarterTurns: 1,
+                      child: Stack(
+                        children: [
+                          VideoOverlay(
+                            aspectRatio: widget.aspectRatio,
+                            isFullscreen: true,
+                          ),
+                          VlcPlayer(
+                            controller: _videoPlayerController,
+                            aspectRatio: widget.aspectRatio,
+                            placeholder: const LivestreamPlaceholder(),
+                          ),
+                        ],
+                      ),
+                    ),
+                  )),
+                ));
+              },
+              icon: const Icon(Icons.fullscreen),
             ),
           ],
         )
